@@ -1,12 +1,69 @@
-Welcome to course - Daniel (15 min)
+---
+bibliography: papers.bib
+#bibliography: "C:/Users/au302898/OneDrive - Aarhus universitet/Documents/mediation-analysis-course/papers.bib"
+---
 
-- practical information
-- going over the schedule
-- overall learning outcomes
+# Welcome to the course {#sec-welcome}
+<!-- Daniel 15 min -->
 
-Motivation for mediation analysis - Omar (60 min)
+Welcome to the course on Modern Mediation Analysis!
+
+This is a 3-day course sponsored by the Danish Diabetes and Endocrine Academy. The course will take you through the realm of mediation analysis, starting with the traditional approach, then dive into causal mediation analysis and modern mediation analysis. Lastly, we will introduce a different approach more suitable for omics-type data taking a network analysis approach.
+
+## Overall learning outcomes
+
+::: callout-note
+## The overall course objective
+
+To provide participants with the knowledge, tools and skills to implement modern mediation analysis for investigation of disease mechanisms.
+
+:::
+
+The more specific learning outcomes include:
+
+-	Explain the theoretical concepts and statistical methods regarding traditional and modern mediation analysis applied to basic, clinical and epidemiological research on diabetes and endocrine diseases.
+-	Perform traditional and modern mediation analysis using R software.
+- Present results from mediation analysis according to the current mediation analysis  reporting guidelines.
+- Interpret results from mediation analysis and suggest relevant sensitivity analyses for mediation analyses
+- Discuss the strengths, limitations and assumptions of traditional and modern mediation analysis
+
+**The target audience:** 
+PhD students and postdocs conducting research within the field of basic science, clinical, and epidemiological studies on diabetes and endocrinology, that are planning to conduct mediation analysis or that are interested in widening their analysis toolkit.
+
+## Schedule
+Over the 3 days we will combine lectures with code-along sessions, group work, discussions and networking activities. 
+
+| Time        | May 28                                            | May 29                                                                                                         | May 30                                                                            |
+| ----------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 8.30-9.00   | Registration and getting started                  |                                                                                                                |                                                                                   |
+| 9.00-10.15  | Introduction to the course and the topic (DI, OS) | Recap from yesterday + Causal mediation analysis: estimation  (DI, JZ)                                         | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                |
+| 10.15-10.30 | Coffee break                                      |                                                                                                                |                                                                                   |
+| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) | Modern mediation analysis - part 3 (NH, ID)                                       |
+| 12.00-13.00 | Lunch                                             | Lunch                                                                                                          | Lunch                                                                             |
+| 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  | Causal mediation analysis: sensitivity analyses (OS)                                                           | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                       |
+| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | NetCoupler introduction (CW) (open lecture, Steno Thursday) (14.15-15.00)         |
+| 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS) |
+| 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                   |
+| 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                   |
+| 18:30       |                                                   | Dinner                                                                                                         |                                                                                   |
+| 20:30       |                                                   | Network activity                                                                                               |                                                                                   |
+
+## Practical information
+
+# Motivation for mediation analysis - Omar (60 min)
+<!-- Omar 60 min -->
+
+Basic, clinical and epidemiological research are often interested in whether a specific intervention has an effect on a disease. Once that has been established, the natural subsequent question is *why* the intervention had an effect? **What was the mechanism?** [@vanderweele_mediation_2016].
+
+Mediation analysis can, if used correctly, answer such questions. However, this is unfortunately rarely the case because the methods are used incorrectly. A recent systematic review of the reporting quality of studies applying mediation analysis showed that most of the studies had incomplete reporting [@rrn_systematic_2022]. This impacts both reproducibility and translation into practice. 
+
+Alongside the applied research, the methodological framework for conducting mediation analysis has also evolved rapidly in recent years. Unfortunately, most applied examples have not caught up with this progression in methodology. In fact, a scoping review found that between 2015 to 2019 only 29.3% of studies using mediation analysis used modern mediation analysis methods [@rijnhart_mediation_2021].
+
 
 - show example of mediation analysis
 - discussion on motivations for mediation analysis
 - relevance for basic, clinical and epidemiological research
 - discussion with participants
+
+# References
+
