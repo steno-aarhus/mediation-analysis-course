@@ -1,3 +1,12 @@
-Teaching the concepts - Daniel
+Teaching the concepts - Daniel (90 min)
 
-Group work - Omar
+- counterfactual notation introduction
+- define the effects - controlled direct, natural direct, natural indirect effect
+- assumptions
+- study designs
+
+Group work - Omar (60 min)
+
+- exercise with traditional methods
+- discussion about limitations
+- show example from a paper and discuss what they think

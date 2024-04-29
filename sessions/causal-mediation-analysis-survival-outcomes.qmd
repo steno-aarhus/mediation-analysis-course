@@ -1,3 +1,6 @@
-Teaching concepts - Jie
+Teaching concepts - Jie (30 min)
+
+- survival analysis
+- code-along with package and setup of survival data
 
 Coding part - Daniel

@@ -1,3 +1,13 @@
-Teaching concepts - Daniel
+Teaching concepts - Daniel  (120 min)
 
-Coding part - Jie
+- recap from yesterday
+- calculate by hand how to estimate the controlled, natural direct, natural indirect effect
+- linear outcome, binary outcome
+- proportion eliminated
+- decomposition of effects
+- go through R package to get estimates
+
+Coding part - Jie (20 min)
+
+- g-computation example
+- motivation with exposure impacting other mediator

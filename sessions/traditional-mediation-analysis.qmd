@@ -1,3 +1,15 @@
-Teaching the concepts - Jie
+Teaching the concepts - Jie (75 min)
 
-Going through the code - Omar
+- concept - showing the DAGs
+- assumptions
+- introduction of dataset
+- difference and product method with code-along
+- linear outcome
+- binary outcome
+
+Go through the limitation of the traditional approach - Omar (15 min)
+
+- limitations of traditional approach
+- non-linearity
+- interactions
+- multi mediators 

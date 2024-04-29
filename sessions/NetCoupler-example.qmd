@@ -1,1 +1,3 @@
-Introduction and example- Daniel
+Introduction and example - Daniel (20 min)
+
+- show how to use the NetCoupler with out data

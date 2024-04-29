@@ -1,3 +1,10 @@
 Teaching concepts - Omar
 
+- unmeasured confounding
+- continuous outcomes
+- binary outcome  
+- natural direct and indirect effect
+
+Note: if there is time, discuss multiple mediators
+
 Coding part - Omar
