@@ -30,6 +30,9 @@ The more specific learning outcomes include:
 **The target audience:** 
 PhD students and postdocs conducting research within the field of basic science, clinical, and epidemiological studies on diabetes and endocrinology, that are planning to conduct mediation analysis or that are interested in widening their analysis toolkit.
 
+**Prerequisites**
+Knowledge about linear and logistic regression and experience using R.
+
 ## Schedule
 Over the 3 days we will combine lectures with code-along sessions, group work, discussions and networking activities. 
 
@@ -48,7 +51,16 @@ Over the 3 days we will combine lectures with code-along sessions, group work, d
 | 18:30       |                                                   | Dinner                                                                                                         |                                                                                   |
 | 20:30       |                                                   | Network activity                                                                                               |                                                                                   |
 
+::: callout-note
 ## Practical information
+
+- There will be served coffee and tea in the break and a sandwich for lunch
+- On day 1 in the afternoon, there will be a networking activity
+- On day 2 in the evening, we will all go for a dinner in the city of Aarhus. If you have any dietary requirements, please let us know today
+- On day 3, the lecture on approaches for omics-type data, this lecture will be combined with a Steno Thursday Global, which will be open to all to attend and will be streamed online as well
+- If you are interested in more networking with the speakers and want to learn more about their research, there will be a networking session and a Precision Medicine Network meeting on Friday May 31. Please let us know, if you want to join
+
+:::
 
 # Motivation for mediation analysis - Omar (60 min)
 <!-- Omar 60 min -->

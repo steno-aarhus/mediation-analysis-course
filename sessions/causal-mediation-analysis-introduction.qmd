@@ -1,11 +1,144 @@
-Teaching the concepts - Daniel (90 min)
+---
+bibliography: papers.bib
+---
 
-- counterfactual notation introduction
-- define the effects - controlled direct, natural direct, natural indirect effect
-- assumptions
-- study designs
+```{r}
+#| include: false
 
-Group work - Omar (60 min)
+library(here)
+```
+
+
+# Introduction to causal mediation analysis
+<!-- Daniel 90 min -->
+
+## What is a cause?
+
+In a way this can be very intuitive. If I press the switch, the light will come on. We use causal reasoning all the time. If I do A, then Y will happen. Some relationship we can even define them to be deterministic. Doing A will always lead to Y.
+
+::: callout-note
+## Notation
+We can already define some terms:
+
+A = received treatment/intervention/exposure (e.g., 1 = intervention, 0 = no intervention)
+
+Y = observed outcome (e.g., 1 = developed the outcome, 0 = no outcome) 
+
+$Y^{a=1}$ = Counterfactual outcome under treatment a (i.e., the outcome had everyone, counter to the fact, recieved treatment a = 1)
+
+$Y^{a=0}$ = Counterfactual outcome under treatment a (i.e., the outcome had everyone, counter to the fact, recieved treatment a = 0)
+
+:::
+
+### Individual causal effect
+When investigating health outcomes, we would ideally want to know if **you** do X, then Y will happen. We could have a specific question:
+
+> Will eating more red meat give me higher blood glucose in 1 year?
+
+To answer this question we would ideally give you more red meat over 1 year and measure your blood glucose levels. Then, we would turn back time, and make you eat something else over 1 year and then measure your blood glucose levels. If there is a difference between your two outcomes, then we say there is a causal effect. 
+
+But we could very never do this.
+
+### Average causal effect
+Instead, we can perform a randomised controlled trial. We now ask the question:
+
+> Will eating more red meat give adults higher blood glucose in 1 year?
+
+We randomely assigning one group to consume more red meat and the other group to consume something else over 1 year. Then we compare the average blood glucose levels after 1 year in each of the groups. If there is a difference, then there could be a causal effect.
+
+::: callout-note
+## Notation
+We now modify the terms a little
+
+$E[Y^{a=1}]$ the average counterfactual outcome under treatment a = 1.
+
+$Pr[Y^{a=1}]$ the proportion of subjects that would have developed the outcome Y had all subjects in the population of interest received a = 1.
+
+:::
+
+What we estimate here is the average causal effect. 
+
+## Definition of a causal effect
+More formally we can now define a causal effect: 
+
+$E[Y^{a=1} = 1] - E[Y^{a=0} = 1] \ne 0$
+
+Note: definition from ref:Hernan2004
+
+## Association and causation
+
+What makes it complicated to estimate a causal effect is that we cannot observe the outcome under different treatments. When we only have a subset of the outcomes, we have an association. This is illustrated in Fig. 1.
+
+![Fig. 1. Causation vs association. From Hernan 2004.](`r here::here("images", "causation-association.PNG")`)
+
+If we want to infer a causal effect, we need three assumptions to be fulfilled:
+
+- Exchangeability
+- Consistency
+- Positivity
+
+### Exchangeability
+The risk of the outcome in A = 1 would have been the same as the risk of the outcome in A = 0, had those in A = 1 received A = 0.
+
+Think, a randomized trial where you, by mistake, give the intervention to the other group.
+
+We can also have conditional exchangeability. The risk is similar in subsets of the population. That could be within the levels of a variable L (e.g., education).
+
+### Consistency
+The treatments under comparison are well-defined and correspond to the versions of treatment observed in the data:
+
+- Precise definition of $Y^a$ via a
+- Link counter-factual outcomes with observed outcomes
+
+$Y^a = Y$ for every individual with A = a.
+
+The observed outcome for all treated equals the outcome if they had received the treatment.
+
+### Positivity
+The probability of receiving every value of treatment conditional on L is greater than zero. In other words, there must be a probability of being assigned to each treatment level.
+
+Think, if we don’t have anyone with A = 0 among those with L=1 (e.g. long education), then we cannot estimate the conditional probability of the outcome.
+
+## A randomized controlled trial
+In a randomized controlled trial these assumptions are often fulfilled given that the randomization is successful (i.e., have exchangeability), the treatment is clearly defined (consistency) and by design all have the possibility to be in either group (positivity).
+
+These assumptions are much harder, let alone impossible, to verify in an observational study. That is why causation is more challenging here. 
+
+### Importance of good research questions
+When we talk about causal effects, we often ask "what if"-questions and we can think of them in the context of a randomized controlled trial. 
+
+A formal extension of this notion is the target trial framework. Here, one first specify the target trial, or referred to as the hypothetical interventions that one would have wanted to perform, to address a specific research question.
+
+...
+
+## Causal mediation analysis
+
+- two randomized controlled trial?
+
+- what is causal mediation analysis (an extension)
+
+# Counterfactual notation
+
+- 
+
+# Defining effects
+
+## Example from a paper
+
+# Assumptions of causal mediation analysis
+
+# Study designs for causal mediation analysis
+
+## Intervention studies
+
+### Example
+
+## Observational studies
+
+### Example from a paper 
+
+# Group work
+<!-- Omar 60 min -->
 
 - exercise with traditional methods
 - discussion about limitations
