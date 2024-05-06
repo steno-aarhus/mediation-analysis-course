@@ -1,6 +1,96 @@
-Teaching the concepts - Jie (75 min)
+*Teaching the concepts - Jie (75 min)
+TRADITIONAL APPROACHES TO MEDIATION ANALYSIS
+1. What is Mediation Analysis? 
 
-- concept - showing the DAGs
+The most widely used two traditional approaches to mediation analysis are the difference method and the product method (or product-of-coefficients methods).
+*- concept - showing the DAGs
+
+
+Step by Step Example
+In this part of the tutorial, 
+
+In nutritional epidemiology, one of the research questions we are interested in is how red meat intake is associated with higher (T2D). I could do a regression analysis to examine the relationship. 
+
+```{r}
+# Creating The causal diagram for a mediation model
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'Red meat']
+    Y [label = 'T2D']
+  edge [minlen = 2]
+    X->Y
+  { rank = same; X;Y }
+}
+")
+```
+
+
+However, we might be more interested in how red meat intake influence T2D risk, is it through the lipid levels? 
+Based on literature, let's hypothesize that higher red meat intake was associated with greater cholesterol levels, which, in turn, increase the risk of T2D. 
+
+```{r}
+# Creating The causal diagram for a mediation model
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'Red meat']
+    M [label = 'Cholesterol']
+    Y [label = 'T2D']
+  edge [minlen = 2]
+    X->M
+    M->Y
+  { rank = same; X; M; Y }
+}
+")
+```
+
+
+We’ll explore the relationship between the red meat intake in the NHANSE dataset (modified for this course) and T2D risk. Specifically, we want to understand how much cholesterol explains the red meat intake and T2D risk. There was HbA1c variable in the dataset, which was a clinical diagnostic biomarker for T2D. 
+
+The variables used in the tutorial:
+T2D: binary variable-whether had diabetes yes or no (Y)
+HbA1c: continuous variable-the clinical diagnosis for T2D (Y)
+cholesterol:  (M)
+red meat intake: (X)
+confounders: age, sex, education, dietary patterns, 
+
+Before we start, let's think about the research question and draw a directed acyclic graphs. You can either draw by hand or use daggity (https://www.dagitty.net/). 
+
+
+
+2.2 Method 1: Baron & Kenny
+This is the original 4-step method used to describe a mediation effect. Steps 1 and 2 use basic linear regression while steps 3 and 4 use multiple regression. 
+
+Step1. Estimate the relationship between X on Y (e.g., ) -Path “c” must be significantly different from 0; must have a total effect between X and Y;
+
+Step2. Estimate the relationship between X on M (e.g.) -Path “a” must be significantly different from 0; X and M(mediator) must be related.
+
+Step3. Estimate the relationship between M on Y controlling for X (cholesterol on HbA1c, controlling for red meat intake) -Path “b” must be significantly different from 0; M(mediator) and Y must be related. -The effect of X on Y decreases with the inclusion of M in the model
+
+Step4. Estimate the relationship between Y on X controlling for M (red meat and HbA1c levels, controlling for cholesterol) -Should be non-significant and nearly 0.
+
+# Load packages 
+```{r}
+library(mediation) #Mediation package
+library(rockchalk) #Graphing simple slopes; moderation
+library(multilevel) #Sobel Test
+library(bda) #Another Sobel Test option
+library(gvlma) #Testing Model Assumptions 
+library(stargazer) #Handy regression tables
+#Useful Help
+?lm
+?mediation 
+```
+
+
+
+2. The Product Method
+
+
+
 - assumptions
 - introduction of dataset
 - difference and product method with code-along
