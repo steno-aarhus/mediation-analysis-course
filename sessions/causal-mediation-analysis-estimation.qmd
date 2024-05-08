@@ -82,18 +82,164 @@ shorten >=2pt,}
 ```
 
 ## Regression-based approach
+General problems with the traditional approach is when we have exposure-mediator interaction and non-linear relationships. 
+
+Counterfactual-based direct and indirect effects can be estimated, provided that the no-confounding assumption hold.
+
+Model for the mediator:
+$E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w $
+
+Model for the outcome:
+$E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w $
+
+From these two regression models we can estimate the CDE, NDE and NIE.
+
+Let's use models to estimate this. We will investigate...
+
+We load the dataset.
+<!-- use our own data example when this is ready -->
+
+```{r}
+
+n <- 1e6
+w <- rnorm(n)
+a <- rnorm(n)*3+5
+m <- rnorm(n, w + a)
+y <- rnorm(n, w + a + m)
+```
+
+We can now run a model for the mediator
+
+```{r}
+lm_m <- lm(m ~ a + w)
+
+summary(lm_m)
+```
+And run the model for the outcome
+
+```{r}
+lm_y <- lm(y ~ a + m + a:m + w)
+
+summary(lm_y)
+```
 
 ### Controlled direct effect
 
+The controlled direct effect can be obtained using this formula based on the regression coefficients:
+
+$CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*) $
+
+$a^*$ is for a change from level $a^*$ to level $a$.
+
+For the controlled direct effect we set m to a specific value. In this example we will set it to 5.
+
+```{r}
+
+CDE_m <- (lm_y$coefficients[1] + lm_y$coefficients[5]*5)*(7 - 5) 
+
+as.numeric(CDE_m)
+```
+The CDE here is how much the outcome would change on average if the mediator were fixed at level m=5 uniformly in the population but the treatment were changed from 5 to 7. 
+
 ### Natural direct effect
+
+NDE can be obtained using this formula: 
+
+$NDE = (\sigma_1 + \sigma_3*\beta_1*a^* + \sigma_3*\beta'_2w)(a - a^*) $
+
+We set the value for the confounder w for the interaction to be the mean value (=0.000126). 
+
+```{r}
+
+NDE <- (lm_y$coefficients[1] + lm_y$coefficients[5]*lm_m$coefficients[2]*7 + lm_y$coefficients[5]*lm_m$coefficients[3]*0.000126)*(7 - 5) 
+
+as.numeric(NDE)
+```
+The NDE is how much the outcome would change if the treatment a was set at 7 versus 5 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
 
 ### Natural indirect effect
 
-## Proportion eliminated
+NIE can be obtained by this formula:
+
+$NDE = (\sigma_2 * \beta_1 + \sigma_3*\beta_1*a)(a - a^*) $
+
+```{r}
+
+NIE <- (lm_y$coefficients[3] * lm_m$coefficients[2] + lm_y$coefficients[5]*lm_m$coefficients[2]*7)*(7 - 5) 
+
+as.numeric(NIE)
+```
+The NIE is how much the outcome would change on average if the treatment were fixed at level a = 7 but the mediator were changed from the level it would take if a* = 5 to the level it would take if a = 7.
+
+Note that exposure has to have an effect on M otherwise this will be zero.
 
 ### 2-way decomposition of effects
 
+The total effect can be decomposed as:
+
+$TE = NDE + NIE $
+
+```{r}
+TE <- NDE + NIE
+
+as.numeric(TE)
+```
+### Proportion eliminated
+
+From this, we can calculate the proportion mediated. 
+
+$PM = \frac{NIE}{TE} $
+
+```{r}
+PM <- NIE / TE
+
+as.numeric(PM) * 100
+```
+99.6% of the association is mediated by m.
+
 ### R package example for causal mediation analysis - Mediation-package
+
+We can also use an R package to estimate these values. One package is the 'Mediation' R package.
+
+
+```{r}
+library(mediation)
+
+#some procedures in the packages require simulations
+set.seed(2024)
+
+#put our variables in a dataframe - will change once we have the dataset
+df <- data.frame(a, m, y, w)
+
+```
+
+First we need to make our models. One for the mediator, one for the outcome.
+
+```{r}
+med_fit <- lm(m ~ a + w, data = df)
+out_fit <- lm(y ~ a*m + w, data = df)
+
+```
+
+Then, we can make the estimation.
+
+```{r}
+med_out <- mediate(model.m = med_fit,
+                   model.y = out_fit,
+                   treat = "a",
+                   mediator = "m",
+                   control.value = 5,
+                   treat.value = 7,
+                   robustSE = TRUE,
+                   sims = 10)
+
+summary(med_out)
+```
+Treatment mediator interaction can be tested:
+
+```{r}
+test.TMint(med_out, conf.level = .95)
+```
 
 ## G-computation-based approach
 
@@ -107,4 +253,17 @@ shorten >=2pt,}
 
 ### R package example for causal mediation analysis - CMAverse-package
 
+Test of other package
 
+```{r}
+library(CMAverse)
+
+res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
+                            mediator = "m", basec = c("w"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "linear",
+                            astar = 5, a = 7, mval = list(5), 
+                            estimation = "paramfunc", inference = "delta")
+
+summary(res_rb)
+
+```
