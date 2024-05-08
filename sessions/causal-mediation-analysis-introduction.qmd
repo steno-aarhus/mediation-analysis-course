@@ -14,6 +14,8 @@ library(DiagrammeR)
 # Introduction to causal mediation analysis
 <!-- Daniel 90 min -->
 
+In this session we will go over fundamental concepts of causal inference in general and then focus more specifically on causal mediation analysis. For the mediation analysis, this introduction targets the controlled direct effect, the indirect and direct effect as overall concepts. In the next sessions, we will dive further into additional estimands and decompositions of the effects.
+
 ## What is a cause?
 
 In a way this can be very intuitive. If I press the switch, the light will come on. We use causal reasoning all the time. If I do A, then Y will happen. Some relationships, we can define them to be deterministic. Doing A will always lead to Y.
@@ -80,7 +82,7 @@ Then, we will run a linear regression model for the effect of the treatment on t
 lm_y <- lm(y ~ a + w)
 ```
 
-We now use this model to predict the outcome, if, all had received treatment = 1 and another prediction of the outcome had not received treatment (A = 0).
+We now use this model to predict the outcome, if all had received treatment = 1 and another prediction of the outcome had not received treatment (A = 0).
 
 ```{r}
 pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, w = w))
@@ -92,6 +94,15 @@ We can now get the causal effect, which is the average of the difference in the 
 ```{r}
 mean(pred_y1 - pred_y0)
 ```
+
+It turns out that this average causal effect is the same as the regression coefficient in the linear model.
+
+```{r}
+summary(lm_y)
+```
+
+This mean that a regression-based approach can in some situations also be used. However, for more complicated situations, the regression-based approach fail. The causal intuition in the regression-based approach is also less clear.
+
 ## Association vs causation
 
 What makes it complicated to estimate a causal effect is that we cannot observe the outcome under different treatments. When we only have a subset of the outcomes, we have an association. This is illustrated in Fig. 1.
@@ -143,7 +154,7 @@ Another method to graphically display your research question and your assumption
 
 A DAG contains nodes and arrows. It cannot be circular. Fig. 2 shows the different types of variables in a DAG and rules for paths (ref:Tennant2021). 
 
-```{r, echo = FALSE, fig.cap="Fig. 2. Components of a DAG, including the common types of variables and paths. From Tennant et al. 2021", out.width = '50%'}
+```{r, echo = FALSE, fig.cap="Fig. 2. Components of a DAG, including the common types of variables and paths. From Tennant et al. 2021", out.width = '100%'}
 knitr::include_graphics(here::here("images", "dag-overview.PNG"))
 ```
 
@@ -298,14 +309,14 @@ From the DAG rules, we have a special problem that we cannot solve with traditio
 ### Taking interaction and non-linearity into account
 Neither the product method nor the difference method can take interaction and non-linearity into account. 
 
-The causal inference analysis methods are different from the traditional regression approach in that:
+Causal mediation analysis can take this into account. It can do this using a regression-based approach. It can also use other causal inference analysis methods such as g-computation, that are different from the traditional regression approach in that:
 
 - it builds a causal model. This model can include non-linearity and interactions
 - then artificially manipulate the data to set the treatment **and** the mediator to certain values
 - then predict the outcome using the causal model and contrast the outcomes
 
 ### Effect decomposition
-Using the causal inference framework allow for effect decomposition, even when there are interaction and non-linearity.
+Using the causal inference framework also allow for effect decomposition, even when there are interaction and non-linearity.
 
 Effect decomposition is important when we want to assess relative contributions such as the proportion mediated and eliminated.
 
@@ -318,7 +329,7 @@ We are also interested in the effect of a mediator on this pathway, so we also i
 
 > $Y^m=1 - Y^m=0$
 
-Now consider if we could, in the same trial, could intervene on both because we are interested in whether treatment _causes_ the outcome because it _causes_ the mediator.
+Now consider if we, in the same trial, could intervene on both because we are interested in whether treatment _causes_ the outcome because it _causes_ the mediator.
 
 ::: callout-note
 ## Notation
@@ -342,7 +353,7 @@ The effect of A on Y not mediated through M. Fixing the value of M to m.
 
 > $Y^{a=1,m}$ - $Y^{a=0,m}$
 
-We intervene on a but fix m to a certain value. The CDE is how much the outcome would change on average if the mediator were fixed at level m uniformly in the population but the treatment were changed from 0 to 1. 
+We intervene on $a$ but fix $m$ to a certain value. The CDE is how much the outcome would change on average if the mediator were fixed at level m uniformly in the population but the treatment were changed from 0 to 1. 
 
 This could be relevant in the context of a change in a policy that impacted the mediator for everyone. For instance, if air pollution was a mediator between physical activity and cardiovascular disease risk. If a new policy would change the level of air pollution for all while we implement an intervention to increase biking in the city.
 
@@ -372,61 +383,17 @@ Mediation analysis can be used in both intervention and observational studies.
 A key assumption is that the exposure should be before the mediator and the mediator and exposure before the outcome. It is possible by design to have these three variables measured at different time points. In practice, this is rarely the case. Probably because the study was not designed to conduct mediation analysis.
 
 ::: callout-note
-## Exercise: Understanding different study designs (30 min)
-You will now be placed in different groups and read selected sections of different mediation analyses within different study designs. You have 15 min to complete the task. Then, each group will briefly present their paper, the approach used and what they thought about it.
+## Exercise: Understanding different study designs (15 min)
+Stay in the same groups that you did the previous exercise.
 
-### Group 1: Intervention study a
-
-Paper: [Shoer et al. 2023](https://www.nature.com/articles/s41467-023-41042-x) 
-
-- read the abstract
-- read section 'Mediation analysis' under 'Methods'
-- read section 'The microbiome mediates the diet’s effect' under 'Results'
-- try to understand Fig. 4.
-
-Task: explain the overall study and the mediation analysis. What does the results imply? 
-
-### Group 2: Intervention study b
-
-Paper: [Johansen et al. 2020](https://link.springer.com/article/10.1007/s00125-020-05249-7) 
-
-- read the abstract
-- read from "Single mediation analysis" under 'Statistical analysis'
-- try to understand table 4
-- read from "To explore the role of weight loss in relation to beta cell function we performed single mediation analysis" under 'Discussion'
-
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
-
-### Group 3: Cohort study
-
-Paper: [Wang et al. 2022](https://doi.org/10.1007/s00125-022-05692-8) 
-
-- read the abstract
-- read from "To test whether an association between the metabolite profile score and risk of type 2 diabetes..." under 'Statistical analysis'
-- try to understand Fig. 4
-- read the conclusion 
-
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
-
-### Group 4: Cross-sectional study
-
-Paper: [Shi et al. 2022](https://www.nature.com/articles/s41598-022-08544-y) 
-
-- read the abstract
-- they used a specific algorithm to identify mediation. You do not have to understand how it works. Simply note whether they adjusted for specific variables in their analysis (Hint: look in the methods section)
-- Read section 'Mediation by the gut microbial species Dialister invisus' under 'Results'
-
-Task: explain the overall study design, what exposure, mediator and outcomes were they interested in? Are their results causal? 
-
+Discuss the different study designs used. How would you rank them? And what would be the ideal study design?
 :::
-
-
 
 ## Two trials
 
 It is possible to conduct two randomized controlled trials to investigate mediation (ref:Imai). One approach is the so-called parallel design. Two randomized controlled trials are conducted in parallel. The first investigates the effect of the treatment on the outcome (i.e., total effect). In the second trial we randomize both the treatment and the mediator. 
 
-For example, one could use transcranial magnetic stimulation (TMS) to investigate if activation of specific brain regions mediate the propensity to accept more unfair monetary offers in a bidding game called the "ultimatum game) (ref: Knoch 2006). First you conduct an experiment with unfair bidding and acceptance. Then one conducts the same experiment but with manipulation of the mediator, here TMS to activate a certain brain region.
+For example, one could use transcranial magnetic stimulation (TMS) to investigate if activation of specific brain regions mediate the propensity to accept more unfair monetary offers in a bidding game called the "ultimatum game" (ref: Knoch 2006). First, you conduct an experiment with unfair bidding and acceptance. Then one conducts the same experiment but with manipulation of the mediator, here TMS to activate a certain brain region.
 
 A key assumption here is consistency. The subjects should not know the receive the extra intervention. 
 
@@ -434,10 +401,9 @@ There is also a crossover version (ref: Imai). Here, we first randomize the orde
 
 In addition to consistency there is the assumption of no carry-over effects.
 
-
 # Group work
 <!-- Omar 60 min -->
 
 - exercise with traditional methods
-- discussion about limitations
-- show example from a paper and discuss what they think
+- discussion about limitations - could use the studies we have in the exercise
+- discuss when we can use traditional methods and when we cannot
