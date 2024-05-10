@@ -243,6 +243,94 @@ test.TMint(med_out, conf.level = .95)
 
 ## G-computation-based approach
 
+## G-computation-based approach
+###############################################################
+Under the above mentioned assumptions, we can calculate the estimate using the G-computation.
+We will visit a research question in the Framgingham dataset. 
+
+> Does obesity lead to higher CVD risk by increasing higher blood pressure?
+
+(insert figure)
+
+To make my life easier, I will call the exposure (obesity) A, mediator (systolic blood pressure) M, outcome (CVD) Y, A, M, and Y are all binary variables. In addition, I will add two confouding factors in the model (W1: sex, W2: current smoking status (cursmoke)). 
+
+```{r}
+full_data <- full_data  %>%
+  mutate(A=obesity, M=high_sysbp, Y=cvd, W1=sex, W2=cursmoke)
+```
+We we want to estimate is: E(Y|A = 0/1, M = 0/1, W1 = W1i, W2 = W2i)
+
+First, we fit outcome regression (include interaction because we can)
+```{r}
+or_fit <- glm(Y ~ A + M + W1 + W2 + A*M + M*W1 + age,
+              family = binomial(), data = full_data)
+summary(or_fit)
+```
+
+Based on the outcome regression model, we can predict Y under different scenarios. 
+
+```{r}
+get_EY_a_m_Wi <- function(full_data, or_fit, a, m){
+  data_Aa_Mm_Wi <- full_data
+  data_Aa_Mm_Wi$A <- a; data_Aa_Mm_Wi$M <- m
+  predict(or_fit, newdata = data_Aa_Mm_Wi, type = "response")
+}
+## run prediction, for different scenarios (a=1 or 0, and m=1 or 0)
+EY_A0_M0_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 0, m = 0)
+EY_A0_M1_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 0, m = 1)
+EY_A1_M0_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 1, m = 0)
+EY_A1_M1_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 1, m = 1)
+```
+
+Next, we will run the mediation models, based on the values of A, and run the prediction models of M. 
+```{r}
+med_fit <- glm(M ~ A*W1 + W1*W2, family = binomial(), data = full_data)
+# estimates of P(M = m | A = a, W = W_i), predict m based on a
+get_Pm_a_Wi <- function(full_data, med_fit, a, m){
+  data_Aa_Wi <- full_data; data_Aa_Wi$A <- a
+  p <- predict(med_fit, newdata = data_Aa_Wi, type = "response")
+  if(m == 1){
+    p
+  }else{
+    1 - p
+  }
+}
+##similary, we get the predicted values of m for different scenarios
+PM0_A0_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 0, m = 0)
+PM1_A0_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 0, m = 1)
+PM0_A1_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 1, m = 0)
+PM1_A1_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 1, m = 1)
+```
+
+Finally, we calculate the predicted Y on the estimates: 
+```{r}
+# E(E(Y | A = 1, M, W) | A = 1, W)
+EY1M1_Wi <- EY_A1_M1_Wi * PM1_A1_Wi + EY_A1_M0_Wi * PM0_A1_Wi
+# E(E(Y | A = 0, M, W) | A = 1, W)
+EY0M1_Wi <- EY_A0_M1_Wi * PM1_A1_Wi + EY_A0_M0_Wi * PM0_A1_Wi
+# E(E(Y | A = 1, M, W) | A = 0, W)
+EY1M0_Wi <- EY_A1_M1_Wi * PM1_A0_Wi + EY_A1_M0_Wi * PM0_A0_Wi
+# E(E(Y | A = 0, M, W) | A = 0, W)
+EY0M0_Wi <- EY_A0_M1_Wi * PM1_A0_Wi + EY_A0_M0_Wi * PM0_A0_Wi
+#Finally, we average over distribution of W to get effect esti
+# estimate of E[Y(1, M(1))]
+E_Y1M1 <- mean(EY1M1_Wi)
+# estimate of E[Y(0, M(1))]
+E_Y0M1 <- mean(EY0M1_Wi)
+# estimate of E[Y(1, M(0))]
+E_Y1M0 <- mean(EY1M0_Wi)
+# estimate of E[Y(0, M(0))]
+E_Y0M0 <- mean(EY0M0_Wi)
+```
+Now, you can freely calculate the natural direct effect and indirect effect: 
+
+```{r}
+E_Y1M1
+E_Y1M0
+E_Y0M1
+E_Y0M0
+```
+
 ### Controlled direct effect
 
 ### Natural direct effect
