@@ -1,0 +1,38 @@
+
+
+# Datasets
+
+To seamlessly use the code in the text, create an R project and a folder called “Data” in the same location as your R project. In that folder, place the file Functions_rmph.R provided with this text, as well as the teaching datasets used in this text.
+
+Below is a list of the teaching datasets used in this text. Descriptions, including instructions for downloading and processing create these datasets can be found in Appendix A.
+
+
+
+# NHANES dataset 
+##Background
+The National Health and Nutrition Examination Survey (NHANES) is a survey designed to “assess the health and nutritional status of adults and children in the United States.” The study began in the 1960s and since 1999 has has been conducted in 2-year cycles (e.g, 1999-2000, 2001-2002). This nationally representative survey includes both interviews and physical examinations. NHANES is conducted by the National Center for Health Statistics (NCHS), which is part of the Centers for Disease Control and Prevention (CDC) (National Center for Health Statistics 2021a, 2021b).
+
+##Documentation
+A description of the 2017-2018 survey cycle target population, objectives, and data collection procedures can be found at NHANES 2017-2018 Overview. See, in particular, the section on “Guidance for NHANES Data Users.” NHANES data includes demographics, chronic conditions, and risk factors. See NHANES 2017-2018 Data Details for a full list of datasets and their documentation. Individual datasets (e.g., Demographics, Body Measures, Cholesterol – Total) are freely downloadable and can be merged (within a cycle) on the variable SEQN. Data from different survey cycles are from different individuals, however, not longitudinal. See also the NCHS Data User Agreement.
+
+Teaching Datasets
+
+
+
+Any analyses, interpretations, or conclusions reached herein are are only for the purpose of illustrating regression methods and are credited to the author, not to NCHS, which is responsible only for the initial data. The author makes no claim or implication that any inferences derived from these teaching datasets are valid estimates.
+
+The teaching datasets used in this text were merged from multiple NHANES 2017-2018 data files and include a random subset of 1000 observations from adults in the examination data (nhanes1718_adult_exam_sub_rmph.Rdata), and a random subset of 1000 observations from adults in the fasting subsample (nhanes1718_adult_fast_sub_rmph.Rdata). In each case, sampling was done with replacement using the appropriate subsample weights in order to approximate a nationally representative distribution. This sampling method is solely for the purpose of creating a teaching dataset to illustrate regression methods. Chapter 8 discusses analyzing data using the survey weights appropriately using the full dataset (nhanes1718_rmph.Rdata).
+
+In these NHANES teaching datasets, variable names in CAPS are coded as in the original dataset (with the exception of missing value codes being set to NA and some cases assigned values based on skip patterns). Variable names in lower case were derived from other variables (e.g., smoker).
+
+Creating the Teaching Datasets
+
+
+
+
+NOTE: The datasets are meant for teaching, not research. The analyses herein are meant solely as teaching examples illustrating the use of models in R. Results found in this text, and datasets provided with this text, should not be used to draw conclusions about any conditions or relationships between variables.
+
+
+References
+National Center for Health Statistics. 2021a. “NHANES - About the National Health and Nutrition Examination Survey.” https://www.cdc.gov/nchs/nhanes/about_nhanes.htm.
+———. 2021b. “NHANES Questionnaires, Datasets, and Related Documentation.” https://wwwn.cdc.gov/nchs/nhanes/Default.aspx.
