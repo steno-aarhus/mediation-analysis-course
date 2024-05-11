@@ -82,8 +82,7 @@ The following shows the basic steps for mediation analysis suggested by Baron & 
 **Step1. Path C-Estimate the relationship between X(red meat intake) on Y (glucose levels). 
 We first check whether there is an association between red meat intake and glucose levels. In this case, both the mediator and outcome are continuous, so we conduct linear regression models, adjusting for the confounders based on directed acyclic graphs (DAG). We will talk more about DAG in the later session. 
 
-Y=b0+b1X+b2C
-
+E(Y|A=a, C=c) = θ'0 + θ1'a + θ4'c                   (1.3)
 
 ```{r}
 fit <- lm(Y ~ total_meat + age + gender + race + education + smoke, data=nhanes)
@@ -110,16 +109,17 @@ We then check the path between exposure (red meat) and the mediator (inflammator
 
 As the mediator is a continuous variable, similarly we built the linear regression model, adjusting for confounders on the pathway between X and M. 
 
-M=b0+b3X+b4C+e
+E(M|A=a, C=c) = β0 + β1a + β2c                     (1.1)
 
 ```{r}
 fita <- lm(M ~ total_meat + age + gender +  education_clean + smoke, data=nhanes)
 summary(fita)
 ```
 
-**Step3. Estimate the relationship between M on Y controlling for X (inflmmatory biomarker on glucose, controlling for total meat intake). This step corresponds to criteria (ii). 
+**Step3. Estimate the relationship between M on Y controlling for X (inflmmatory biomarker on glucose, controlling for red meat intake). This step corresponds to criteria (ii). 
 
-Y=β0+β5x+β6M+e
+E(Y|A=a, M=m, C=c) = θ0 + θ1a + θ2m + θ4c           (1.2)
+
 
 ```{r}
 fitb <- lm(Y ~ total_meat + age + gender + race + education + smoke + M, data=nhanes)
@@ -136,28 +136,31 @@ education_cleanCollege and above   0.014579   0.048520    0.300    0.764
 smokeNo                            0.025149   0.045252    0.556    0.578    
 M                                  0.689067   0.021656   31.819   <2e-16 ***
 
-According to Baron$Kenny,
-direct effect = \beta1
-indirect effect = \beta*\theta
-total effect = \beta
-The intuition behind this approach is that the indirect effect equals how much the exposure explaining the mediator, times how much the mediator explaining the outcome. 
-In Model 1, the coefficient for red meat is 1.084756 (b1), representing the *total effect of red meat on glucose levels.
-In Model 3, the coefficient for the mediator is 0.689067 (b6) in Model 3. The indirect effect can be assessed by calculating the product of b3 (0.3979264) and b6 (). 
+Then we can estimate the direct effect and indirect effect: 
+direct effect = θ1   
+indirect effect = β1*θ2
+total effect = θ1'
 
+In Model 1, the coefficient for red meat is 1.085 (θ1'), representing the *total effect* of red meat on glucose levels.
+In Model 3, the coefficient for red meat is 0.811 (θ1), representing the *direct effect* of red meat on glucose levels.
+The *indirect effect*  can be assessed by calculating the product of β1 in Model2 and θ2 in Model3, which is 0.274(0.398*0.689). The intuition of the indirect effect is that the MEDIATION depends on the extent to which the exposure changes the mediator (path A) and the extent to which the mediator changes the outcome (path B). 
 
 
 ##Difference approach: 
-Is b5 non-significant or smaller than before? 
+The difference approach is more commonly used in psychological domain. And the rational of this approach is to compare the effect of X on Y without and with adding M in the models. 
+
 If a mediation effect exists, the effect of X on Y will be attenuated when M is included in the regression, indicating the effect of X on Y goes through M. If the effect of X on Y completely disappears, M fully mediates between X and Y (full mediation). If the effect of X on Y still exists, but in a smaller magnitude, M partially mediates between X and Y (partial mediation).
 
-In Model 1, the coefficient for red meat is 1.084756 (b1), representing the total effect of red meat on glucose levels. In Model 3, this coefficient reduces to 0.810558 (b5) after adding the mediator to the model, indicating there is direct effect of red meat on glucose levels. The coefficient for the mediator is 0.689067 (b6) in Model 3. The indirect effect can be assessed by calculating the product of b3 (0.3979264) and b6. 
+In Model 1, which only included X and C in the models, the coefficient for red meat is 1.085 (θ1'), this coefficient reduces to 0.811 (θ1) after adding the mediator to the model in Model 3. The indirect effect can be assessed by calculating the difference between θ1'-θ1, which equals to 0.274 (1.085-0.811). 
 
 
 ## Use mediation packages  
-Once we find these relationships, we want to see if this mediation effect is statistically significant (different from zero or not). To do so, there are two main approaches: the Sobel test (Sobel, 1982) and bootstrapping (Preacher & Hayes, 2004). Here I will demonstrate that we can use the mediate() function in ‘mediation’ package (Tingley et al. 2019) to conduct mediation analysis, One of the very good options to conduct mediation analysis using the mediation package is we can get confidence interval by bootstrapping. 
+Now we have estimated the direct and indirect effect using these two approaches. 
+You might have noticed what you got so far are only point estimates, but what if you want to see if this mediation effect is statistically significant (different from zero or not)?
 
-mediate() takes two model objects as input (X → M and X + M → Y) and we need to specify which variable is an IV (treatment) and a mediator (mediator). For bootstrapping, set boot = TRUE and sims to at least 500. After running it, look for ACME (Average Causal Mediation Effects) in the results and see if it’s different from zero. For details of mediate(), please refer to Tingley, Yamamoto, Hirose, Keele, & Imai (2014).
+To do so, there are two main approaches: the Sobel test (Sobel, 1982) and bootstrapping (Preacher & Hayes, 2004). 
 
+Here I will demonstrate that we can use the mediate() function in ‘mediation’ package (Tingley et al. 2019) to conduct mediation analysis, One of the very good options to conduct mediation analysis using the mediation package is we can get confidence interval by bootstrapping. 
 
 Let’s load up the R packages.
 # Load packages 
@@ -166,8 +169,7 @@ install.packages("mediation")
 library(mediation) #Mediation package
 ```
 
-
-The mediate function from the mediation package asks for the models we just estimated and then requires us to specify the variable that is the treatment, i.e., our independent variable, and the variable that is the mediator. Also, we need to specify boot=T as, by default, mediate will use a quasi-Bayesian approximation for confidence intervals. However, we want to report percentile confidence intervals, so we set it to T for true. This command, which takes some time to run, will not produce any output yet. To get the output, we need to run the command below.
+mediate() takes two model objects as input (X → M and X + M → Y) and we need to specify which variable is an IV (treatment) and a mediator (mediator). For bootstrapping, set boot = TRUE and sims to at least 500. 
 
 
 ```{r}
@@ -197,24 +199,17 @@ Simulations: 100
 ### ADE stands for average direct effects. It describes the direct effect of the IV on the DV. Note this estimate is the same as the coefficient We got in step #3 (0.811). The direct effect of the IV on the DV when controlling for the mediator.
 
 
-### ACME stands for average causal mediation effects. This is the indirect effect of the IV on the DV that goes through the mediator. Note that ACME estimated to be 0.273. 
-this equals to b1-b4, this also equals to b2*b4, that is the effect of the IV on the mediator from step #2 ) times the mediator's effect on the DV from step #3. 
+### ACME stands for average causal mediation effects. This is the indirect effect of the IV on the DV that goes through the mediator. Note that ACME estimated to be 0.273, which is very similar to the traditional approached we just used.
+But be aware we are able to get *confidence interval* and *significance* levels for the indirect effect, not only its two individual parts by bootstrapping. This is something we need for reporting the mediation.
 
-But be aware we are able to get confidence interval and significance levels for the indirect effect, not only its two individual parts by bootstrapping. This is something we need for reporting the mediation.
+###Total Effect stands for the total effect (direct + indirect) of the IV onto the DV. We calculated this in step #1. We can also get it by adding the ACME () and the ADE () to receive the total effect of . 
 
-###Total Effect stands for the total effect (direct + indirect) of the IV onto the DV. We calculated this in step #1. We can also get it by adding the ACME () and the ADE () to receive the total effect of . We also already knew that the total effect was significant from step #1.
-Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. We will talk more about proportion mediation in Session ?. 
+###Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. The result suggests the mediator (inflmmaotry biomarker) explains 25.2% proportion of the effect from red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
 
-
-
-Note that the Total Effect in the summary  is b? in the first step: a total effect of X on Y (without M). The direct effect (ADE, 0.0396) is in the third step: a direct effect of X on Y after taking into account a mediation (indirect) effect of M. Finally, the mediation effect (ACME) is the total effect minus the direct effect ()
-, or 0.3961 - 0.0396 = 0.3565), which equals to a product of a coefficient of X in the second step and a coefficient of M in the last step (
-, or 0.56102 * 0.6355 = 0.3565). The goal of mediation analysis is to obtain this indirect effect and see if it’s statistically significant.
+For details of the mediate() package, please refer to Tingley, Yamamoto, Hirose, Keele, & Imai (2014).
 
 
 Reporting the mediation
-
-
 - assumptions
 - introduction of dataset
 - difference and product method with code-along
@@ -222,7 +217,6 @@ Reporting the mediation
 - binary outcome
 
 Go through the limitation of the traditional approach - Omar (15 min)
-
 - limitations of traditional approach
 - non-linearity
 - interactions
