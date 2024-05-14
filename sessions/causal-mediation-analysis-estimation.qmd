@@ -7,6 +7,7 @@ bibliography: papers.bib
 
 library(here)
 library(DiagrammeR)
+library(tidyverse)
 
 ```
 
@@ -96,32 +97,43 @@ From these two regression models we can estimate the CDE, NDE and NIE.
 
 Let's use models to estimate this. We will investigate...
 
-We load the dataset.
-<!-- use our own data example when this is ready -->
+We load the NHANES dataset, only keep the variables we need for the example, remove missing data and scale the intake of red meat to be per 65 g/day.
+
+For you own data, you may need to take missing data into account in another way.
 
 ```{r}
 
-n <- 1e6
-w <- rnorm(n)
-a <- rnorm(n)*3+5
-m <- rnorm(n, w + a)
-y <- rnorm(n, w + a + m)
+#nhanes <- read.csv(here::here("data", "nhanes_dataset.RData"))
+
+#only keeping the variables we need for the example and removing missing variables
+
+nhanes <- nhanes %>% select(id = seqn, w1 = age, w2 = gender, w3 = education, a = total_meat, y = plasma_fasting_glucose, m = serum_c_reactive_protein) %>% na.omit() %>% mutate(
+  a = a/65, #scale to per 65 g/day
+  m = log(m) #m is not normal, so we log transform
+)
+
 ```
-
-We can now run a model for the mediator
+We can now run a model for the mediator only adjusting for a single variable. 
 
 ```{r}
-lm_m <- lm(m ~ a + w)
+lm_m <- lm(m ~ a + w1, data = nhanes)
 
 summary(lm_m)
 ```
-And run the model for the outcome
+Note we found that higher red meat intake is associated with lower CRP.
+
+Now, we run the model for the outcome, including an interaction.
 
 ```{r}
-lm_y <- lm(y ~ a + m + a:m + w)
+lm_y <- lm(y ~ a + m + a:m + w1, data = nhanes)
 
 summary(lm_y)
 ```
+
+In this model we can see:
+ - red meat intake is associated with a higher blood glucose levels, independent of CRP
+ - there is no statistically significant interaction between red meat and age. We keep this in the model because even though the interaction is not statistically significant, it can still contribute to the outcomes. For an interaction to be statistically significant we often need a lot of power.
+ - CRP is associated with higher blood glucose levels, independent of red meat intake
 
 ### Controlled direct effect
 
@@ -129,138 +141,161 @@ The controlled direct effect can be obtained using this formula based on the reg
 
 $CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*) $
 
-$a^*$ is for a change from level $a^*$ to level $a$.
+$a^*$ is for a change from level $a^*$ (=control) to level $a$ (=intervention).
 
-For the controlled direct effect we set m to a specific value. In this example we will set it to 5.
+For the controlled direct effect we set m to a specific value. 
 
-```{r}
-
-CDE_m <- (lm_y$coefficients[1] + lm_y$coefficients[5]*5)*(7 - 5) 
-
-as.numeric(CDE_m)
-```
-The CDE here is how much the outcome would change on average if the mediator were fixed at level m=5 uniformly in the population but the treatment were changed from 5 to 7. 
-
-### Natural direct effect
-
-NDE can be obtained using this formula: 
-
-$NDE = (\sigma_1 + \sigma_3*\beta_1*a^* + \sigma_3*\beta'_2w)(a - a^*) $
-
-We set the value for the confounder w for the interaction to be the mean value (=0.000126). 
+Let's look at the distribution of m. 
 
 ```{r}
 
-NDE <- (lm_y$coefficients[1] + lm_y$coefficients[5]*lm_m$coefficients[2]*7 + lm_y$coefficients[5]*lm_m$coefficients[3]*0.000126)*(7 - 5) 
+nhanes %>% select(m) %>% summary()
 
-as.numeric(NDE)
+median_m_log <- round(median(nhanes$m), digits = 1)
+
+median_m <- round(exp(median(nhanes$m)), digits = 1)
 ```
-The NDE is how much the outcome would change if the treatment a was set at 7 versus 5 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
 
-### Natural indirect effect
-
-NIE can be obtained by this formula:
-
-$NDE = (\sigma_2 * \beta_1 + \sigma_3*\beta_1*a)(a - a^*) $
+In this example we will set it to the median `r median_m_log` which is a CRP at `r median_m` which is a low level.
 
 ```{r}
 
-NIE <- (lm_y$coefficients[3] * lm_m$coefficients[2] + lm_y$coefficients[5]*lm_m$coefficients[2]*7)*(7 - 5) 
+CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5]*median_m_log)*(1 - 0) 
 
-as.numeric(NIE)
+round(as.numeric(CDE_m), digits = 2)
 ```
-The NIE is how much the outcome would change on average if the treatment were fixed at level a = 7 but the mediator were changed from the level it would take if a* = 5 to the level it would take if a = 7.
+The CDE here is how much the outcome, here blood glucose, would change on average if the mediator, here inflammation, were fixed at level m=0.2 uniformly in the population but the treatment, red meat intake, was changed from 0 to 65 g/day. 
+
+### (Pure) natural direct effect
+
+PNDE can be obtained using this formula: 
+
+$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a^* + \beta'_2*w))(a - a^*) $
+
+We set the value for the confounder w1 for the interaction to be the mean value of w1.
+
+```{r}
+mean_w1 <- mean(nhanes$w1)
+```
+
+Then we calculate the PNDE 
+
+```{r}
+
+PNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*0 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+
+round(as.numeric(PNDE), digits = 2)
+```
+The NDE is how much the outcome would change if the treatment a was set at 65 versus 0 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
+
+### (Total) natural indirect effect
+
+TNIE can be obtained by this formula:
+
+$TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*) $
+
+```{r}
+
+TNIE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*1 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+
+round(as.numeric(TNIE), digits = 2)
+```
+The TNIE is how much the outcome would change on average if the treatment were fixed at level a = 65 g/day but the mediator were changed from the level it would take if a* = 0 to the level it would take if a = 65 g/day.
 
 Note that exposure has to have an effect on M otherwise this will be zero.
 
-### 2-way decomposition of effects
+We see that inflammation through red meat has a very small effect on blood glucose levels.
+
+### Pure natural indirect effect
+
+$PNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a^*)(a - a^*) $
+
+```{r}
+PNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 0))*(1 - 0) 
+
+round(as.numeric(PNIE), digits = 2)
+```
+
+### Total natural indirect effect
+
+$TNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a)(a - a^*) $
+
+```{r}
+TNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 1))*(1 - 0) 
+
+round(as.numeric(TNIE), digits = 2)
+```
+### total effect
 
 The total effect can be decomposed as:
 
-$TE = NDE + NIE $
+$TE = PNDE + TNIE $
 
 ```{r}
-TE <- NDE + NIE
+TE <- PNDE + TNIE
 
-as.numeric(TE)
+round(as.numeric(TE), digits = 2)
 ```
+
 ### Proportion mediation
 
 From this, we can calculate the proportion mediated. 
 
-$PM = \frac{NIE}{TE} $
+$PM = \frac{TNIE}{TE} $
 
 ```{r}
-PM <- NIE / TE
+PM <- TNIE / TE
 
 as.numeric(PM) * 100
 ```
-99.6% of the association is mediated by m.
+6.6% of the association is mediated by m. Not a lot.
 
-### R package example for causal mediation analysis - Mediation-package
-
-We can also use an R package to estimate these values. One package is the 'Mediation' R package.
-
+### R package example for causal mediation analysis - CMAverse-package
 
 ```{r}
-library(mediation)
+library(CMAverse)
 
-#some procedures in the packages require simulations
-set.seed(2024)
+res_rb <- cmest(data = nhanes, model = "rb", outcome = "y", exposure = "a",
+                            mediator = "m", basec = c("w1"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "linear",
+                            astar = 0, a = 1, mval = list(-1.6), 
+                            estimation = "paramfunc", inference = "delta")
 
-#put our variables in a dataframe - will change once we have the dataset
-df <- data.frame(a, m, y, w)
-
-```
-
-First we need to make our models. One for the mediator, one for the outcome.
-
-```{r}
-med_fit <- lm(m ~ a + w, data = df)
-out_fit <- lm(y ~ a*m + w, data = df)
+summary(res_rb)
 
 ```
-
-Then, we can make the estimation.
-
-```{r}
-med_out <- mediate(model.m = med_fit,
-                   model.y = out_fit,
-                   treat = "a",
-                   mediator = "m",
-                   #control.value = 5,
-                   #treat.value = 7,
-                   robustSE = TRUE,
-                   sims = 10)
-
-summary(med_out)
-```
-Treatment mediator interaction can be tested:
-
-```{r}
-test.TMint(med_out, conf.level = .95)
-```
-
 ## G-computation-based approach
-###############################################################
 Under the above mentioned assumptions, we can calculate the estimate using the G-computation.
+
 We will visit a research question in the Framgingham dataset. 
 
 > Does obesity lead to higher CVD risk by increasing higher blood pressure?
 
-(insert figure)
-
-To make my life easier, I will call the exposure (obesity) A, mediator (systolic blood pressure) M, outcome (CVD) Y, A, M, and Y are all binary variables. In addition, I will add two confouding factors in the model (W1: sex, W2: current smoking status (cursmoke)). 
+To make my life easier, we will call the exposure (obesity) A, mediator (systolic blood pressure) M, outcome (CVD) Y, A, M, and Y are all binary variables. In addition, I will add two confouding factors in the model (W1: sex, W2: current smoking status (cursmoke)). 
 
 ```{r}
-full_data <- full_data  %>%
-  mutate(A=obesity, M=high_sysbp, Y=cvd, W1=sex, W2=cursmoke)
+framingham <- read.csv(here::here("data", "frmgham2.csv"))
+
+framingham <- framingham %>% select(id = RANDID,
+                                     BMI,
+                                     SYSBP,
+                                     y = CVD,
+                                     w1 = SEX,
+                                     w2 = CURSMOKE,
+                                     w3 = AGE) 
+
+%>% 
+  na.omit() %>% 
+  mutate(a = case_when(BMI >= 25 ~ "obese",
+                       TRUE ~ "not obese"),
+         m = case_when(SYSBP >= 140 ~ "high bp",
+                       TRUE ~ "normal bp"))
+
 ```
-We we want to estimate is: E(Y|A = 0/1, M = 0/1, W1 = W1i, W2 = W2i)
 
-First, we fit outcome regression (include interaction because we can)
+First, we fit the outcome regression (including interaction terms)
 ```{r}
-or_fit <- glm(Y ~ A + M + W1 + W2 + A*M + M*W1 + age,
+or_fit <- glm(y ~ a + m + w1 + w2 + a*m + m*w1 + age,
               family = binomial(), data = full_data)
 summary(or_fit)
 ```
@@ -327,29 +362,4 @@ E_Y1M1
 E_Y1M0
 E_Y0M1
 E_Y0M0
-```
-
-### Controlled direct effect
-
-### Natural direct effect
-
-### Natural indirect effect
-
-## 3-way and 4-way decomposition of effects
-
-### R package example for causal mediation analysis - CMAverse-package
-
-Test of other package
-
-```{r}
-library(CMAverse)
-
-res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
-                            mediator = "m", basec = c("w"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "linear",
-                            astar = 5, a = 7, mval = list(5), 
-                            estimation = "paramfunc", inference = "delta")
-
-summary(res_rb)
-
 ```

@@ -6,8 +6,6 @@ format: html
 ```{r}
 library(here)
 ```
-
-
 # Group work - Day 1
 
 For the exercises, we will use the Framingham dataset. 
@@ -16,23 +14,24 @@ For the exercises, we will use the Framingham dataset.
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 ```
 
-
 The overall aim of the cohort study was to investigate effect of obesity on the risk of cardiovascular disease (CVD).
 
 ## Variables
-We will work with the following variables
 
-***socio** = socioeconomic status (SES) (binary: 0 = low SES, 1 = high SES)*
+The dataset includes 'r nrow(framingham)´ participants and 'r ncol(framingham)´.
 
-***smoke** = smoking status (binary: 0 = no prenatal smoking, 1 = prenatal smoking)*
+```{r}
+str(framingham)
+```
 
-***education***
+For the exercise on day 1, we will work with the following variables:
 
-***bmi** = body mass index (BMI) (continuous variable in kg/m^2^)*
-
-*obesity (binary: 0=normal, 1=obesity)*
-
-*CVD= (binary: 0=no, 1=yes).*
+- socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high SES)
+- smoke = smoking status (binary: 0 = no prenatal smoking, 1 = prenatal smoking)
+- educ = education ()
+- bmi = body mass index (BMI) (continuous variable in kg/m^2^)
+- CVD= (binary: 0=no, 1=yes).
+- obesity (binary: 0=normal, 1=obesity)*
 
 There are other variables in the dataset, please take a few minutes to explore the dataset. Before we start, let's think about the research question and draw a directed acyclic graphs. You can either draw by hand or use daggity (https://www.dagitty.net/).
 

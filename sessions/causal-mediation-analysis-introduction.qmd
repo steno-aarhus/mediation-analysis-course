@@ -373,17 +373,23 @@ This could be relevant in the context of a change in a policy that impacted the 
 
 This effect is not used that often. But can be highly relevant in some situations.
 
-### Natural direct effect
+### (Pure) Natural direct effect
 
 The effect that would remain, if we were to disable the pathway from exposure to mediator. 
 
 > $Y^{a=1,M_a=0}$ - $Y^{a=0,M_a=0}$
 
-The NDE is how much the outcome would change if the exposure was set at a = 1 versus a* = 0 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
+The PNDE is how much the outcome would change if the exposure was set at a = 1 versus a* = 0 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
 
 Note that the word "natural" refers to the nested counterfactual, the level the mediator would have taken in the absence of exposure. What it would naturally have been in the absence of exposure. 
 
-### Natural indirect effect
+### Total natural direct effect
+
+> $Y^{a=1,M_a=1}$ - $Y^{a=0,M_a=1}$
+
+Note, different from above in that the mediator is kept at the level it would have taken in the **presence** of the exposure.
+
+### (Total) Natural indirect effect
 
 The effect of the mediator pathway.
 
@@ -393,12 +399,58 @@ The NIE is how much the outcome would change on average if the exposure were fix
 
 Note that exposure has to have an effect on M otherwise this will be zero.
 
+### Pure natural indirect effect
+
+> $Y^{a=0,M_a=1}$ - $Y^{a=0,M_a=0}$
+
+Note, this is different from the TNIE in that the exposure is set to no intervention.
+
+### Interaction effects
+
+Reference interaction:
+
+> $INT_{ref} = PNDE - CDE$
+
+Mediation interaction:
+
+> $INT_{med} = TNIE - PNIE$
+
 ### Effect decomposition
 Using the causal inference framework also allow for effect decomposition, even when there are interaction and non-linearity.
 
 Effect decomposition is important when we want to assess relative contributions such as the proportion mediated and eliminated.
 
-> TE =  $Y^{a=1}$ - $Y^{a=0}$ = $Y^{a=1,M_a=1}$ - $Y^{a=0,M_a=0}$ = ($Y^{a=1,M_a=1}$ - $Y^{a=1,M_a=0}$) + ($Y^{a=1,M_a=0}$ - $Y^{a=0,M_a=0}$) = NIE + NDE
+> TE =  PNDE + TNIE = TNDE + PNIE
+
+### Proportions
+
+Proportion CDE:
+
+> $prop^{CDE} = CDE / TE$
+
+Proportion $INT_{ref}$
+
+> $prop^{INT_{ref}} = INT_{ref} / TE$
+
+Proportion $INT_{med}$
+
+> $prop^{INT_{med}} = INT_{med} / TE$
+
+Proportion pure natural indirect effect:
+
+> $prop^{PNIE} = PNIE / TE$
+
+Proportion mediated:
+
+> $PM = TNIE / TE$
+
+Proportion attributable to interaction:
+
+> $INT = (INT_{ref} + INT_{med}) / TE$
+
+Proportion eliminated:
+
+> $PE = (INT_{ref} + INT_{med} + PNIE) / TE$
 
 # Study designs for causal mediation analysis
 Mediation analysis can be used in both intervention and observational studies.
