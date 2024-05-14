@@ -3,15 +3,24 @@ title: "group work"
 format: html
 ---
 
-## Group work-day1
+```{r}
+library(here)
+```
 
-**Day 1 Group Exercise (May 27)**
 
-We will use Framingham dataset for this exercise.
+# Group work - Day 1
 
-*The overall aim of the cohort study is to estimate the average total effect (marginal treatment effect) of obesity on the risk of cardiovascular disease (CVD).*
+For the exercises, we will use the Framingham dataset. 
 
-*Variable list for dataset 1:*
+```{r}
+framingham <- read.csv(here::here("data", "frmgham2.csv"))
+```
+
+
+The overall aim of the cohort study was to investigate effect of obesity on the risk of cardiovascular disease (CVD).
+
+## Variables
+We will work with the following variables
 
 ***socio** = socioeconomic status (SES) (binary: 0 = low SES, 1 = high SES)*
 
