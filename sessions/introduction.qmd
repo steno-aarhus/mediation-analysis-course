@@ -21,11 +21,11 @@ To provide participants with the knowledge, tools and skills to implement modern
 
 The more specific learning outcomes include:
 
--	Explain the theoretical concepts and statistical methods regarding traditional and modern mediation analysis applied to basic, clinical and epidemiological research on diabetes and endocrine diseases.
--	Perform traditional and modern mediation analysis using R software.
-- Present results from mediation analysis according to the current mediation analysis  reporting guidelines.
+-	Explain the theoretical concepts and statistical methods regarding traditional and modern mediation analysis applied to basic, clinical and epidemiological research on diabetes and endocrine diseases
+-	Perform traditional, causal and modern mediation analysis using R software
+- Present results from mediation analysis according to the current mediation analysis  reporting guidelines
 - Interpret results from mediation analysis and suggest relevant sensitivity analyses for mediation analyses
-- Discuss the strengths, limitations and assumptions of traditional and modern mediation analysis
+- Discuss the strengths, limitations and assumptions of traditional, causal and modern mediation analysis
 
 **The target audience:** 
 PhD students and postdocs conducting research within the field of basic science, clinical, and epidemiological studies on diabetes and endocrinology, that are planning to conduct mediation analysis or that are interested in widening their analysis toolkit.
@@ -44,12 +44,12 @@ Over the 3 days we will combine lectures with code-along sessions, group work, d
 | 10.30-12.00 | Traditional mediation analysis (JZ, OS)           | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) | Modern mediation analysis - part 3 (NH, ID)                                       |
 | 12.00-13.00 | Lunch                                             | Lunch                                                                                                          | Lunch                                                                             |
 | 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  | Causal mediation analysis: sensitivity analyses (OS)                                                           | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                       |
-| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | NetCoupler introduction (CW) (open lecture, Steno Thursday) (14.15-15.00)         |
+| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00)         |
 | 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS) |
 | 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                   |
 | 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                   |
 | 18:30       |                                                   | Dinner                                                                                                         |                                                                                   |
-| 20:30       |                                                   | Network activity                                                                                               |                                                                                   |
+| 20:30       |                                                   |                                                                                                |                                                                                   |
 
 ::: callout-note
 ## Practical information
@@ -59,11 +59,12 @@ Over the 3 days we will combine lectures with code-along sessions, group work, d
 - On day 2 in the evening, we will all go for a dinner in the city of Aarhus. If you have any dietary requirements, please let us know today
 - On day 3, the lecture on approaches for omics-type data, this lecture will be combined with a Steno Thursday Global, which will be open to all to attend and will be streamed online as well
 - If you are interested in more networking with the speakers and want to learn more about their research, there will be a networking session and a Precision Medicine Network meeting on Friday May 31. Please let us know, if you want to join
+- Please be aware that the areas outside the lecture theater is a public space where people who go to the diabetes clinic also are. Be mindful of them
 
 :::
 
 # Motivation for mediation analysis - Omar (60 min)
-<!-- Omar 60 min -->
+<!-- Omar 30 min -->
 
 Basic, clinical and epidemiological research are often interested in whether a specific intervention has an effect on a disease. Once that has been established, the natural subsequent question is *why* the intervention had an effect? **What was the mechanism?** [@vanderweele_mediation_2016].
 
@@ -76,6 +77,8 @@ Alongside the applied research, the methodological framework for conducting medi
 - discussion on motivations for mediation analysis
 - relevance for basic, clinical and epidemiological research
 - discussion with participants - exercise below
+
+<!-- make groups before -->
 
 ::: callout-note
 ## Exercise: Understanding different study designs (30 min)
