@@ -1,6 +1,49 @@
 *Teaching the concepts - Jie (75 min)
+
+::: callout-note
+##objective of this session
+To learn how to conduct mediation analyses using the traditional approaches, along with understanding the assumptions and limitations of the methods. 
+:::
+
+
 # what is Mediation analyses?
-The purpose of mediation analyses is to determine if the effect of an independent variable (X) on a dependent variable (Y) can be explained by a mediating variable (M). This can be visualized in the following figure:
+The purpose of mediation analyses is to determine if the effect of an independent variable (X) on a dependent variable (Y) can be explained by a third variable-mediating variable (M). Thus, mediation analyses not only answer whether two variables are related, but also **why and how**. This can be visualized in the following figure:
+
+
+```{r, echo = FALSE, fig.cap="Basic Mediation Model", out.width = '50%'}
+knitr::include_graphics(here::here("images", "mediation_basic.PNG"))
+knitr::include_graphics(here::here("images", "mediation_basic2.PNG"))
+```
+
+
+
+The above shows the standard mediation model. 
+Standard Equations for Mediator and Outcome (for the case of a continuous mediator and a continuous outcome)
+
+$( E(M|A=a, C=c)  = \beta_0 + \beta_1a + \beta_2c $                     (1.1)
+$( E(Y|A=a, M=m, C=c) = \theta_0 + \theta_1a + \theta_2m + \theta4c $   (1.2)
+$( E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c $                 (1.3)
+
+
+## Traditional approaches to mediation alaysis
+The most widely used two traditional approaches to mediation analysis are **the difference method** and **the product method** (also known as Baron$Kenny).
+
+
+- the total effect -->c
+- the direct effect --> c', the effect of X on Y after controlling for M
+**the product method**
+- indirect effect=a*b
+**the difference method**
+- indirect effect=c-c'
+
+## Empirical example in nutritional epidemiology 
+In this session, we will use an example to address a question about mediation in nutritional epidemiology using both methods.
+
+It has been suggested that red meat is associated with higher blood glucose levels and a greater risk of Type 2 diabetes (T2D). However, we might be more interested in the mechanisms behind this relationship. Does red meat intake influence blood glucose levels directly or through other mechanisms (e.g., inflammation)?
+
+> Is eating more red meat associated with higher blood glucose by increasing certain inflammation biomarkers?
+
+Based on literature, let's hypothesize that higher red meat intake is associated with elevated inflammatory levels, which, in turn, increase blood glucose.
 
 ```{r}
 # Creating The causal diagram for a mediation model
@@ -9,154 +52,139 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'X']
-    M [label = 'M']
-    Y [label = 'Y']
-  edge [minlen = 2]
-    X->Y
-    X->M
-    M->Y
-   { rank = same; M; X; Y; }
-}
-")
-```
-Thus, mediation analyses not only answer whether two variables are related, but also how.
-
-Standard Equations for Mediator and Outcome (for the case of a continuous mediator and a continuous outcome)
-E(M|A=a, C=c) = β0 + β1a + β2c                     (1.1)
-E(Y|A=a, M=m, C=c) = θ0 + θ1a + θ2m + θ4c           (1.2)
-E(Y|A=a, C=c) = θ'0 + θ1'a + θ4'c                   (1.3)
-
-
-# TRADITIONAL APPROACHES TO MEDIATION ANALYSIS
-The most widely used two traditional approaches to mediation analysis are the difference method and the product method (also known as Baron$Kenny).In this session, we will use an example to address an question about mediation in nutrtional epidemiology by conducting both methods. 
-
-## Empirical example in nutritional epidemiology 
-
-In nutritional epidemiology, it has been suggested red meat is associated with higher blood glucose and greater risk of Type2 diabetes(T2D). However, we might be more interested in the mechanisms behind this relation, does red meat intake influence blood glucose level directly or through other mechanisms (e.g., inflammation)? 
-
-> Is eating more red meat associated with higher blood glucose by increasing certain inflmmation biomarkers? 
-
-Based on literature, let's hypothesize that higher red meat intake is associated with elevated inflammatory" levels, which, in turn, increased blood glucose.  
-
-```{r}
-# Creating The causal diagram for a mediation model
-grViz("
-digraph {
-  graph []
-  node [shape = plaintext]
     X [label = 'Red meat']
-    M [label = 'Inflamation']
+    M [label = 'Inflammation']
     Y [label = 'Blood glucose']
   edge [minlen = 1.5]
-    X->Y [label = 'Path C*']
+    X->Y [label = 'Path C*', xlabel = 'Path C']
     X->M [taillabel = 'Path A']
     M->Y [label = 'Path B']
   { rank = same; X; Y }
   { rank = min; M;}
-}
-")
+}")
+
+
 ```
 
-## Example Dataset: A Brief Overview
-We’ll explore the relationship between the red meat intake and glucose levels in the NHANSE dataset (which was modified for this course). Specifically, we want to understand how much inflammatory biomarker (M) explains the relation between red meat intake and T2D risk. 
 
+
+## Example Dataset: A Brief Overview
+::: callout-note
+We'll explore the relationship between red meat intake and glucose levels in the National Health and Nutrition Examination Survey (NHANES) dataset, which has been modified for this course with simulated variables. NHANES is a program of studies designed to assess the health and nutritional status of adults and children in the United States. The survey includes extensive data collected through interviews and physical examinations. 
+
+Specifically, we want to understand how much a new inflammatory biomarker (M) explains the relation between red meat intake and glucose levels. 
 
 The variables used in the dataset:
-plasma fasting glucose: (Y) continuous variable
-serum_c_reactive_protein:  (M) continuous variable
-red meat intake: (X), continuous variable 
-There are demographic variables and other lipid biomarkers in the dataset. 
-
+exposure of interest (x): red meat intake: (continuous variable, grams per day)
+outcome (y): plasma fasting glucose (continuous variable, )
+mediator (m): a new inflammatory biomarker (continuous variable)
+Four demographic variables will be used in the analyses: age, gender, education, and smoking. We assume that adjusting for these four confounders is sufficient to block the backdoor paths. Further discussion on confounding adjustment will be covered in the following session. For the convenience of analysis, I have transformed the mediator (m) and outcome variable (y) so that they follow a normal distribution.
+:::
 
 ## Method 1: Baron & Kenny (the product method)
 According to Baron and Kenny (1986), the following criteria need to be satisfied for a variable to be considered a mediator: 
-i) The exposure should be associated with the mediator;
-ii) in the model for the outcome that includes both the exposure and mediator, the mediator should be associated with the outcome;
-iii)in the model for the outcome that includes only the exposure, the exposure should be associated with the outcome;
-iv)when controlling for the mediator, the association between the exposure and outcome should be reduced, with the strongest demonstration of mediation occuring when the path from the exposure to the outcome, when controlling for the mediator is zero. 
+- (i) The exposure should be associated with the mediator;
+- (ii) in the model for the outcome that includes both the exposure and mediator, the mediator should be associated with the outcome;
+- (iii)in the model for the outcome that includes only the exposure, the exposure should be associated with the outcome;
+- (iv)when controlling for the mediator, the association between the exposure and outcome should be reduced, with the strongest demonstration of mediation occuring when the path from the exposure to the outcome, when controlling for the mediator is zero. 
 
 The following shows the basic steps for mediation analysis suggested by Baron & Kenny.
 
-#1. Total Effect
-**Step1. Path C-Estimate the relationship between X(red meat intake) on Y (glucose levels). 
-We first check whether there is an association between red meat intake and glucose levels. In this case, both the mediator and outcome are continuous, so we conduct linear regression models, adjusting for the confounders based on directed acyclic graphs (DAG). We will talk more about DAG in the later session. 
+## Path A-Estimate the relationship between X on M 
+We then check the path between exposure (red meat) and the mediator (inflammatory biomarker), which corresponds to criteria (i). A mediation makes sense only if X affects M. If X and M have no relationship, M is just a third variable that may or may not be associated with Y.
 
-E(Y|A=a, C=c) = θ'0 + θ1'a + θ4'c                   (1.3)
+As the mediator is a continuous variable, we can built a linear regression model, adjusting for confounders on the pathway between X and M. 
+
+$( E(M|A=a, C=c)  = \beta_0 + \beta_1a + \beta_2c $                    (1.1)
+
 
 ```{r}
-fit <- lm(Y ~ total_meat + age + gender + race + education + smoke, data=nhanes)
-summary(fit1)
-```
-
-Coefficients:
-                                   Estimate Std. Error  t value Pr(>|t|)    
-(Intercept)                      108.266312   0.084778 1277.051   <2e-16 ***
-total_meat                         1.084756   0.004867  222.884   <2e-16 ***
-age                                1.499793   0.001220 1228.998   <2e-16 ***
-genderFemale                      -0.047374   0.049085   -0.965    0.334    
-education_cleanCollege and above   0.026471   0.051305    0.516    0.606    
-smokeNo                            0.052975   0.047841    1.107    0.268    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-
-Discussion: Is b1 significant? 
-If you recall the four criteria, this model corresponds to Criterion III. Originally suggested by Baron and Kenny, they proposed that 'Path C must be significantly different from 0 to ensure there is a total effect between X and Y', but this step might be controversial. Even if we don’t find a significant association between X and Y, we could proceed to the next step if we have a strong theoretical basis for their relationship. Take 5 minutes to run the model, interpret your results, and discuss with your group the scenarios under which there might be no significant association between X and Y. 
-
-**Step2. Path A-Estimate the relationship between X on M 
-We then check the path between exposure (red meat) and the mediator (inflammatory biomarker), which correspondsto criteria (i).  A mediation makes sense only if X affects M. If X and M have no relationship, M is just a third variable that may or may not be associated with Y.
-
-As the mediator is a continuous variable, similarly we built the linear regression model, adjusting for confounders on the pathway between X and M. 
-
-E(M|A=a, C=c) = β0 + β1a + β2c                     (1.1)
-
-```{r}
-fita <- lm(M ~ total_meat + age + gender +  education_clean + smoke, data=nhanes)
+#first load the dataset
+load("C:/Users/au644508/OneDrive - Aarhus universitet/Dokumenter/Mediation course/mediation-analysis-course/sessions/data/nhanes_dataset.RData")
+fita <- lm(m ~ x + age + gender +  education_clean + smoke, data=nhanes)
 summary(fita)
 ```
 
-**Step3. Estimate the relationship between M on Y controlling for X (inflmmatory biomarker on glucose, controlling for red meat intake). This step corresponds to criteria (ii). 
 
-E(Y|A=a, M=m, C=c) = θ0 + θ1a + θ2m + θ4c           (1.2)
+##Path B- Estimate the relationship between M on Y controlling for X (inflmmatory biomarker on glucose levels, controlling for red meat intake. This step corresponds to criteria (ii). 
+
+$( E(Y|A=a, M=m, C=c) = \theta_0 + \theta_1a + \theta_2m + \theta4c $           (1.2)
+
+```{r}
+fitb <- lm(y ~ x + m + age + gender + race + education + smoke , data=nhanes)
+summary(fitb)
+```
+
+## Path C-Estimate the relationship between X(red meat intake) on Y (glucose levels). 
+
+Similarly, We conduct a linear regression model adjusting for the confounders. 
+
+$( E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c $                      (1.3)
+
+```{r}
+fitc <- lm(y ~ x + age + gender + race + education + smoke, data=nhanes)
+summary(fitc)
+```
+
+::: callout-note
+Then we can estimate the direct effect and indirect effect: 
+**direct effect** = $ \theta_1 $   
+**indirect effect** =   $ \beta_1 \theta_2 $  
+**total effect** = $ \theta_1' $ 
+::: 
+
+In our example, 
+- the *direct effect* ($\theta_1$) of red meat on glucose levels can be assessed by 
+the coefficient of red meat in model b, which is 0.811. 
+
+```{r}
+direct_ma <- fitb$coefficients[2] 
+direct_ma
+```
+
+- the *indirect effect*  can be assessed by calculating the product of $ \beta_1 \theta_2 $. The intuition of the indirect effect is that the **mediation** depends on the extent to which the exposure changes the mediator (path A) and the extent to which the mediator changes the outcome (path B). In this example, the indirect effect between red meat and glucose levels through inflmmatory biomarker is 0.273. 
+```{r}
+indirect_ma <- fita$coefficients[2]*fitb$coefficients[3]
+indirect_ma
+```
+
+- the *total effect* ($\theta_1'$) of red meat on glucose levels can be assessed by 
+the coefficient of red meat in model c, which is 1.084. You might have noticed the total effect also equals the sum of the direct effect and indirect effect. 
+
+```{r}
+total_ma <- fitc$coefficients[2]
+total_ma
+```
+
+## Difference approach: 
+The difference approach is more commonly used in psychological domain. And the rational of this approach is to compare the effect of X on Y without and with adding M in the models. 
+
+Back to the example, the indirect effect will be the coefficient of red meat in model c (without adjusting for m) minus the coefficent of red meat in model b (adjusting for m), which equals to 0.273. 
 
 
 ```{r}
-fitb <- lm(Y ~ total_meat + age + gender + race + education + smoke + M, data=nhanes)
-summary(fit)
+indirect_mb <- fitc$coefficients[2]-fitb$coefficients[2]
+indirect_mb
 ```
 
-Coefficients:
-                                   Estimate Std. Error  t value Pr(>|t|)    
-(Intercept)                      107.945138   0.080808 1335.818   <2e-16 ***
-total_meat                         0.810558   0.009770   82.968   <2e-16 ***
-age                                1.500012   0.001154 1299.724   <2e-16 ***
-genderFemale                      -0.019696   0.046428   -0.424    0.671    
-education_cleanCollege and above   0.014579   0.048520    0.300    0.764    
-smokeNo                            0.025149   0.045252    0.556    0.578    
-M                                  0.689067   0.021656   31.819   <2e-16 ***
-
-Then we can estimate the direct effect and indirect effect: 
-direct effect = θ1   
-indirect effect = β1*θ2
-total effect = θ1'
-
-In Model 1, the coefficient for red meat is 1.085 (θ1'), representing the *total effect* of red meat on glucose levels.
-In Model 3, the coefficient for red meat is 0.811 (θ1), representing the *direct effect* of red meat on glucose levels.
-The *indirect effect*  can be assessed by calculating the product of β1 in Model2 and θ2 in Model3, which is 0.274(0.398*0.689). The intuition of the indirect effect is that the MEDIATION depends on the extent to which the exposure changes the mediator (path A) and the extent to which the mediator changes the outcome (path B). 
-
-
-##Difference approach: 
-The difference approach is more commonly used in psychological domain. And the rational of this approach is to compare the effect of X on Y without and with adding M in the models. 
 
 If a mediation effect exists, the effect of X on Y will be attenuated when M is included in the regression, indicating the effect of X on Y goes through M. If the effect of X on Y completely disappears, M fully mediates between X and Y (full mediation). If the effect of X on Y still exists, but in a smaller magnitude, M partially mediates between X and Y (partial mediation).
 
-In Model 1, which only included X and C in the models, the coefficient for red meat is 1.085 (θ1'), this coefficient reduces to 0.811 (θ1) after adding the mediator to the model in Model 3. The indirect effect can be assessed by calculating the difference between θ1'-θ1, which equals to 0.274 (1.085-0.811). 
+
+::: callout-note
+If you recall the four criteria Originally suggested by Baron and Kenny, they proposed that 'Path C must be significantly different from 0 to ensure there is a total effect between X and Y', but this step might be controversial. Even if we don’t find a significant association between X and Y, we could proceed to the next step if we have a strong theoretical basis for their relationship. 
+
+:::
+
+
+## Group work- 15 minutes
+- Discuss with your group about the two tradiational approaches, did you get the same results?
+- Discuss the scenarios under which there might be no significant association between X and Y. 
+
 
 
 ## Use mediation packages  
-Now we have estimated the direct and indirect effect using these two approaches. 
-You might have noticed what you got so far are only point estimates, but what if you want to see if this mediation effect is statistically significant (different from zero or not)?
+Now we have estimated the direct and indirect effect using the product and the difference methods.You might have noticed what you got so far are only point estimates, but what if you want to see if this mediation effect is statistically significant (different from zero or not)?
 
 To do so, there are two main approaches: the Sobel test (Sobel, 1982) and bootstrapping (Preacher & Hayes, 2004). 
 
@@ -174,45 +202,31 @@ mediate() takes two model objects as input (X → M and X + M → Y) and we need
 
 ```{r}
 # Fit mediator model
-mediator_model <- lm(M ~ total_meat + age + gender +  education + smoke, data = nhanes)
+lm_m  <- lm(m ~ x + age + gender +  education + smoke, data = nhanes)
 # Fit outcome model
-outcome_model <- lm(outcome ~ M + total_meat + age + gender +  education + smoke, data = nhanes)
+lm_y <- lm(y ~ x + m + age + gender +  education + smoke, data = nhanes)
 # Run mediation analysis
-results <- mediate(mediator_model, outcome_model, treat = "total_meat", mediator = "M", boot = TRUE, sims = 100)
+results <- mediate(lm_m, lm_y, treat = "x", mediator = "m", boot = TRUE, sims = 500)
 summary(results)
 ```
-The output from calling the summary function on the results of the bootstrap procedure (the R object I named med) has four rows:
-
-Causal Mediation Analysis 
-Nonparametric Bootstrap Confidence Intervals with the Percentile Method
-               Estimate 95% CI Lower 95% CI Upper p-value    
-ACME              0.273        0.254         0.29  <2e-16 ***
-ADE               0.811        0.794         0.83  <2e-16 ***
-Total Effect      1.084        1.074         1.09  <2e-16 ***
-Prop. Mediated    0.252        0.236         0.27  <2e-16 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-Sample Size Used: 8597 
-Simulations: 100 
 
 
-### ADE stands for average direct effects. 
-It describes the direct effect of the IV on the DV. Note this estimate is the same as the coefficient We got in step #3 (0.811). The direct effect of the IV on the DV when controlling for the mediator.
+- **ADE** stands for average direct effects. 
+It describes the direct effect of the x on the y when controlling for the mediator. Note this estimate is the same as the coefficient We got in the product and difference method (0.811). But be aware we are able to get *confidence interval* and *significance* levels for the indirect effect, not only its two individual parts by bootstrapping. This is something we need for reporting the mediation.
 
 
-### ACME stands for average causal mediation effects. 
-This is the indirect effect of the IV on the DV that goes through the mediator. Note that ACME estimated to be 0.273, which is very similar to the traditional approached we just used.
-But be aware we are able to get *confidence interval* and *significance* levels for the indirect effect, not only its two individual parts by bootstrapping. This is something we need for reporting the mediation.
-
-### Total Effect stands for the total effect (direct + indirect) of the IV onto the DV. 
-We calculated this in step #1. We can also get it by adding the ACME () and the ADE () to receive the total effect. 
-
-### Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. The result suggests the mediator (inflmmaotry biomarker) explains 25.2% proportion of the effect from red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
-
-For details of the mediate() package, please refer to Tingley, Yamamoto, Hirose, Keele, & Imai (2014).
+- **ACME** stands for average causal mediation effects. 
+This is the indirect effect of the IV on the DV that goes through the mediator. Note that ACME estimated to be 0.273, which is the same to the traditional approached we just used.
 
 
-Reporting the mediation
+- **Total Effect** stands for the total effect (direct + indirect) of the IV onto the DV. We can also get it by adding the ACME () and the ADE () to receive the total effect. 
+
+- **Prop. Mediated** describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) and yields 0.252. The result suggests the mediator (inflammaotry biomarker) explains 25.2% proportion of the effect of red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
+
+For details of the mediate() package, please refer to (mediation_rpackage 2014). 
+
+
+# Reporting the mediation
 - assumptions
 - introduction of dataset
 - difference and product method with code-along
