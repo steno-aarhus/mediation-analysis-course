@@ -343,6 +343,8 @@ E_Y0M0
 
 Test of other package
 
+devtools::install_github("BS1125/CMAverse")
+
 ```{r}
 library(CMAverse)
 
