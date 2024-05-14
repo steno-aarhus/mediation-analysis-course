@@ -1,4 +1,5 @@
 *Teaching the concepts - Jie (75 min)
+
 # what is Mediation analyses?
 The purpose of mediation analyses is to determine if the effect of an independent variable (X) on a dependent variable (Y) can be explained by a mediating variable (M). This can be visualized in the following figure:
 
@@ -61,12 +62,12 @@ digraph {
 ## Example Dataset: A Brief Overview
 We’ll explore the relationship between the red meat intake and glucose levels in the NHANSE dataset (which was modified for this course). Specifically, we want to understand how much inflammatory biomarker (M) explains the relation between red meat intake and T2D risk. 
 
-
 The variables used in the dataset:
 plasma fasting glucose: (Y) continuous variable
 serum_c_reactive_protein:  (M) continuous variable
 red meat intake: (X), continuous variable 
 There are demographic variables and other lipid biomarkers in the dataset. 
+
 
 
 ## Method 1: Baron & Kenny (the product method)
@@ -210,7 +211,6 @@ We calculated this in step #1. We can also get it by adding the ACME () and the 
 ### Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. The result suggests the mediator (inflmmaotry biomarker) explains 25.2% proportion of the effect from red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
 
 For details of the mediate() package, please refer to Tingley, Yamamoto, Hirose, Keele, & Imai (2014).
-
 
 Reporting the mediation
 - assumptions
