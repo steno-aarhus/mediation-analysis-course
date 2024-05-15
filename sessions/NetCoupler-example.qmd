@@ -1,3 +1,186 @@
-Introduction and example - Daniel (20 min)
+---
+bibliography: papers.bib
+---
 
-- show how to use the NetCoupler with out data
+```{r}
+#| include: false
+
+library(here)
+library(DiagrammeR)
+library(tidyverse)
+
+```
+
+# NetCoupler
+
+All documentation for the algorithm and package can be found [here](https://netcoupler.github.io/NetCoupler/).
+
+## What is NetCoupler?
+The goal of NetCoupler is to estimate **potential** causal links between a set of
+-omic (e.g. metabolomics, lipidomics) or other high-dimensional metabolic data
+as a conditional dependency network and either a disease outcome, an exposure,
+or both. 
+
+These potential causal links are classified as direct, ambigious, or
+no effects. 
+
+This algorithm is largely meant to be used with -omic style
+data to generate the networks and while theoretically non-omic data could be
+used, we have not tested it in that context. 
+
+Given the algorithms nature, it's primarily designed to be used for exploration of potential mechanisms
+and used to complement other analyses for a research question. It could also
+be used to confirm a **pre-specified and explicit** hypothesis, similar to how
+structural equation models are used. However, this might be a more niche use.
+
+![Overview of the NetCoupler algorithm.](C:/Users/au302898/OneDrive - Aarhus universitet/Documents/mediation-analysis-course/images/netcoupler-overview.svg)
+
+## Why or when might you want to use NetCoupler?
+
+1. You are interested in asking a research question on how some factor might influence
+another factor and how it might mediate through a metabolic network.
+
+2. If you want to explore how a factor might influence a metabolic network or
+how a metabolic network might influence a factor.
+
+3. You have an -omic dataset and want another method to explore how it relates
+to your variable of interest.
+
+## Input and assumptions
+
+The input for NetCoupler includes:
+
+1. Standardized metabolic or other high-dimensional data.
+2. Exposure or outcome data.
+3. Network estimating method (default is the PC algorithm (Colombo and Maathuis 2014) from the pcalg package).
+4. Modeling method (e.g. linear regression with lm()), including confounders to adjust for.
+
+The final output is the modeling results along with the results from NetCoupler’s classification. Results can then be displayed as a joint network model in graphical format.
+
+There are a few key assumptions to consider before using NetCoupler for your own research purposes.
+
+1. -omics data is the basis for the network. We haven’t tested this on non-omics datasets, so can’t guarantee it works as intended.
+2. The variables used for the metabolic network are numerical
+3. Metabolic data should have a theoretical network underlying it.
+4. Missing data are not used in any of the NetCoupler processes.
+
+## Installation
+
+To install the official CRAN version, use:
+
+```{r, eval=FALSE}
+install.packages("NetCoupler")
+```
+
+## Example
+
+### Estimating the metabolic network
+
+For estimating the network, it's (basically) required to standardize
+the metabolic variables before inputting into `nc_estimate_network()`.
+
+This function also log-transforms and scales 
+(mean-center and z-score normalize) the values of the metabolic variables.
+
+We do this because the network estimation algorithm can sometimes be finicky
+about differences in variable numerical scale (mean of 1 vs mean of 1000).
+
+```{r metabolic-standardize}
+library(NetCoupler)
+library(here)
+
+load(file = here::here("data", "simulated_data.Rda"))
+
+std_metabolic_data <- simulated_data %>% 
+    nc_standardize(starts_with("metabolite"))
+```
+
+If you have potential confounders that you need to adjust for during the estimating
+links phase of NetCoupler, you'll need to include these confounding variables
+when standardizing the metabolic variables. You do this by regressing the confounding
+variables on the metabolic variables by using the `regressed_on` argument
+of `nc_standardize()`.
+
+This will automatically first standardize the variables,
+run models on the metabolic variables that includes the confounding variables,
+and then extract the residuals from the model which are then used to construct
+the network. Here's an example:
+
+```{r metabolic-standardize-residuals, eval=FALSE}
+std_metabolic_data <- simulated_data %>% 
+    nc_standardize(starts_with("metabolite"),
+                   regressed_on = "age")
+```
+
+After that, you can estimate the network. The network is by default estimated
+using the PC-algorithm.
+
+```{r create-network}
+# Make partial independence network from metabolite data
+metabolite_network <- std_metabolic_data %>% 
+    nc_estimate_network(starts_with("metabolite"))
+```
+
+### Estimating exposure and outcome-side connections
+
+For the exposure and outcome side, 
+you should standardize the metabolic variables, 
+but this time, we don't regress on the confounders 
+since they will be included in the models.
+
+```{r standardize-data}
+standardized_data <- simulated_data %>% 
+    nc_standardize(starts_with("metabolite"))
+```
+
+Now you can estimate the outcome or exposure and identify direct effects
+for either the exposure side (`exposure -> metabolite`) 
+or the outcome side (`metabolite -> outcome`).
+
+For the exposure side, the function identifies whether a link between the exposure 
+and an index node (one metabolic variable in the network) exists,
+independent of potential confounders 
+and from neighbouring nodes (other metabolic variables linked to the index variable).
+
+Depending on how consistent and strong the link is,
+the effect is classified as "direct", "ambiguous", or "none".
+
+In the example below, we specifically generated the simulated data so that
+the exposure is associated with metabolites 1, 8, and 12.
+And as we can see, those links have been correctly identified.
+
+```{r example-use, cache=TRUE}
+outcome_estimates <- standardized_data %>%
+    nc_estimate_outcome_links(
+        edge_tbl = as_edge_tbl(metabolite_network),
+        outcome = "outcome_continuous",
+        model_function = lm
+    )
+outcome_estimates
+
+exposure_estimates <- standardized_data %>%
+    nc_estimate_exposure_links(
+        edge_tbl = as_edge_tbl(metabolite_network),
+        exposure = "exposure",
+        model_function = lm
+    )
+exposure_estimates
+```
+
+If you want to adjust for confounders and have already used `regressed_on` in
+the `nc_standardize()` function, add confounders to `nc_estimate_outcome_links()`
+or `nc_estimate_exposure_links()` with the `adjustment_vars` argument:
+
+```{r estimation-adjustment, eval=FALSE}
+outcome_estimates <- standardized_data %>%
+    nc_estimate_outcome_links(
+        edge_tbl = as_edge_tbl(metabolite_network),
+        outcome = "outcome_continuous",
+        model_function = lm,
+        adjustment_vars = "age"
+    )
+
+outcome_estimates
+``` 
+
+
