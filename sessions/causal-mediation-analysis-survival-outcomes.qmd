@@ -1,6 +1,54 @@
 Teaching concepts - Jie (30 min)
 
+::: callout-note
+## Learning outcomes
+
+-	Perform causal mediation analysis using R software
+- Interpret results from causal mediation analysis
+
+:::
+
 - survival analysis
 - code-along with package and setup of survival data
 
 Coding part - Daniel
+
+```{r}
+framingham <- read.csv(here::here("data", "frmgham2.csv"))
+
+framingham <- framingham %>% select(id = RANDID,
+                                    BMI,
+                                    m = SYSBP,
+                                    y = CVD,
+                                    w1 = SEX,
+                                    w2 = CURSMOKE,
+                                    w3 = AGE,
+                                    y_time = TIMECVD) %>% 
+  na.omit() %>% 
+  mutate(a = case_when(BMI >= 25 ~ 1,
+                       TRUE ~ 0),
+         y_time = y_time/365.25) %>% 
+  select(-BMI)
+
+```
+
+> Does obesity lead to higher CVD risk by increasing blood pressure?
+
+The new thing here is that we need to calculate the time to event. This is already done in the dataset.
+
+We need the outcome to be the time to event and specify event as the outcome variable. 
+
+```{r}
+library(CMAverse)
+library(survival)
+
+res_rb_coxph <- cmest(data = framingham, model = "rb", outcome = "y_time", event = "y", exposure = "a",
+                            mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "coxph",
+                            astar = 0, a = 1, mval = list(120), 
+                            estimation = "imputation", inference = "bootstrap")
+
+
+summary(res_rb_coxph)
+```
+

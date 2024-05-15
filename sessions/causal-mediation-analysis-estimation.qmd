@@ -14,6 +14,15 @@ library(tidyverse)
 # Estimation of effects using causal mediation analysis
 <!-- Daniel 120 min -->
 
+::: callout-note
+## Learning outcomes
+
+- Explain the theoretical concepts and statistical methods regarding causal mediation analysis
+-	Perform causal mediation analysis using R software
+- Interpret results from causal mediation analysis
+
+:::
+
 ## Recap from yesterday (part 1)
 
 - causal inference in general
@@ -97,9 +106,11 @@ General problems with the traditional approach is when we have exposure-mediator
 Counterfactual-based direct and indirect effects can be estimated, provided that the no-confounding assumption hold. To be able to do so, we need a model for the mediator and a model for the outcome.
 
 Model for the mediator:
+
 $E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w $
 
 Model for the outcome:
+
 $E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w $
 
 From these two regression models we can estimate the CDE, NDE and NIE.
@@ -211,7 +222,7 @@ $TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*) $
 
 TNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*1 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
 
-round(as.numeric(TNIE), digits = 2)
+round(as.numeric(TNDE), digits = 2)
 ```
 Here, the value of M is enabled to act (as opposed to the PNDE). Here we see a little higher blood glucose, and that is the extra contribution from inflammation.  
 
