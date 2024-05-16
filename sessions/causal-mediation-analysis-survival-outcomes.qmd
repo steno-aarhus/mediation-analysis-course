@@ -35,9 +35,9 @@ digraph {
     M [label = 'quality of stroke care']
     Y [label = 'stroke mortality']
   edge [minlen = 1.5]
-    X->Y 
-    X->M 
-    M->Y 
+    X->Y
+    X->M
+    M->Y
   { rank = same; X; Y }
   { rank = min; M;}
 }")
@@ -178,7 +178,6 @@ outcome (time).
 ## Step 1: Fit a parametric survival model with a Weibull error distribution to the survival times including exposure(x), mediator(m) and potentail confounders.
 
 ```{r}
-
 ```
 
 ## Step 2: Create a copy of the original dataset: in the first set copy, the new variable is set to the values of the actual expsoure (A), while in the second copy, the new variable is set to the opposite value of the actual value (A\*).
@@ -211,20 +210,26 @@ steps 1-5.
 library(tidyverse)
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 
-framingham <- framingham %>% select(id = RANDID,
-                                    BMI,
-                                    m = SYSBP,
-                                    y = CVD,
-                                    w1 = SEX,
-                                    w2 = CURSMOKE,
-                                    w3 = AGE,
-                                    y_time = TIMECVD) %>% 
-  na.omit() %>% 
-  mutate(a = case_when(BMI >= 25 ~ 1,
-                       TRUE ~ 0),
-         y_time = y_time/365.25) %>% 
+framingham <- framingham %>%
+  select(
+    id = RANDID,
+    BMI,
+    m = SYSBP,
+    y = CVD,
+    w1 = SEX,
+    w2 = CURSMOKE,
+    w3 = AGE,
+    y_time = TIMECVD
+  ) %>%
+  na.omit() %>%
+  mutate(
+    a = case_when(
+      BMI >= 25 ~ 1,
+      TRUE ~ 0
+    ),
+    y_time = y_time / 365.25
+  ) %>%
   select(-BMI)
-
 ```
 
 > Does obesity lead to higher CVD risk by increasing blood pressure?
@@ -239,11 +244,13 @@ outcome variable.
 library(CMAverse)
 library(survival)
 
-res_rb_coxph <- cmest(data = framingham, model = "rb", outcome = "y_time", event = "y", exposure = "a",
-                            mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "coxph",
-                            astar = 0, a = 1, mval = list(120), 
-                            estimation = "imputation", inference = "bootstrap")
+res_rb_coxph <- cmest(
+  data = framingham, model = "rb", outcome = "y_time", event = "y", exposure = "a",
+  mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
+  mreg = list("linear"), yreg = "coxph",
+  astar = 0, a = 1, mval = list(120),
+  estimation = "imputation", inference = "bootstrap"
+)
 
 
 summary(res_rb_coxph)

@@ -6,7 +6,6 @@
 library(here)
 library(DiagrammeR)
 library(tidyverse)
-
 ```
 
 <!-- Daniel 120 min -->
@@ -127,16 +126,17 @@ Note, that for your own data, you may need to take missing data into
 account in another way.
 
 ```{r}
-
 nhanes <- read.csv(here::here("data", "nhanes.csv"))
 
-#only keeping the variables we need for the example and removing missing variables
+# only keeping the variables we need for the example and removing missing variables
 
-nhanes <- nhanes %>% select(id = seqn, w1 = age, w2 = gender, w3 = education, a = total_meat, y = plasma_fasting_glucose, m = serum_c_reactive_protein) %>% na.omit() %>% mutate(
-  a = a/65, #scale to per 65 g/day
-  m = log(m) #m is not normal, so we log transform
-)
-
+nhanes <- nhanes %>%
+  select(id = seqn, w1 = age, w2 = gender, w3 = education, a = total_meat, y = plasma_fasting_glucose, m = serum_c_reactive_protein) %>%
+  na.omit() %>%
+  mutate(
+    a = a / 65, # scale to per 65 g/day
+    m = log(m) # m is not normal, so we log transform
+  )
 ```
 
 We can now run a model for the mediator only adjusting for a single
@@ -191,8 +191,9 @@ For the controlled direct effect we set m to a specific value.
 Let's look at the distribution of m.
 
 ```{r}
-
-nhanes %>% select(m) %>% summary()
+nhanes %>%
+  select(m) %>%
+  summary()
 
 median_m_log <- round(median(nhanes$m), digits = 1)
 
@@ -203,8 +204,7 @@ In this example we will set it to the median `r median_m_log` which is a
 CRP at `r median_m` which is a low level.
 
 ```{r}
-
-CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5]*median_m_log)*(1 - 0) 
+CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5] * median_m_log) * (1 - 0)
 
 round(as.numeric(CDE_m), digits = 2)
 ```
@@ -236,8 +236,7 @@ mean_w1 <- mean(nhanes$w1)
 Then we calculate the PNDE.
 
 ```{r}
-
-PNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*0 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+PNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5] * (lm_m$coefficients[1] + lm_m$coefficients[2] * 0 + lm_m$coefficients[3] * mean_w1))) * (1 - 0)
 
 round(as.numeric(PNDE), digits = 2)
 ```
@@ -257,8 +256,7 @@ TNDE can be obtained by this formula:
 $TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*)$
 
 ```{r}
-
-TNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*1 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+TNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5] * (lm_m$coefficients[1] + lm_m$coefficients[2] * 1 + lm_m$coefficients[3] * mean_w1))) * (1 - 0)
 
 round(as.numeric(TNDE), digits = 2)
 ```
@@ -278,7 +276,7 @@ The PNIE can be obtained by this formula:
 $PNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a^*)(a - a^*)$
 
 ```{r}
-PNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 0))*(1 - 0) 
+PNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 0)) * (1 - 0)
 
 round(as.numeric(PNIE), digits = 2)
 ```
@@ -303,7 +301,7 @@ The TNIE can be obtained by this formula:
 $TNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a)(a - a^*)$
 
 ```{r}
-TNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 1))*(1 - 0) 
+TNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 1)) * (1 - 0)
 
 round(as.numeric(TNIE), digits = 2)
 ```
@@ -391,14 +389,15 @@ In short, all the things we did above can be estimated like this:
 ```{r}
 library(CMAverse)
 
-res_rb <- cmest(data = nhanes, model = "rb", outcome = "y", exposure = "a",
-                            mediator = "m", basec = c("w1"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "linear",
-                            astar = 0, a = 1, mval = list(-1.6), 
-                            estimation = "paramfunc", inference = "delta")
+res_rb <- cmest(
+  data = nhanes, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w1"), EMint = TRUE,
+  mreg = list("linear"), yreg = "linear",
+  astar = 0, a = 1, mval = list(-1.6),
+  estimation = "paramfunc", inference = "delta"
+)
 
 summary(res_rb)
-
 ```
 
 We can check that the models were the ones we wanted to specify. And we
@@ -407,15 +406,15 @@ can see that the results are the same.
 We can now try to adjust for multiple other confounders.
 
 ```{r}
-
-res_rb_confounders <- cmest(data = nhanes, model = "rb", outcome = "y", exposure = "a",
-                            mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "linear",
-                            astar = 0, a = 1, mval = list(-1.6), 
-                            estimation = "paramfunc", inference = "delta")
+res_rb_confounders <- cmest(
+  data = nhanes, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
+  mreg = list("linear"), yreg = "linear",
+  astar = 0, a = 1, mval = list(-1.6),
+  estimation = "paramfunc", inference = "delta"
+)
 
 summary(res_rb_confounders)
-
 ```
 
 After adjustment for age, sex and education, there is not longer
@@ -440,27 +439,36 @@ and only keep the variables we need.
 ```{r}
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 
-framingham <- framingham %>% select(id = RANDID,
-                                     BMI,
-                                     SYSBP,
-                                     y = CVD,
-                                     w1 = SEX,
-                                     w2 = CURSMOKE,
-                                     w3 = AGE) %>% 
-  na.omit() %>% 
-  mutate(a = case_when(BMI >= 25 ~ 1,
-                       TRUE ~ 0),
-         m = case_when(SYSBP >= 140 ~ 1,
-                       TRUE ~ 0)) %>% 
+framingham <- framingham %>%
+  select(
+    id = RANDID,
+    BMI,
+    SYSBP,
+    y = CVD,
+    w1 = SEX,
+    w2 = CURSMOKE,
+    w3 = AGE
+  ) %>%
+  na.omit() %>%
+  mutate(
+    a = case_when(
+      BMI >= 25 ~ 1,
+      TRUE ~ 0
+    ),
+    m = case_when(
+      SYSBP >= 140 ~ 1,
+      TRUE ~ 0
+    )
+  ) %>%
   select(-BMI, -SYSBP)
-
 ```
 
 First, we fit the outcome regression (including interaction terms).
 
 ```{r}
-or_fit <- glm(y ~ a + m + w1 + w2 + a*m + m*w1 + w3,
-              family = binomial(), data = framingham)
+or_fit <- glm(y ~ a + m + w1 + w2 + a * m + m * w1 + w3,
+  family = binomial(), data = framingham
+)
 summary(or_fit)
 ```
 
@@ -470,9 +478,10 @@ different inputs for A and M. Then we use the function to predict the
 out with different combinations of A and M.
 
 ```{r}
-get_EY_a_m_Wi <- function(full_data, or_fit, A, M){
+get_EY_a_m_Wi <- function(full_data, or_fit, A, M) {
   data_Aa_Mm_Wi <- full_data
-  data_Aa_Mm_Wi$a <- A; data_Aa_Mm_Wi$m <- M
+  data_Aa_Mm_Wi$a <- A
+  data_Aa_Mm_Wi$m <- M
   predict(or_fit, newdata = data_Aa_Mm_Wi, type = "response")
 }
 ## run prediction, for different scenarios (a=1 or 0, and m=1 or 0)
@@ -485,7 +494,7 @@ EY_A1_M1_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 1, M = 1)
 Next, we will run the mediation model. Also including interaction terms.
 
 ```{r}
-med_fit <- glm(m ~ a*w1 + w1*w2, family = binomial(), data = framingham)
+med_fit <- glm(m ~ a * w1 + w1 * w2, family = binomial(), data = framingham)
 ```
 
 We now make a new function that based on the values of A, run the
@@ -493,16 +502,17 @@ prediction models of M. This is the nested counterfactual.
 
 ```{r}
 # estimates of Pr(M = m | A = a, W = W_i), predict m based on a
-get_Pm_a_Wi <- function(full_data, med_fit, A, M){
-  data_Aa_Wi <- full_data; data_Aa_Wi$a <- A
+get_Pm_a_Wi <- function(full_data, med_fit, A, M) {
+  data_Aa_Wi <- full_data
+  data_Aa_Wi$a <- A
   p <- predict(med_fit, newdata = data_Aa_Wi, type = "response")
-  if(M == 1){
+  if (M == 1) {
     p
-  }else{
+  } else {
     1 - p
   }
 }
-##similary, we get the predicted values of m for different scenarios
+## similary, we get the predicted values of m for different scenarios
 PM0_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 0)
 PM1_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 1)
 PM0_A1_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 1, M = 0)
@@ -521,7 +531,7 @@ EY1M0_Wi <- EY_A1_M1_Wi * PM1_A0_Wi + EY_A1_M0_Wi * PM0_A0_Wi
 # E(E(Y | A = 0, M, W) | A = 0, W)
 EY0M0_Wi <- EY_A0_M1_Wi * PM1_A0_Wi + EY_A0_M0_Wi * PM0_A0_Wi
 
-#Finally, we average over distribution of W to get effect estimate 
+# Finally, we average over distribution of W to get effect estimate
 # estimate of E[Y(1, M(1))]
 E_Y1M1 <- mean(EY1M1_Wi)
 # estimate of E[Y(0, M(1))]
@@ -558,28 +568,32 @@ Test of other package
 #| eval: false
 library(CMAverse)
 
-res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
-                            mediator = "m", basec = c("w"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "linear",
-                            astar = 5, a = 7, mval = list(5), 
-                            estimation = "paramfunc", inference = "delta")
+res_rb <- cmest(
+  data = df, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w"), EMint = TRUE,
+  mreg = list("linear"), yreg = "linear",
+  astar = 5, a = 7, mval = list(5),
+  estimation = "paramfunc", inference = "delta"
+)
 
 summary(res_rb)
 
 
-#changing the intervention, keeping the mediator the same
-PNDE_gcomp = round(exp(E_Y1M0 - E_Y0M0), digits = 2)
+# changing the intervention, keeping the mediator the same
+PNDE_gcomp <- round(exp(E_Y1M0 - E_Y0M0), digits = 2)
 
-TNDE_gcomp = round(exp(E_Y1M1 - E_Y0M1), digits = 2)
+TNDE_gcomp <- round(exp(E_Y1M1 - E_Y0M1), digits = 2)
 
-#change the mediator keeping intervention the same
-PNIE_comp = round(exp(E_Y0M1 - E_Y0M0), digits = 2)
+# change the mediator keeping intervention the same
+PNIE_comp <- round(exp(E_Y0M1 - E_Y0M0), digits = 2)
 
-TNIE_comp = round(exp(E_Y1M1 - E_Y1M0), digits = 2) 
+TNIE_comp <- round(exp(E_Y1M1 - E_Y1M0), digits = 2)
 
-est_table <- data.frame(PNDE = PNDE_gcomp,
-                        TNDE = TNDE_gcomp,
-                        PNIE = PNIE_comp,
-                        TNIE = TNIE_comp)
+est_table <- data.frame(
+  PNDE = PNDE_gcomp,
+  TNDE = TNDE_gcomp,
+  PNIE = PNIE_comp,
+  TNIE = TNIE_comp
+)
 est_table
 ```

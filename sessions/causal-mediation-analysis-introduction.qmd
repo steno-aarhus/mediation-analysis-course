@@ -5,7 +5,6 @@
 
 library(here)
 library(DiagrammeR)
-
 ```
 
 <!-- Daniel 90 min -->
@@ -160,7 +159,7 @@ When we only have a subset of the outcomes, we have an association. This
 is illustrated in Fig. 1.
 
 ```{r, echo = FALSE, fig.cap="Fig. 1. Causation vs association. From Hernan 2004", out.width = '50%'}
-#knitr::include_graphics(here::here("images", "causation-association.PNG"))
+# knitr::include_graphics(here::here("images", "causation-association.PNG"))
 ```
 
 If we want to infer a causal effect (i.e., what would have happened, had
@@ -241,7 +240,7 @@ different types of variables in a DAG and rules for paths
 (ref:Tennant2021).
 
 ```{r, echo = FALSE, fig.cap="Fig. 2. Components of a DAG, including the common types of variables and paths. From Tennant et al. 2021", out.width = '100%'}
-#knitr::include_graphics(here::here("images", "dag-overview.PNG"))
+# knitr::include_graphics(here::here("images", "dag-overview.PNG"))
 ```
 
 ## Causal mediation analysis

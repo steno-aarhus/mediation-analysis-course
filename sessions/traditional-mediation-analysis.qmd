@@ -141,9 +141,9 @@ M.
 \$ (E(M\|A=a, C=c)\$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
 
 ```{r}
-#first load the dataset
+# first load the dataset
 load(here::here("data/nhanes_dataset.RData"))
-fita <- lm(m ~ x + age + gender +  education_clean + smoke, data=nhanes)
+fita <- lm(m ~ x + age + gender + education_clean + smoke, data = nhanes)
 summary(fita)
 ```
 
@@ -157,7 +157,7 @@ $(E(Y|A=a, M=m, C=c)$ = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
 $\theta4c$ (1.2)
 
 ```{r}
-fitb <- lm(y ~ x + m + age + gender + race + education + smoke , data=nhanes)
+fitb <- lm(y ~ x + m + age + gender + race + education + smoke, data = nhanes)
 summary(fitb)
 ```
 
@@ -170,7 +170,7 @@ between step 2 and step 3 is that mediator is not included in the model.
 $(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (1.3)
 
 ```{r}
-fitc <- lm(y ~ x + age + gender + race + education + smoke, data=nhanes)
+fitc <- lm(y ~ x + age + gender + race + education + smoke, data = nhanes)
 summary(fitc)
 ```
 
@@ -187,7 +187,7 @@ glucose levels can be assessed by the coefficient of red meat in model
 b, which is 0.811.
 
 ```{r}
-direct_ma <- fitb$coefficients[2] 
+direct_ma <- fitb$coefficients[2]
 direct_ma
 ```
 
@@ -200,7 +200,7 @@ direct_ma
     0.273.
 
 ```{r}
-indirect_ma <- fita$coefficients[2]*fitb$coefficients[3]
+indirect_ma <- fita$coefficients[2] * fitb$coefficients[3]
 indirect_ma
 ```
 
@@ -232,7 +232,7 @@ meat in model c (without adjusting for m) minus the coefficent of red
 meat in model b (adjusting for m), which equals to 0.273.
 
 ```{r}
-indirect_mb <- fitc$coefficients[2]-fitb$coefficients[2]
+indirect_mb <- fitc$coefficients[2] - fitb$coefficients[2]
 indirect_mb
 ```
 
@@ -270,7 +270,7 @@ mediation package is we can get confidence interval by bootstrapping.
 Let’s load up the R packages.
 
 ```{r}
-library(mediation) #Mediation package
+library(mediation) # Mediation package
 ```
 
 mediate() takes two model objects as input (X → M and X + M → Y) and we
@@ -279,9 +279,9 @@ need to specify which variable is an IV (treatment) and a mediator
 
 ```{r}
 # Fit mediator model
-lm_m  <- lm(m ~ x + age + gender +  education + smoke, data = nhanes)
+lm_m <- lm(m ~ x + age + gender + education + smoke, data = nhanes)
 # Fit outcome model
-lm_y <- lm(y ~ x + m + age + gender +  education + smoke, data = nhanes)
+lm_y <- lm(y ~ x + m + age + gender + education + smoke, data = nhanes)
 # Run mediation analysis
 results <- mediate(lm_m, lm_y, treat = "x", mediator = "m", boot = TRUE, sims = 500)
 summary(results)
@@ -312,7 +312,7 @@ summary(results)
     levels. We will talk more about proportion mediation in Session ?.
 
 ```{r}
-#We can also plot the estimates
+# We can also plot the estimates
 plot(results)
 ```
 
