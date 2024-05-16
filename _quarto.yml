@@ -36,8 +36,8 @@ book:
         href: LICENSE.html
 
 bibliography:
-  - sessions/papers.bib
-csl: sessions/the-american-journal-of-clinical-nutrition.csl
+  - includes/papers.bib
+csl: includes/the-american-journal-of-clinical-nutrition.csl
 
 editor:
   markdown:

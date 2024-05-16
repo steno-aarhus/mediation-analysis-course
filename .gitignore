@@ -4,3 +4,11 @@
 .Ruserdata
 
 /.quarto/
+*_files
+*.html
+_freeze
+public
+_site
+_book
+*_cache
+*.log
