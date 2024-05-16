@@ -5,9 +5,13 @@
 
 ## Description
 
-This course on covers the investigation of disease mechanisms through mediation analysis in the context of diabetes and endocrine diseases. 
+This course on covers the investigation of disease mechanisms through
+mediation analysis in the context of diabetes and endocrine diseases.
 
-Our three-day course is a face-to-face workshop that includes a variety of teaching methods, including lectures, R code-along sessions, and activities that foster networking between participants such as group work activities, and student presentations.
+Our three-day course is a face-to-face workshop that includes a variety
+of teaching methods, including lectures, R code-along sessions, and
+activities that foster networking between participants such as group
+work activities, and student presentations.
 
 This repository contains the lesson, lecture, and assignment material
 for the course, including the website source files and other associated
@@ -21,7 +25,6 @@ The teaching material is found mainly in the project folders:
 -   `sessions/`: Contains the teaching material
 -   `data/`: Contains the example datasets used in the course
 
-
 The website is generated from [Quarto](https://quarto.org), so follows
 the file and folder structure conventions from that package.
 
@@ -29,14 +32,8 @@ the file and folder structure conventions from that package.
 
 Packages used and depended on for this course are included in the
 `DESCRIPTION` file. To install the packages, run this function in the
-root directory (where the `mediaion-analysis-course.Rproj` file is located:
-
-``` r
-# install.packages("renv")
-renv::install()
-# Or:
-renv::restore()
-```
+root directory (where the `mediation-analysis-course.Rproj` file is
+located:
 
 You might need to connect to GitHub via a personal access token if you
 encounter a "rate limit" when installing packages:
@@ -44,15 +41,6 @@ encounter a "rate limit" when installing packages:
 ``` r
 # usethis::create_github_token()
 gitcreds::gitcreds_set()
-```
-
-For Linux users (and maybe Mac?), you will probably need to install
-extra dependencies:
-
-``` bash
-sudo apt install librdf0-dev libharfbuzz-dev libfribidi-dev \
-  libxml2-dev libglpk-dev gfortran libsodium-dev \
-  libpoppler-cpp-dev
 ```
 
 ## Contributing
