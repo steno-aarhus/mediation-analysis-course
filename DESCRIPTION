@@ -12,12 +12,14 @@ License: CC BY 4.0
 Imports: 
     CMAverse (>= 0.1.0),
     DiagrammeR,
+    downlit,
     furrr,
     here,
     knitr,
     mediation,
     NetCoupler,
     rmarkdown,
-    survival
+    survival,
+    xml2
 Remotes: 
     BS1125/CMAverse
