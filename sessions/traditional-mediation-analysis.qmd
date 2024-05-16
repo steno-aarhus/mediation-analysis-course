@@ -223,4 +223,5 @@ Go through the limitation of the traditional approach - Omar (15 min)
 - limitations of traditional approach
 - non-linearity
 - interactions
-- multi mediators 
+- multiple mediators
+- confounding assumptions
