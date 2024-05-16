@@ -31,7 +31,7 @@ book:
       - sessions/group_work_day2.qmd
       - sessions/NetCoupler-example.qmd
   appendices:
-    - LICENSE.md
+    - appendices/references.qmd
   page-footer:
     center:
       - text: "License: CC BY 4.0 {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}}"
