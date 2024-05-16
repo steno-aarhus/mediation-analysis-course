@@ -10,7 +10,7 @@ book:
   subtitle: "Modern mediation analysis for basic, clinical and epidemiological research in diabetes and endocrinology"
   author:
     - "Daniel B. Ibsen"
-  site-url: "https://pure.au.dk/portal/da/persons/dbi%40ph.au.dk"
+  site-url: "https://analysis-of-mechanisms.netlify.app"
   repo-url: "https://github.com/steno-aarhus/mediation-analysis-course"
   chapters:
     - index.qmd
