@@ -184,7 +184,7 @@ TE <- NDE + NIE
 
 as.numeric(TE)
 ```
-### Proportion eliminated
+### Proportion mediation
 
 From this, we can calculate the proportion mediated. 
 
@@ -228,8 +228,8 @@ med_out <- mediate(model.m = med_fit,
                    model.y = out_fit,
                    treat = "a",
                    mediator = "m",
-                   control.value = 5,
-                   treat.value = 7,
+                   #control.value = 5,
+                   #treat.value = 7,
                    robustSE = TRUE,
                    sims = 10)
 
@@ -240,8 +240,6 @@ Treatment mediator interaction can be tested:
 ```{r}
 test.TMint(med_out, conf.level = .95)
 ```
-
-## G-computation-based approach
 
 ## G-computation-based approach
 ###############################################################

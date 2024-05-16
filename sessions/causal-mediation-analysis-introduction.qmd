@@ -10,15 +10,23 @@ library(DiagrammeR)
 
 ```
 
-
 # Introduction to causal mediation analysis
 <!-- Daniel 90 min -->
 
 In this session we will go over fundamental concepts of causal inference in general and then focus more specifically on causal mediation analysis. For the mediation analysis, this introduction targets the controlled direct effect, the indirect and direct effect as overall concepts. In the next sessions, we will dive further into additional estimands and decompositions of the effects.
 
+::: callout-note
+## Learning outcomes
+
+- Explain the theoretical concepts and statistical methods regarding causal mediation analysis
+-	Perform causal mediation analysis using R software
+- Interpret results from causal mediation analysis
+
+:::
+
 ## What is a cause?
 
-In a way this can be very intuitive. If I press the switch, the light will come on. We use causal reasoning all the time. If I do A, then Y will happen. Some relationships, we can define them to be deterministic. Doing A will always lead to Y.
+In a way this can be very intuitive. If I press the switch, the light will come on. We use causal reasoning all the time. If I do A, then Y will happen. Some relationships we can define them to be deterministic. Doing A will always lead to Y. This is useful for our intuition but when we work with health outcomes it is more complicated.
 
 ::: callout-note
 ## Notation
@@ -46,7 +54,7 @@ Instead, we can perform a randomized controlled trial. We now ask a slightly dif
 
 > Will eating more red meat give adults higher blood glucose in 1 year?
 
-We can randomely assigning one group to consume more red meat and the other group to consume more of something else over 1 year. Then we compare the average blood glucose levels after 1 year in each of the groups. If there is a difference, we could say there is a causal effect.
+We can randomely assigning one group to consume more red meat and the other group to consume more of something else over 1 year. Then we compare the average blood glucose levels after 1 year in each of the groups. If there is a difference, we could say there is an average causal effect.
 
 ::: callout-note
 ## Notation
@@ -58,9 +66,7 @@ $Pr[Y^{a=1}]$ the proportion of subjects that would have developed the outcome Y
 
 :::
 
-What we estimate here is the average causal effect. 
-
-## Definition of a causal effect
+### Definition of a causal effect
 More formally we can now define a causal effect (ref:Hernan2004): 
 
 $E[Y^{a=1} = 1] - E[Y^{a=0} = 1] \ne 0$
@@ -82,7 +88,7 @@ Then, we will run a linear regression model for the effect of the treatment on t
 lm_y <- lm(y ~ a + w)
 ```
 
-We now use this model to predict the outcome, if all had received treatment = 1 and another prediction of the outcome had not received treatment (A = 0).
+We now use this model to predict the outcome, if **all** had received treatment = 1 and another prediction of the outcome had everyone not received treatment (A = 0).
 
 ```{r}
 pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, w = w))
@@ -101,17 +107,26 @@ It turns out that this average causal effect is the same as the regression coeff
 summary(lm_y)
 ```
 
-This mean that a regression-based approach can in some situations also be used. However, for more complicated situations, the regression-based approach fail. The causal intuition in the regression-based approach is also less clear.
+A regression-based approach can in some situations also be used. However, for more complicated situations, the regression-based approach fail. The causal intuition in the regression-based approach is also less clear.
+
+::: callout-note
+## Question
+
+Why is there no difference between the linear regression coefficient and the predicted mean difference?
+
+:::
 
 ## Association vs causation
 
-What makes it complicated to estimate a causal effect is that we cannot observe the outcome under different treatments. When we only have a subset of the outcomes, we have an association. This is illustrated in Fig. 1.
+What makes it complicated to estimate a causal effect is that we cannot observe the outcome under different treatments.
+
+When we only have a subset of the outcomes, we have an association. This is illustrated in Fig. 1.
 
 ```{r, echo = FALSE, fig.cap="Fig. 1. Causation vs association. From Hernan 2004", out.width = '50%'}
 knitr::include_graphics(here::here("images", "causation-association.PNG"))
 ```
 
-If we want to infer a causal effect, we need three assumptions to be fulfilled:
+If we want to infer a causal effect (i.e., what would have happened, had everyone done A=1 vs A=0), we need three assumptions to be fulfilled:
 
 - Exchangeability
 - Consistency
@@ -122,7 +137,7 @@ The risk of the outcome in A = 1 would have been the same as the risk of the out
 
 Think about a randomized trial where you, by mistake, give the intervention to the other group. The effect should be the same as the one you would have observed had the groups been correct. 
 
-We can also have conditional exchangeability. The risk is similar in subsets of the population. That could be within the levels of a variable L (e.g., education).
+We can also have conditional exchangeability. The risk is similar in subsets of the population. That could be within the levels of a variable W (e.g., education).
 
 ### Consistency
 The treatments under comparison are well-defined and correspond to the versions of treatment observed in the data:
@@ -139,7 +154,7 @@ The probability of receiving every value of treatment conditional on L is greate
 
 Think, if we don’t have anyone with A = 0 among those with L=1 (e.g. long education), then we cannot estimate the conditional probability of the outcome.
 
-### A randomized controlled trial
+## A randomized controlled trial
 In a randomized controlled trial these assumptions are often fulfilled given that the randomization is successful (i.e., have exchangeability and large enough groups), the treatment is clearly defined (consistency) and by design all have the possibility to be in either group (positivity).
 
 These assumptions are much harder, let alone impossible, to verify in an observational study. That is why causation is more challenging in observational studies. 
@@ -161,9 +176,12 @@ knitr::include_graphics(here::here("images", "dag-overview.PNG"))
 ## Causal mediation analysis
 Causal mediation analyses help you establish whether treatment _causes_ the outcome because it _causes_ the mediator. To do this, causal mediation seek to understand how the paths behave under circumstances different from the observed circumstances (e.g., interventions).
 
-Causal mediation analysis is an extension of the traditional approach by first and foremost making the effect we are investigating clear. 
+Causal mediation analysis is an extension of the traditional approach by:
+- outlining all confounding assumptions needed
+- handling non-linearity and interaction
+- clearly defining estimands of interest
 
-### Making assumptions explicit
+## Confounding assumptions
 By using DAGs, the assumptions about confounding are made much more explicit.
 
 ```{r, engine="tikz", fig.cap = "Fig. 3. DAG under *no intermediate confounders* of the mediator-outcome relation affected by treatment", fig.ext=if (knitr:::is_latex_output()) "pdf" else "png", echo = FALSE}
@@ -306,7 +324,7 @@ shorten >=2pt,}
 
 From the DAG rules, we have a special problem that we cannot solve with traditional regression approaches. If we adjust for Z we open the backdoor path from $Z \leftarrow W \rightarrow Y$. We will work on how to solve this problem later in the course.  
 
-### Taking interaction and non-linearity into account
+## Non-linearity and interactions
 Neither the product method nor the difference method can take interaction and non-linearity into account. 
 
 Causal mediation analysis can take this into account. It can do this using a regression-based approach. It can also use other causal inference analysis methods such as g-computation, that are different from the traditional regression approach in that:
@@ -315,17 +333,13 @@ Causal mediation analysis can take this into account. It can do this using a reg
 - then artificially manipulate the data to set the treatment **and** the mediator to certain values
 - then predict the outcome using the causal model and contrast the outcomes
 
-### Effect decomposition
-Using the causal inference framework also allow for effect decomposition, even when there are interaction and non-linearity.
+Additional approaches also exists, but we will not focus on these in this course.
 
-Effect decomposition is important when we want to assess relative contributions such as the proportion mediated and eliminated.
-
-# Defining effects
+## Defining estimands
 Imagine we have a hypothetical randomized controlled trial where we give participants treatment or no treatment on a specific outcome Y. 
-
 > $Y^a=1 - Y^a=0$
 
-We are also interested in the effect of a mediator on this pathway, so we also intervene on the mediator in a new hypothetical randomized controlled trial.
+For mediation, we are also interested in the effect of a mediator on this pathway. Now image that we also intervene on the mediator in a new hypothetical randomized controlled trial.
 
 > $Y^m=1 - Y^m=0$
 
@@ -339,16 +353,16 @@ $M^a$ = a subject's value of the mediator if the exposure A were set to the valu
 
 $Y^{a,m}$ = a subject's outcome if A were set to a and M were set to m
 
-$Y^{a,M_a}$ = a subject's outcome if A were set to a and M were set the value m would have had a been set to a. Note, this is a nested counterfactual
+$Y^{a,M_a}$ = a subject's outcome if A were set to a and M were set the value m would have had had a been set to a. Note, this is a nested counterfactual
 :::
 
-We can now define these effects:
+We can now define these estimands:
 
 - the controlled direct effect (CDE)
 - natural direct effect (NDE)
 - natural indirect effect (NIE)
 
-## Controlled direct effect
+### Controlled direct effect
 The effect of A on Y not mediated through M. Fixing the value of M to m.
 
 > $Y^{a=1,m}$ - $Y^{a=0,m}$
@@ -357,17 +371,19 @@ We intervene on $a$ but fix $m$ to a certain value. The CDE is how much the outc
 
 This could be relevant in the context of a change in a policy that impacted the mediator for everyone. For instance, if air pollution was a mediator between physical activity and cardiovascular disease risk. If a new policy would change the level of air pollution for all while we implement an intervention to increase biking in the city.
 
-This effect is not used that often. But can be relevant in some situations.
+This effect is not used that often. But can be highly relevant in some situations.
 
-## Natural direct effect
+### Natural direct effect
 
 The effect that would remain, if we were to disable the pathway from exposure to mediator. 
 
 > $Y^{a=1,M_a=0}$ - $Y^{a=0,M_a=0}$
 
-The NDE is how much the outcome would change if the exposure was set at a = 1 versus a* = 0 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure. 
+The NDE is how much the outcome would change if the exposure was set at a = 1 versus a* = 0 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
 
-## Natural indirect effect
+Note that the word "natural" refers to the nested counterfactual, the level the mediator would have taken in the absence of exposure. What it would naturally have been in the absence of exposure. 
+
+### Natural indirect effect
 
 The effect of the mediator pathway.
 
@@ -376,6 +392,13 @@ The effect of the mediator pathway.
 The NIE is how much the outcome would change on average if the exposure were fixed at level a = 1 but the mediator were changed from the level it would take if a* = 0 to the level it would take if a = 1.
 
 Note that exposure has to have an effect on M otherwise this will be zero.
+
+### Effect decomposition
+Using the causal inference framework also allow for effect decomposition, even when there are interaction and non-linearity.
+
+Effect decomposition is important when we want to assess relative contributions such as the proportion mediated and eliminated.
+
+> TE =  $Y^{a=1}$ - $Y^{a=0}$ = $Y^{a=1,M_a=1}$ - $Y^{a=0,M_a=0}$ = ($Y^{a=1,M_a=1}$ - $Y^{a=1,M_a=0}$) + ($Y^{a=1,M_a=0}$ - $Y^{a=0,M_a=0}$) = NIE + NDE
 
 # Study designs for causal mediation analysis
 Mediation analysis can be used in both intervention and observational studies.
@@ -386,7 +409,17 @@ A key assumption is that the exposure should be before the mediator and the medi
 ## Exercise: Understanding different study designs (15 min)
 Stay in the same groups that you did the previous exercise.
 
-Discuss the different study designs used. How would you rank them? And what would be the ideal study design?
+1. First discuss you own study: (5 min)
+- How does your study separate the timing between the exposure, mediator and outcome?
+- Did your study account for all the confunding assumptions? If not, why not? What could they have done?
+
+2. Everyone: (5min)
+- Describe the issues in your study to everyone.
+
+3. Everyone: (5 min)
+- How should we rank the different studies?
+- And what would be the ideal study design?
+
 :::
 
 ## Two trials
@@ -400,10 +433,3 @@ A key assumption here is consistency. The subjects should not know the receive t
 There is also a crossover version (ref: Imai). Here, we first randomize the order of the treatment and control, then observe the effect on mediator and outcome. Then we assign the opposite treatment status and to the value of the mediator that was observed in the first period. 
 
 In addition to consistency there is the assumption of no carry-over effects.
-
-# Group work
-<!-- Omar 60 min -->
-
-- exercise with traditional methods
-- discussion about limitations - could use the studies we have in the exercise
-- discuss when we can use traditional methods and when we cannot
