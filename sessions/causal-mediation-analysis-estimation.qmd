@@ -554,9 +554,8 @@ E_Y0M0
 
 Test of other package
 
-devtools::install_github("BS1125/CMAverse")
-
 ```{r}
+#| eval: false
 library(CMAverse)
 
 res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",

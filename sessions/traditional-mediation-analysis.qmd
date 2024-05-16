@@ -1,4 +1,6 @@
--   Teaching the concepts - Jie (75 min)
+# What is Mediation analyses?
+
+<!-- -   Teaching the concepts - Jie (75 min) -->
 
 ::: callout-note
 # Objective of this session
@@ -7,8 +9,6 @@ To learn how to conduct mediation analyses using the traditional
 approaches, along with understanding the assumptions and limitations of
 the methods.
 :::
-
-# What is Mediation analyses?
 
 The purpose of mediation analyses is to determine if the effect of an
 independent variable (X) on a dependent variable (Y) can be explained by
@@ -142,7 +142,7 @@ M.
 
 ```{r}
 #first load the dataset
-load("C:/Users/au644508/OneDrive - Aarhus universitet/Dokumenter/Mediation course/mediation-analysis-course/sessions/data/nhanes_dataset.RData")
+load(here::here("data/nhanes_dataset.RData"))
 fita <- lm(m ~ x + age + gender +  education_clean + smoke, data=nhanes)
 summary(fita)
 ```
@@ -270,7 +270,6 @@ mediation package is we can get confidence interval by bootstrapping.
 Let’s load up the R packages.
 
 ```{r}
-devtools::install_cran("mediation")
 library(mediation) #Mediation package
 ```
 
@@ -341,4 +340,3 @@ estimate a causal mediation effect.
 Go through the limitation of the traditional approach - Omar (15 min) -
 limitations of traditional approach - non-linearity - interactions -
 multi mediators
-
