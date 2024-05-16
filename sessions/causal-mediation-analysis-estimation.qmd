@@ -342,7 +342,7 @@ E_Y0M0
 ### R package example for causal mediation analysis - CMAverse-package
 
 Test of other package
-
+#install devtools, go to github website to install the CMAverse, Rtools
 ```{r}
 library(CMAverse)
 
