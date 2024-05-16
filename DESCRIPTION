@@ -12,6 +12,7 @@ License: CC BY 4.0
 Imports: 
     CMAverse (>= 0.1.0),
     DiagrammeR,
+    furrr,
     here,
     knitr,
     mediation,
