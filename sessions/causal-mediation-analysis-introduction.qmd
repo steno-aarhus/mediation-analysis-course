@@ -123,7 +123,7 @@ What makes it complicated to estimate a causal effect is that we cannot observe 
 When we only have a subset of the outcomes, we have an association. This is illustrated in Fig. 1.
 
 ```{r, echo = FALSE, fig.cap="Fig. 1. Causation vs association. From Hernan 2004", out.width = '50%'}
-knitr::include_graphics(here::here("images", "causation-association.PNG"))
+#knitr::include_graphics(here::here("images", "causation-association.PNG"))
 ```
 
 If we want to infer a causal effect (i.e., what would have happened, had everyone done A=1 vs A=0), we need three assumptions to be fulfilled:
@@ -170,7 +170,7 @@ Another method to graphically display your research question and your assumption
 A DAG contains nodes and arrows. It cannot be circular. Fig. 2 shows the different types of variables in a DAG and rules for paths (ref:Tennant2021). 
 
 ```{r, echo = FALSE, fig.cap="Fig. 2. Components of a DAG, including the common types of variables and paths. From Tennant et al. 2021", out.width = '100%'}
-knitr::include_graphics(here::here("images", "dag-overview.PNG"))
+#knitr::include_graphics(here::here("images", "dag-overview.PNG"))
 ```
 
 ## Causal mediation analysis
@@ -336,12 +336,13 @@ Causal mediation analysis can take this into account. It can do this using a reg
 Additional approaches also exists, but we will not focus on these in this course.
 
 ## Defining estimands
-Imagine we have a hypothetical randomized controlled trial where we give participants treatment or no treatment on a specific outcome Y. 
-> $Y^a=1 - Y^a=0$
+Imagine we have a hypothetical randomized controlled trial where we give participants treatment or no treatment on a specific outcome Y.
+
+> $Y^{a=1} - Y^{a=0}$
 
 For mediation, we are also interested in the effect of a mediator on this pathway. Now image that we also intervene on the mediator in a new hypothetical randomized controlled trial.
 
-> $Y^m=1 - Y^m=0$
+> $Y^{m=1} - Y^{m=0}$
 
 Now consider if we, in the same trial, could intervene on both because we are interested in whether treatment _causes_ the outcome because it _causes_ the mediator.
 

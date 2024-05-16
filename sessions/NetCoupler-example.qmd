@@ -33,7 +33,9 @@ and used to complement other analyses for a research question. It could also
 be used to confirm a **pre-specified and explicit** hypothesis, similar to how
 structural equation models are used. However, this might be a more niche use.
 
-![Overview of the NetCoupler algorithm.](C:/Users/au302898/OneDrive - Aarhus universitet/Documents/mediation-analysis-course/images/netcoupler-overview.svg)
+```{r, echo = FALSE, fig.cap="Fig. 1. Overview of the NetCoupler algorithm", out.width = '100%'}
+knitr::include_graphics(here::here("images", "netcoupler-overview.svg"))
+```
 
 ## Why or when might you want to use NetCoupler?
 

@@ -2,7 +2,7 @@
 bibliography: papers.bib
 ---
 
-# Welcome to the course {#sec-welcome}
+# Reporting guidelines {#sec-reporting-guidelines}
 
 ## Overall learning outcomes
 
@@ -24,7 +24,7 @@ There is both a long and a short form of this reporting checklist. The long form
 
 The list contains 25 items and in many ways resemble other reporting checklists.
 
-```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '50%'}
+```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '100%'}
 knitr::include_graphics(here::here("images", "agrema-checklist.PNG"))
 ```
 
@@ -36,7 +36,7 @@ They also emphasize that you should include a DAG that show your assumptions. An
 
 The short list includes fewer items, but still emphasize key things to report. 
 
-```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '50%'}
+```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '100%'}
 knitr::include_graphics(here::here("images", "agrema-checklist-sf.PNG"))
 ```
 

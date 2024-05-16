@@ -107,11 +107,11 @@ Counterfactual-based direct and indirect effects can be estimated, provided that
 
 Model for the mediator:
 
-$E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w $
+$E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w$
 
 Model for the outcome:
 
-$E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w $
+$E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w$
 
 From these two regression models we can estimate the CDE, NDE and NIE.
 
@@ -149,7 +149,8 @@ summary(lm_y)
 ```
 
 In this model we can see:
- - higher red meat intake is associated with a higher blood glucose levels, independent of CRP
+
+ - higher red meat intake is associated with a lower blood glucose levels, independent of CRP
  - there is no statistically significant interaction between red meat and age. We still keep this in the model because even though the interaction is not statistically significant, it can still contribute to the outcomes. For an interaction to be statistically significant we often need a lot of power
  - CRP is associated with higher blood glucose levels, independent of red meat intake
 
@@ -159,7 +160,7 @@ Based on the coefficients of these two models, we can now estimate the different
 
 The controlled direct effect can be obtained using this formula based on the regression coefficients:
 
-$CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*) $
+$CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*)$
 
 $a^*$ is for a change from level $a^*$ (=control) to level $a$ (=intervention).
 
@@ -192,7 +193,7 @@ The CDE answer the question, what would be the effect of A on Y, when fixing M a
 
 PNDE can be obtained using this formula: 
 
-$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a^* + \beta'_2*w))(a - a^*) $
+$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a^* + \beta'_2*w))(a - a^*)$
 
 We set the value for the confounder w1 for the interaction to be the mean value of w1.
 
@@ -216,7 +217,7 @@ In other words, to what extent does X cause Y via pathways other than through M 
 
 TNDE can be obtained by this formula:
 
-$TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*) $
+$TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*)$
 
 ```{r}
 
@@ -232,7 +233,7 @@ The TNDE asks the question: "to what extent does A cause Y via pathways other th
 
 The PNIE can be obtained by this formula:
 
-$PNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a^*)(a - a^*) $
+$PNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a^*)(a - a^*)$
 
 ```{r}
 PNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 0))*(1 - 0) 
@@ -247,7 +248,7 @@ The PNIE answer the question: "to what extent does A cause Y via M only (i.e., d
 
 The TNIE can be obtained by this formula:
 
-$TNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a)(a - a^*) $
+$TNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a)(a - a^*)$
 
 ```{r}
 TNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 1))*(1 - 0) 
@@ -266,7 +267,7 @@ This is often the effect we are interested in in biomedical research for questio
 
 The total effect can be decomposed as:
 
-$TE = PNDE + TNIE $
+$TE = PNDE + TNIE$
 
 ```{r}
 TE <- PNDE + TNIE
@@ -279,7 +280,7 @@ This is the overall effect of red meat on blood glucose levels. Higher red meat 
 
 From this, we can calculate the proportion mediated. 
 
-$PM = \frac{TNIE}{TE} $
+$PM = \frac{TNIE}{TE}$
 
 ```{r}
 PM <- TNIE / TE
