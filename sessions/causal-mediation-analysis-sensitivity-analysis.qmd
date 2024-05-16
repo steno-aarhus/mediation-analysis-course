@@ -1,6 +1,8 @@
 # Sensitivity analysis for mediation analysis
-::: callout-note
-##Add here the objective of the session and learning outcomes
+
+<!-- ::: callout-note
+##Add here the objective of the session and learning outcomes-->
+
 Unmeasured or uncontrolled confounding is a common problem in observational studies. This is a challenge to observational research    even in the analysis of total effects
 
 When we are interested in pathways and direct and indirect effects, the assumptions about confounding that are needed to identify     these effects are even stronger than for total effects. 
@@ -14,7 +16,7 @@ It can also be useful in assessing a plausible range of values for the causal ef
 ##Sensitivity analysis for unmeasured confounding for total effects
 Consider the following  figure in which U represents an unmeasured confounder, *C* measured covariables, *A* the exposure and *Y* the outcome
 
-```{r}
+```{r, echo = FALSE}
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -81,7 +83,8 @@ Using this technique, we could also examine how substantial the confounding woul
 (we could do this for the estimate and confidence interval).
 
 
-- binary outcome  
+
+<!-- - binary outcome  
 
 
 
@@ -93,3 +96,4 @@ Note: if there is time, discuss multiple mediators
 Coding part - Omar
 
 #check the mediation package and the CMAverse package for sensitivity analysis
+-->
