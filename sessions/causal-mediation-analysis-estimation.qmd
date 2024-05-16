@@ -1,27 +1,35 @@
----
-bibliography: papers.bib
----
+# Estimation of effects using causal mediation analysis
 
 ```{r}
 #| include: false
 
 library(here)
 library(DiagrammeR)
+library(tidyverse)
 
 ```
 
-# Estimation of effects using causal mediation analysis
 <!-- Daniel 120 min -->
 
-## Recap from yesterday
+::: callout-note
+## Learning outcomes
 
-- causal inference in general
-- causal mediation analysis
-  - the controlled direct effect (CDE)
-  - natural direct effect (NDE)
-  - natural indirect effect (NIE)
+-   Explain the theoretical concepts and statistical methods regarding
+    causal mediation analysis
+-   Perform causal mediation analysis using R software
+-   Interpret results from causal mediation analysis
+:::
 
-```{r, engine="tikz", fig.cap = "Fig. 3. DAG under *no intermediate confounders* of the mediator-outcome relation affected by treatment", fig.ext=if (knitr:::is_latex_output()) "pdf" else "png", echo = FALSE}
+## Recap from yesterday (part 1)
+
+-   causal inference in general
+-   causal mediation analysis
+-   (many) different estimands
+
+Fig. 3. DAG under *no intermediate confounders* of the mediator-outcome
+relation affected by treatment
+
+``` tikz
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
@@ -81,226 +89,428 @@ shorten >=2pt,}
 \end{tikzpicture}
 ```
 
-## Regression-based approach
-General problems with the traditional approach is when we have exposure-mediator interaction and non-linear relationships. 
+::: callout-note
+## Reflection on yesterday
 
-Counterfactual-based direct and indirect effects can be estimated, provided that the no-confounding assumption hold.
+Take 2 min to reflect on what your main 2 learning points from yesterday
+were
+
+Then, we take 3 min where you talk to your neighbor about these.
+
+Lastly, we will take 5 mins to share in plenum.
+:::
+
+## Regression-based approach
+
+General problems with the traditional approach is when we have
+exposure-mediator interaction and non-linear relationships.
+
+Counterfactual-based direct and indirect effects can be estimated,
+provided that the no-confounding assumption hold. To be able to do so,
+we need a model for the mediator and a model for the outcome.
 
 Model for the mediator:
-$E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w $
+
+$E(M|A = a, W = w) = \beta_0 + \beta_1a + \beta'_2w$
 
 Model for the outcome:
-$E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w $
+
+$E(Y|A = a, M = m, W = w) = \sigma_0 + \sigma_1a + \sigma_2m + \sigma_3am + \sigma'_4w$
 
 From these two regression models we can estimate the CDE, NDE and NIE.
 
-Let's use models to estimate this. We will investigate...
+To try this out in practice, we load the NHANES dataset, only keep the
+variables we need for the example, remove missing data and scale the
+intake of red meat to be per 65 g/day (i.e., 1-unit higher = 65 g/day).
 
-We load the dataset.
-<!-- use our own data example when this is ready -->
+Note, that for your own data, you may need to take missing data into
+account in another way.
 
 ```{r}
 
-n <- 1e6
-w <- rnorm(n)
-a <- rnorm(n)*3+5
-m <- rnorm(n, w + a)
-y <- rnorm(n, w + a + m)
+nhanes <- read.csv(here::here("data", "nhanes.csv"))
+
+#only keeping the variables we need for the example and removing missing variables
+
+nhanes <- nhanes %>% select(id = seqn, w1 = age, w2 = gender, w3 = education, a = total_meat, y = plasma_fasting_glucose, m = serum_c_reactive_protein) %>% na.omit() %>% mutate(
+  a = a/65, #scale to per 65 g/day
+  m = log(m) #m is not normal, so we log transform
+)
+
 ```
 
-We can now run a model for the mediator
+We can now run a model for the mediator only adjusting for a single
+variable. In practice you would adjust for many more variables to
+satisfy the confounding assumptions.
 
 ```{r}
-lm_m <- lm(m ~ a + w)
+lm_m <- lm(m ~ a + w1, data = nhanes)
 
 summary(lm_m)
 ```
-And run the model for the outcome
+
+Here, we see that higher red meat intake is associated with lower CRP
+levels.
+
+Now, we run the model for the outcome, including an interaction.
 
 ```{r}
-lm_y <- lm(y ~ a + m + a:m + w)
+lm_y <- lm(y ~ a + m + a:m + w1, data = nhanes)
 
 summary(lm_y)
 ```
 
+In this model we can see:
+
+-   higher red meat intake is associated with a lower blood glucose
+    levels, independent of CRP
+-   there is no statistically significant interaction between red meat
+    and age. We still keep this in the model because even though the
+    interaction is not statistically significant, it can still
+    contribute to the outcomes. For an interaction to be statistically
+    significant we often need a lot of power
+-   CRP is associated with higher blood glucose levels, independent of
+    red meat intake
+
+Based on the coefficients of these two models, we can now estimate the
+different effects. The equations are from Valeri et al. \[valeri2013\]
+and VanderWeele et al. \[vanderweele2014\].
+
 ### Controlled direct effect
 
-The controlled direct effect can be obtained using this formula based on the regression coefficients:
+The controlled direct effect can be obtained using this formula based on
+the regression coefficients:
 
-$CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*) $
+$CDE(m) = (\sigma_1 + \sigma_3*m)(a - a^*)$
 
-$a^*$ is for a change from level $a^*$ to level $a$.
+$a^*$ is for a change from level $a^*$ (=control) to level $a$
+(=intervention).
 
-For the controlled direct effect we set m to a specific value. In this example we will set it to 5.
+For the controlled direct effect we set m to a specific value.
 
-```{r}
-
-CDE_m <- (lm_y$coefficients[1] + lm_y$coefficients[5]*5)*(7 - 5) 
-
-as.numeric(CDE_m)
-```
-The CDE here is how much the outcome would change on average if the mediator were fixed at level m=5 uniformly in the population but the treatment were changed from 5 to 7. 
-
-### Natural direct effect
-
-NDE can be obtained using this formula: 
-
-$NDE = (\sigma_1 + \sigma_3*\beta_1*a^* + \sigma_3*\beta'_2w)(a - a^*) $
-
-We set the value for the confounder w for the interaction to be the mean value (=0.000126). 
+Let's look at the distribution of m.
 
 ```{r}
 
-NDE <- (lm_y$coefficients[1] + lm_y$coefficients[5]*lm_m$coefficients[2]*7 + lm_y$coefficients[5]*lm_m$coefficients[3]*0.000126)*(7 - 5) 
+nhanes %>% select(m) %>% summary()
 
-as.numeric(NDE)
+median_m_log <- round(median(nhanes$m), digits = 1)
+
+median_m <- round(exp(median(nhanes$m)), digits = 1)
 ```
-The NDE is how much the outcome would change if the treatment a was set at 7 versus 5 but for each individual the mediator was kept at the level it would have taken, for that individual, in the absence of the exposure.
 
-### Natural indirect effect
-
-NIE can be obtained by this formula:
-
-$NDE = (\sigma_2 * \beta_1 + \sigma_3*\beta_1*a)(a - a^*) $
+In this example we will set it to the median `r median_m_log` which is a
+CRP at `r median_m` which is a low level.
 
 ```{r}
 
-NIE <- (lm_y$coefficients[3] * lm_m$coefficients[2] + lm_y$coefficients[5]*lm_m$coefficients[2]*7)*(7 - 5) 
+CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5]*median_m_log)*(1 - 0) 
 
-as.numeric(NIE)
+round(as.numeric(CDE_m), digits = 2)
 ```
-The NIE is how much the outcome would change on average if the treatment were fixed at level a = 7 but the mediator were changed from the level it would take if a* = 5 to the level it would take if a = 7.
 
-Note that exposure has to have an effect on M otherwise this will be zero.
+The CDE is how much the outcome, here blood glucose, would change on
+average if the mediator, here inflammation measured by CRP levels, were
+fixed at level (m=0.2) uniformly in the population but the treatment,
+red meat intake, was changed from 0 to 65 g/day. As we operate with a
+linear model for simplicity, it does not matter here if the change is
+from 0 to 65 or from 50 to 115 g/day.
 
-### 2-way decomposition of effects
+The CDE answer the question, what would be the effect of A on Y, when
+fixing M at a specific value for everyone in the population?
+\[wang&arah2015\]
+
+### (Pure) natural direct effect
+
+PNDE can be obtained using this formula:
+
+$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a^* + \beta'_2*w))(a - a^*)$
+
+We set the value for the confounder w1 for the interaction to be the
+mean value of w1.
+
+```{r}
+mean_w1 <- mean(nhanes$w1)
+```
+
+Then we calculate the PNDE.
+
+```{r}
+
+PNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*0 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+
+round(as.numeric(PNDE), digits = 2)
+```
+
+The PNDE is how much the outcome, blood glucose, would change if the
+treatment a, red meat, was set at 65 versus 0 but for each individual
+the mediator was kept at the level it would have taken, for that
+individual, in the absence of the exposure.
+
+In other words, to what extent does X cause Y via pathways other than
+through M \[wang&arah2015\].
+
+### (Total) natural direct effect
+
+TNDE can be obtained by this formula:
+
+$TNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a + \beta'_2*w))(a - a^*)$
+
+```{r}
+
+TNDE <- (lm_y$coefficients[2] + (lm_y$coefficients[5]*(lm_m$coefficients[1] + lm_m$coefficients[2]*1 + lm_m$coefficients[3]*mean_w1)))*(1 - 0) 
+
+round(as.numeric(TNDE), digits = 2)
+```
+
+Here, the value of M is enabled to act (as opposed to the PNDE). Here we
+see a little higher blood glucose, and that is the extra contribution
+from inflammation.
+
+The TNDE asks the question: "to what extent does A cause Y via pathways
+other than through M, allowing M to boost up or tune down such effect at
+the same time?"
+
+### Pure natural indirect effect
+
+The PNIE can be obtained by this formula:
+
+$PNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a^*)(a - a^*)$
+
+```{r}
+PNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 0))*(1 - 0) 
+
+round(as.numeric(PNIE), digits = 2)
+```
+
+The PNIE is different from the TNIE because it does not include the
+interaction effect. We estimate the effect of red meat on inflammation
+and then subsequent effect of inflammation on blood glucose. As we saw
+above in the mediation model, red meat, lower inflammation. Hence,
+lowering inflammation lower blood glucose a little here.
+
+The PNIE answer the question: "to what extent does A cause Y via M only
+(i.e., due to A affecting M and subsequently, M affecting Y), not
+accounting for the possible interaction between A and M? In other words,
+the effect that the exposure would have had if 'its only action were to
+cause the mediator' (i.e., the portion of the effect for which mediation
+is ''sufficient'')" \[wang&arah2015\].
+
+### Total natural indirect effect
+
+The TNIE can be obtained by this formula:
+
+$TNIE = (\sigma_2 * \beta_1 + \sigma_3 * \beta_1 * a)(a - a^*)$
+
+```{r}
+TNIE <- ((lm_y$coefficients[3] * lm_m$coefficients[2]) + (lm_y$coefficients[5] * lm_m$coefficients[2] * 1))*(1 - 0) 
+
+round(as.numeric(TNIE), digits = 2)
+```
+
+The TNIE is how much the outcome would change on average if the
+treatment were fixed at level a = 65 g/day but the mediator were changed
+from the level it would take if a\* = 0 to the level it would take if a
+= 65 g/day.
+
+Note that exposure has to have an effect on M otherwise this will be
+zero.
+
+The TNIE asks the question: to what extent does A cause Y via M (due to
+A affecting M and subsequently, M affecting Y) and the possible
+interaction between A and M in affecting Y? In other words, the effect
+of exposure that 'would be prevented if the exposure did not cause the
+mediator' (i.e., the portion of the effect for which mediation is
+'necessary') \[wang&arah2015\].
+
+This is often the effect we are interested in in biomedical research for
+questions regarding mediation.
+
+### total effect
 
 The total effect can be decomposed as:
 
-$TE = NDE + NIE $
+$TE = PNDE + TNIE$
 
 ```{r}
-TE <- NDE + NIE
+TE <- PNDE + TNIE
 
-as.numeric(TE)
+round(as.numeric(TE), digits = 2)
 ```
+
+This is the overall effect of red meat on blood glucose levels. Higher
+red meat is associated with higher blood glucose.
+
 ### Proportion mediation
 
-From this, we can calculate the proportion mediated. 
+From this, we can calculate the proportion mediated.
 
-$PM = \frac{NIE}{TE} $
+$PM = \frac{TNIE}{TE}$
 
 ```{r}
-PM <- NIE / TE
+PM <- TNIE / TE
 
 as.numeric(PM) * 100
 ```
-99.6% of the association is mediated by m.
 
-### R package example for causal mediation analysis - Mediation-package
+6.6% of the association between red meat and blood glucose is mediated
+by M, inflammation. Not a lot.
 
-We can also use an R package to estimate these values. One package is the 'Mediation' R package.
+### R package example for causal mediation analysis - CMAverse-package
 
+All of this can be done using an R package. Here we can use several
+different approach for the estimation and get confidence intervals.
+
+First, we load the package and then we setup the model object. We have
+to specify:
+
+-   model: this is the type of model, or the approach for the causal
+    mediation. We used the regression-based approach, so we will also do
+    that here. However, one can also use weighting-based approach
+    marginal structural models or the gformula.
+-   outcome: your outcome variable
+-   exposure: your exposure/intervention/treatment
+-   mediator: your mediator
+-   mreg: the type of model for the mediator. It is a list because you
+    can have multiple mediators
+-   yreg: type of regression for the outcome. E.g., linear, logistic,
+    cox.
+-   astar: Control/comparison intervention (value from)
+-   a: Intervention (value to)
+-   mval: the value for the mediator when estimating the CDE
+-   EMin0t: indicator of whether there should be exposure and mediator
+    interaction in the models.
+-   estimation: method for estimating causal effects. Can use parametric
+    functions or imputation.
+-   inference: how to calculate confidence intervals. For
+    regression-based we use the delta method. But for the other methods
+    we use a bootstrap.
+
+In short, all the things we did above can be estimated like this:
 
 ```{r}
-library(mediation)
+library(CMAverse)
 
-#some procedures in the packages require simulations
-set.seed(2024)
+res_rb <- cmest(data = nhanes, model = "rb", outcome = "y", exposure = "a",
+                            mediator = "m", basec = c("w1"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "linear",
+                            astar = 0, a = 1, mval = list(-1.6), 
+                            estimation = "paramfunc", inference = "delta")
 
-#put our variables in a dataframe - will change once we have the dataset
-df <- data.frame(a, m, y, w)
+summary(res_rb)
 
 ```
 
-First we need to make our models. One for the mediator, one for the outcome.
+We can check that the models were the ones we wanted to specify. And we
+can see that the results are the same.
+
+We can now try to adjust for multiple other confounders.
 
 ```{r}
-med_fit <- lm(m ~ a + w, data = df)
-out_fit <- lm(y ~ a*m + w, data = df)
+
+res_rb_confounders <- cmest(data = nhanes, model = "rb", outcome = "y", exposure = "a",
+                            mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "linear",
+                            astar = 0, a = 1, mval = list(-1.6), 
+                            estimation = "paramfunc", inference = "delta")
+
+summary(res_rb_confounders)
 
 ```
 
-Then, we can make the estimation.
-
-```{r}
-med_out <- mediate(model.m = med_fit,
-                   model.y = out_fit,
-                   treat = "a",
-                   mediator = "m",
-                   #control.value = 5,
-                   #treat.value = 7,
-                   robustSE = TRUE,
-                   sims = 10)
-
-summary(med_out)
-```
-Treatment mediator interaction can be tested:
-
-```{r}
-test.TMint(med_out, conf.level = .95)
-```
+After adjustment for age, sex and education, there is not longer
+statistically significant associations.
 
 ## G-computation-based approach
-###############################################################
-Under the above mentioned assumptions, we can calculate the estimate using the G-computation.
-We will visit a research question in the Framgingham dataset. 
 
-> Does obesity lead to higher CVD risk by increasing higher blood pressure?
+Under the above mentioned assumptions, we can also calculate the
+estimate using the G-computation approach.
 
-(insert figure)
+The approach here is more manual but we also have more flexibility in
+the models with use.
 
-To make my life easier, I will call the exposure (obesity) A, mediator (systolic blood pressure) M, outcome (CVD) Y, A, M, and Y are all binary variables. In addition, I will add two confouding factors in the model (W1: sex, W2: current smoking status (cursmoke)). 
+We will test this out using the Framgingham dataset. Our research
+question is:
+
+> Does obesity lead to higher CVD risk by increasing blood pressure?
+
+We load the data, rename the variables, make a few categorical variables
+and only keep the variables we need.
 
 ```{r}
-full_data <- full_data  %>%
-  mutate(A=obesity, M=high_sysbp, Y=cvd, W1=sex, W2=cursmoke)
+framingham <- read.csv(here::here("data", "frmgham2.csv"))
+
+framingham <- framingham %>% select(id = RANDID,
+                                     BMI,
+                                     SYSBP,
+                                     y = CVD,
+                                     w1 = SEX,
+                                     w2 = CURSMOKE,
+                                     w3 = AGE) %>% 
+  na.omit() %>% 
+  mutate(a = case_when(BMI >= 25 ~ 1,
+                       TRUE ~ 0),
+         m = case_when(SYSBP >= 140 ~ 1,
+                       TRUE ~ 0)) %>% 
+  select(-BMI, -SYSBP)
+
 ```
-We we want to estimate is: E(Y|A = 0/1, M = 0/1, W1 = W1i, W2 = W2i)
 
-First, we fit outcome regression (include interaction because we can)
+First, we fit the outcome regression (including interaction terms).
+
 ```{r}
-or_fit <- glm(Y ~ A + M + W1 + W2 + A*M + M*W1 + age,
-              family = binomial(), data = full_data)
+or_fit <- glm(y ~ a + m + w1 + w2 + a*m + m*w1 + w3,
+              family = binomial(), data = framingham)
 summary(or_fit)
 ```
 
-Based on the outcome regression model, we can predict Y under different scenarios. 
+Based on the outcome regression model, we can predict Y under different
+scenarios. We first make a function that predict the outcome with
+different inputs for A and M. Then we use the function to predict the
+out with different combinations of A and M.
 
 ```{r}
-get_EY_a_m_Wi <- function(full_data, or_fit, a, m){
+get_EY_a_m_Wi <- function(full_data, or_fit, A, M){
   data_Aa_Mm_Wi <- full_data
-  data_Aa_Mm_Wi$A <- a; data_Aa_Mm_Wi$M <- m
+  data_Aa_Mm_Wi$a <- A; data_Aa_Mm_Wi$m <- M
   predict(or_fit, newdata = data_Aa_Mm_Wi, type = "response")
 }
 ## run prediction, for different scenarios (a=1 or 0, and m=1 or 0)
-EY_A0_M0_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 0, m = 0)
-EY_A0_M1_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 0, m = 1)
-EY_A1_M0_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 1, m = 0)
-EY_A1_M1_Wi <- get_EY_a_m_Wi(full_data, or_fit, a = 1, m = 1)
+EY_A0_M0_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 0, M = 0)
+EY_A0_M1_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 0, M = 1)
+EY_A1_M0_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 1, M = 0)
+EY_A1_M1_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 1, M = 1)
 ```
 
-Next, we will run the mediation models, based on the values of A, and run the prediction models of M. 
+Next, we will run the mediation model. Also including interaction terms.
+
 ```{r}
-med_fit <- glm(M ~ A*W1 + W1*W2, family = binomial(), data = full_data)
-# estimates of P(M = m | A = a, W = W_i), predict m based on a
-get_Pm_a_Wi <- function(full_data, med_fit, a, m){
-  data_Aa_Wi <- full_data; data_Aa_Wi$A <- a
+med_fit <- glm(m ~ a*w1 + w1*w2, family = binomial(), data = framingham)
+```
+
+We now make a new function that based on the values of A, run the
+prediction models of M. This is the nested counterfactual.
+
+```{r}
+# estimates of Pr(M = m | A = a, W = W_i), predict m based on a
+get_Pm_a_Wi <- function(full_data, med_fit, A, M){
+  data_Aa_Wi <- full_data; data_Aa_Wi$a <- A
   p <- predict(med_fit, newdata = data_Aa_Wi, type = "response")
-  if(m == 1){
+  if(M == 1){
     p
   }else{
     1 - p
   }
 }
 ##similary, we get the predicted values of m for different scenarios
-PM0_A0_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 0, m = 0)
-PM1_A0_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 0, m = 1)
-PM0_A1_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 1, m = 0)
-PM1_A1_Wi <- get_Pm_a_Wi(full_data, med_fit, a = 1, m = 1)
+PM0_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 0)
+PM1_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 1)
+PM0_A1_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 1, M = 0)
+PM1_A1_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 1, M = 1)
 ```
 
-Finally, we calculate the predicted Y on the estimates: 
+Finally, we calculate the predicted Y on the estimates.
+
 ```{r}
 # E(E(Y | A = 1, M, W) | A = 1, W)
 EY1M1_Wi <- EY_A1_M1_Wi * PM1_A1_Wi + EY_A1_M0_Wi * PM0_A1_Wi
@@ -310,7 +520,8 @@ EY0M1_Wi <- EY_A0_M1_Wi * PM1_A1_Wi + EY_A0_M0_Wi * PM0_A1_Wi
 EY1M0_Wi <- EY_A1_M1_Wi * PM1_A0_Wi + EY_A1_M0_Wi * PM0_A0_Wi
 # E(E(Y | A = 0, M, W) | A = 0, W)
 EY0M0_Wi <- EY_A0_M1_Wi * PM1_A0_Wi + EY_A0_M0_Wi * PM0_A0_Wi
-#Finally, we average over distribution of W to get effect esti
+
+#Finally, we average over distribution of W to get effect estimate 
 # estimate of E[Y(1, M(1))]
 E_Y1M1 <- mean(EY1M1_Wi)
 # estimate of E[Y(0, M(1))]
@@ -320,7 +531,9 @@ E_Y1M0 <- mean(EY1M0_Wi)
 # estimate of E[Y(0, M(0))]
 E_Y0M0 <- mean(EY0M0_Wi)
 ```
-Now, you can freely calculate the natural direct effect and indirect effect: 
+
+Now, you can freely calculate the natural direct effect and indirect
+effect:
 
 ```{r}
 E_Y1M1
@@ -354,4 +567,20 @@ res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
 
 summary(res_rb)
 
+
+#changing the intervention, keeping the mediator the same
+PNDE_gcomp = round(exp(E_Y1M0 - E_Y0M0), digits = 2)
+
+TNDE_gcomp = round(exp(E_Y1M1 - E_Y0M1), digits = 2)
+
+#change the mediator keeping intervention the same
+PNIE_comp = round(exp(E_Y0M1 - E_Y0M0), digits = 2)
+
+TNIE_comp = round(exp(E_Y1M1 - E_Y1M0), digits = 2) 
+
+est_table <- data.frame(PNDE = PNDE_gcomp,
+                        TNDE = TNDE_gcomp,
+                        PNIE = PNIE_comp,
+                        TNIE = TNIE_comp)
+est_table
 ```
