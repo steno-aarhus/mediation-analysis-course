@@ -1,71 +1,102 @@
----
-bibliography: papers.bib
----
 # Motivation for mediation analysis
+
 <!-- Omar 30 min -->
 
-Basic, clinical and epidemiological research are often interested in whether a specific intervention has an effect on a disease. Once that has been established, the natural subsequent question is *why* the intervention had an effect? **What was the mechanism?** [@vanderweele_mediation_2016].
+Basic, clinical and epidemiological research are often interested in
+whether a specific intervention has an effect on a disease. Once that
+has been established, the natural subsequent question is *why* the
+intervention had an effect? **What was the mechanism?**
+[@vanderweele_mediation_2016].
 
-Mediation analysis can, if used correctly, answer such questions. However, this is unfortunately rarely the case because the methods are used incorrectly. A recent systematic review of the reporting quality of studies applying mediation analysis showed that most of the studies had incomplete reporting [@rrn_systematic_2022]. This impacts both reproducibility and translation into practice. 
+Mediation analysis can, if used correctly, answer such questions.
+However, this is unfortunately rarely the case because the methods are
+used incorrectly. A recent systematic review of the reporting quality of
+studies applying mediation analysis showed that most of the studies had
+incomplete reporting [@rrn_systematic_2022]. This impacts both
+reproducibility and translation into practice.
 
-Alongside the applied research, the methodological framework for conducting mediation analysis has also evolved rapidly in recent years. Unfortunately, most applied examples have not caught up with this progression in methodology. In fact, a scoping review found that between 2015 to 2019 only 29.3% of studies using mediation analysis used modern mediation analysis methods [@rijnhart_mediation_2021].
+Alongside the applied research, the methodological framework for
+conducting mediation analysis has also evolved rapidly in recent years.
+Unfortunately, most applied examples have not caught up with this
+progression in methodology. In fact, a scoping review found that between
+2015 to 2019 only 29.3% of studies using mediation analysis used modern
+mediation analysis methods [@rijnhart_mediation_2021].
 
-
-- show example of mediation analysis
-- discussion on motivations for mediation analysis
-- relevance for basic, clinical and epidemiological research
-- discussion with participants - exercise below
+-   show example of mediation analysis
+-   discussion on motivations for mediation analysis
+-   relevance for basic, clinical and epidemiological research
+-   discussion with participants - exercise below
 
 <!-- make groups before -->
 
 ::: callout-note
 ## Exercise: Understanding different study designs (30 min)
-You will now be placed in different groups and read selected sections of different mediation analyses within different study designs. You have 15 min to complete the task. Then, each group will briefly present their paper, the approach used and what they thought about it.
+
+You will now be placed in different groups and read selected sections of
+different mediation analyses within different study designs. You have 15
+min to complete the task. Then, each group will briefly present their
+paper, the approach used and what they thought about it.
 
 ### Group 1: Intervention study a
 
-Paper: [Shoer et al. 2023](https://www.nature.com/articles/s41467-023-41042-x) 
+Paper: [Shoer et al.
+2023](https://www.nature.com/articles/s41467-023-41042-x)
 
-- read the abstract
-- read section 'Mediation analysis' under 'Methods'
-- read section 'The microbiome mediates the diet’s effect' under 'Results'
-- try to understand Fig. 4.
+-   read the abstract
+-   read section 'Mediation analysis' under 'Methods'
+-   read section 'The microbiome mediates the diet’s effect' under
+    'Results'
+-   try to understand Fig. 4.
 
-Task: explain the overall study and the mediation analysis. What does the results imply? 
+Task: explain the overall study and the mediation analysis. What does
+the results imply?
 
 ### Group 2: Intervention study b
 
-Paper: [Johansen et al. 2020](https://link.springer.com/article/10.1007/s00125-020-05249-7) 
+Paper: [Johansen et al.
+2020](https://link.springer.com/article/10.1007/s00125-020-05249-7)
 
-- read the abstract
-- read from "Single mediation analysis" under 'Statistical analysis'
-- try to understand table 4
-- read from "To explore the role of weight loss in relation to beta cell function we performed single mediation analysis" under 'Discussion'
+-   read the abstract
+-   read from "Single mediation analysis" under 'Statistical analysis'
+-   try to understand table 4
+-   read from "To explore the role of weight loss in relation to beta
+    cell function we performed single mediation analysis" under
+    'Discussion'
 
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
+Task: explain the overall study and the mediation analysis. What does
+the results imply? How did the authors interpret the results? How do you
+interpret the results?
 
 ### Group 3: Cohort study
 
-Paper: [Wang et al. 2022](https://doi.org/10.1007/s00125-022-05692-8) 
+Paper: [Wang et al. 2022](https://doi.org/10.1007/s00125-022-05692-8)
 
-- read the abstract
-- read from "To test whether an association between the metabolite profile score and risk of type 2 diabetes..." under 'Statistical analysis'
-- try to understand Fig. 4
-- read the conclusion 
+-   read the abstract
+-   read from "To test whether an association between the metabolite
+    profile score and risk of type 2 diabetes..." under 'Statistical
+    analysis'
+-   try to understand Fig. 4
+-   read the conclusion
 
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
+Task: explain the overall study and the mediation analysis. What does
+the results imply? How did the authors interpret the results? How do you
+interpret the results?
 
 ### Group 4: Cross-sectional study
 
-Paper: [Shi et al. 2022](https://www.nature.com/articles/s41598-022-08544-y) 
+Paper: [Shi et al.
+2022](https://www.nature.com/articles/s41598-022-08544-y)
 
-- read the abstract
-- they used a specific algorithm to identify mediation. You do not have to understand how it works. Simply note whether they adjusted for specific variables in their analysis (Hint: look in the methods section)
-- Read section 'Mediation by the gut microbial species Dialister invisus' under 'Results'
+-   read the abstract
+-   they used a specific algorithm to identify mediation. You do not
+    have to understand how it works. Simply note whether they adjusted
+    for specific variables in their analysis (Hint: look in the methods
+    section)
+-   Read section 'Mediation by the gut microbial species Dialister
+    invisus' under 'Results'
 
-Task: explain the overall study design, what exposure, mediator and outcomes were they interested in? Are their results causal? 
-
+Task: explain the overall study design, what exposure, mediator and
+outcomes were they interested in? Are their results causal?
 :::
 
-# References
-
+## References
