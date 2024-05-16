@@ -1,3 +1,7 @@
+---
+bibliography: papers.bib
+---
+
 *Teaching the concepts - Jie (75 min)
 
 # what is Mediation analyses?
@@ -208,7 +212,7 @@ But be aware we are able to get *confidence interval* and *significance* levels 
 ### Total Effect stands for the total effect (direct + indirect) of the IV onto the DV. 
 We calculated this in step #1. We can also get it by adding the ACME () and the ADE () to receive the total effect. 
 
-### Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. The result suggests the mediator (inflmmaotry biomarker) explains 25.2% proportion of the effect from red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
+Prop. Mediated describes the proportion of the effect of the IV on the DV that goes through the mediator. It’s calculated by dividing the ACME (0.273) by the total effect 1.084) to receive 0.252. The result suggests the mediator (inflmmaotry biomarker) explains 25.2% proportion of the effect from red meat on glucose levels. We will talk more about proportion mediation in Session ?. 
 
 For details of the mediate() package, please refer to Tingley, Yamamoto, Hirose, Keele, & Imai (2014).
 
