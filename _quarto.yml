@@ -10,6 +10,8 @@ book:
   subtitle: "Modern mediation analysis for basic, clinical and epidemiological research in diabetes and endocrinology"
   author:
     - "Daniel B. Ibsen"
+    - "Omar Silverman"
+    - "Jie Zhang"
   site-url: "https://analysis-of-mechanisms.netlify.app"
   repo-url: "https://github.com/steno-aarhus/mediation-analysis-course"
   chapters:
