@@ -11,3 +11,4 @@ public
 _site
 _book
 *_cache
+*.log
