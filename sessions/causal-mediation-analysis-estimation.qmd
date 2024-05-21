@@ -567,6 +567,7 @@ Test of other package #install devtools, go to github website to install
 the CMAverse, Rtools
 
 ```{r}
+#| eval: false
 library(CMAverse)
 
 res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
@@ -623,4 +624,3 @@ est_table <- data.frame(
 )
 est_table
 ```
-
