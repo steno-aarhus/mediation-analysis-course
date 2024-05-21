@@ -1,0 +1,51 @@
+project:
+  type: r3-theme
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "*.Rmd"
+
+book:
+  title: "Analysis of mechanisms"
+  subtitle: "Modern mediation analysis for basic, clinical and epidemiological research in diabetes and endocrinology"
+  author:
+    - "Daniel B. Ibsen"
+  site-url: "https://analysis-of-mechanisms.netlify.app"
+  repo-url: "https://github.com/steno-aarhus/mediation-analysis-course"
+  chapters:
+    - index.qmd
+    - part: "Preamble"
+      chapters:
+      - preamble/pre-course.qmd
+    - part: "Sessions"
+      chapters:
+      - sessions/motivation-for-mediation-analysis.qmd
+      - sessions/traditional-mediation-analysis.qmd
+      - sessions/causal-mediation-analysis-introduction.qmd
+      - sessions/group_work_day1.qmd
+      - sessions/causal-mediation-analysis-estimation.qmd
+      - sessions/causal-mediation-analysis-survival-outcomes.qmd
+      - sessions/reporting-guidelines.qmd
+      - sessions/group_work_day2.qmd
+      - sessions/NetCoupler-example.qmd
+  appendices:
+    - LICENSE.md
+  page-footer:
+    center:
+      - text: "License: CC BY 4.0 {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}}"
+        href: LICENSE.html
+
+bibliography:
+  - sessions/papers.bib
+csl: sessions/the-american-journal-of-clinical-nutrition.csl
+
+editor:
+  markdown:
+    wrap: 72
+    canonical: true
+
+format:
+  r3-theme-html
+
+execute:
+  freeze: auto

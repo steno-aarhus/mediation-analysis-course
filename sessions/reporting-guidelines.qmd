@@ -1,0 +1,49 @@
+---
+bibliography: papers.bib
+---
+
+# Reporting guidelines {#sec-reporting-guidelines}
+
+## Overall learning outcomes
+
+::: callout-note
+## The overall course objective
+
+- Present results from mediation analysis according to the current mediation analysis  reporting guidelines
+
+:::
+
+##AGReMA checklist
+Recent reviews on mediation analyses have suggested that the reporting og documentation from these studies were insuffucient interpretation of the results and application for meta-analysis.
+
+Based on this, a group of researchers have using a comprehensive consensus method developed a reporting checklist.
+
+There is both a long and a short form of this reporting checklist. The long form should be used if the main aim of the paper is mediation analysis. In many papers, mediation analysis is conducted as an extra step. Therefore, the authors also developed a short form that should be used in this situation.
+
+### Long format
+
+The list contains 25 items and in many ways resemble other reporting checklists.
+
+```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '100%'}
+knitr::include_graphics(here::here("images", "agrema-checklist.PNG"))
+```
+
+What is worth highlighting is that the reasoning and rationale for even conducting mediation analysis should be reported. Why do you believe there is an association between A and Y and why do you think M is a mediator.
+
+They also emphasize that you should include a DAG that show your assumptions. And you should critically consider whether you can fulfill the causal assumptions before performing mediation analysis.
+
+### Short format
+
+The short list includes fewer items, but still emphasize key things to report. 
+
+```{r, echo = FALSE, fig.cap="Fig. 1. AGReMA checklist from Lee et al.", out.width = '100%'}
+knitr::include_graphics(here::here("images", "agrema-checklist-sf.PNG"))
+```
+
+# Exercise
+
+- how many of the items are reported in the mediation analysis papers you reviewed in the beginning of the course?
+- what do you think are the most important things missing?
+
+# References
+
