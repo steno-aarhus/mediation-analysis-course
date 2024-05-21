@@ -1,233 +1,121 @@
-# Welcome to the course" {.unnumbered}
+# Welcome to the course {.unnumbered}
+
 <!-- Daniel 15 min -->
 
 Welcome to the course on Modern Mediation Analysis!
 
-This is a 3-day course sponsored by the Danish Diabetes and Endocrine Academy. The course will take you through the realm of mediation analysis, starting with the traditional approach, then dive into causal mediation analysis and modern mediation analysis. Lastly, we will introduce a different approach more suitable for omics-type data taking a network analysis approach.
+This is a 3-day course sponsored by the Danish Diabetes and Endocrine
+Academy. The course will take you through the realm of mediation
+analysis, starting with the traditional approach, then dive into causal
+mediation analysis and modern mediation analysis. Lastly, we will
+introduce a different approach more suitable for omics-type data taking
+a network analysis approach.
+
+Note, this is the first time we run this course. Thus, there will be
+some mistakes here and there. Please let us know so we can improve for
+next time.
 
 ## Overall learning outcomes
 
 ::: callout-note
 ## The overall course objective
 
-To provide participants with the knowledge, tools and skills to implement modern mediation analysis for investigation of disease mechanisms.
-
+To provide participants with the knowledge, tools and skills to
+implement modern mediation analysis for investigation of disease
+mechanisms.
 :::
 
 The more specific learning outcomes include:
 
--	Explain the theoretical concepts and statistical methods regarding traditional and modern mediation analysis applied to basic, clinical and epidemiological research on diabetes and endocrine diseases
--	Perform traditional, causal and modern mediation analysis using R software
-- Present results from mediation analysis according to the current mediation analysis  reporting guidelines
-- Interpret results from mediation analysis and suggest relevant sensitivity analyses for mediation analyses
-- Discuss the strengths, limitations and assumptions of traditional, causal and modern mediation analysis
+-   Explain the theoretical concepts and statistical methods regarding
+    traditional and modern mediation analysis applied to basic, clinical
+    and epidemiological research on diabetes and endocrine diseases
+-   Perform traditional, causal and modern mediation analysis using R
+    software
+-   Present results from mediation analysis according to the current
+    mediation analysis reporting guidelines
+-   Interpret results from mediation analysis and suggest relevant
+    sensitivity analyses for mediation analyses
+-   Discuss the strengths, limitations and assumptions of traditional,
+    causal and modern mediation analysis
 
-### The target audience 
-PhD students and postdocs conducting research within the field of basic science, clinical, and epidemiological studies on diabetes and endocrinology, that are planning to conduct mediation analysis or that are interested in widening their analysis toolkit.
+### The target audience
+
+PhD students and postdocs conducting research within the field of basic
+science, clinical, and epidemiological studies on diabetes and
+endocrinology, that are planning to conduct mediation analysis or that
+are interested in widening their analysis toolkit.
 
 ### Prerequisites
+
 Knowledge about linear and logistic regression and experience using R.
 
 ## Schedule
-Over the 3 days we will combine lectures with code-along sessions, group work, discussions and networking activities. 
 
-| Time        | May 28                                            | May 29                                                                                                         | May 30                                                                            |
-| ----------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| 8.30-9.00   | Registration and getting started                  |                                                                                                                |                                                                                   |
-| 9.00-10.15  | Introduction to the course and the topic (DI, OS) | Recap from yesterday + Causal mediation analysis: estimation  (DI, JZ)                                         | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                |
-| 10.15-10.30 | Coffee break                                      |                                                                                                                |                                                                                   |
-| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) | Modern mediation analysis - part 3 (NH, ID)                                       |
-| 12.00-13.00 | Lunch                                             | Lunch                                                                                                          | Lunch                                                                             |
-| 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  | Causal mediation analysis: sensitivity analyses (OS)                                                           | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                       |
-| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00)         |
-| 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS) |
-| 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                   |
-| 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                   |
-| 18:30       |                                                   | Dinner                                                                                                         |                                                                                   |
-| 20:30       |                                                   |                                                                                                |                                                                                   |
+Over the 3 days we will combine lectures with code-along sessions, group
+work, discussions and networking activities.
+
+| Time        | May 28                                            | May 29                                                                                                         | May 30                                                                                      |
+|-------------|---------------------------------------------------|----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| 8.30-9.00   | Registration and getting started                  |                                                                                                                |                                                                                             |
+| 9.00-10.15  | Introduction to the course and the topic (DI, OS) | Recap from yesterday + Causal mediation analysis: estimation (DI, JZ)                                          | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                          |
+| 10.15-10.30 | Coffee break                                      |                                                                                                                |                                                                                             |
+| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) | Modern mediation analysis - part 3 (NH, ID)                                                 |
+| 12.00-13.00 | Lunch                                             | Lunch                                                                                                          | Lunch                                                                                       |
+| 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  | Causal mediation analysis: sensitivity analyses (OS)                                                           | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                                 |
+| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00) |
+| 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS)           |
+| 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                             |
+| 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                             |
+| 18:30       |                                                   | Social activity                                                                                                |                                                                                             |
+| 20:30       |                                                   | Dinner                                                                                                         |                                                                                             |
 
 ::: callout-note
 ## Practical information
 
-- There will be served coffee and tea in the break and a sandwich for lunch
-- On day 1 in the afternoon, there will be a networking activity
-- On day 2 in the evening, we will all go for a dinner in the city of Aarhus. If you have any dietary requirements, please let us know today
-- On day 3, the lecture on approaches for omics-type data, this lecture will be combined with a Steno Thursday Global, which will be open to all to attend and will be streamed online as well
-- If you are interested in more networking with the speakers and want to learn more about their research, there will be a networking session and a Precision Medicine Network meeting on Friday May 31. Please let us know, if you want to join
-- Please be aware that the areas outside the lecture theater is a public space where people who go to the diabetes clinic also are. Be mindful of them
-
+-   There will be served coffee and tea in the break and a sandwich for
+    lunch
+-   On day 1 in the afternoon, there will be a networking activity
+-   On day 2 in the evening, we will all go for a dinner in the city of
+    Aarhus. The dinner is a buffet at Food Club Aarhus, Aaboulevarden
+    30, Aarhus C
+-   We will have a social activity before the dinner. This is optional
+    and all are also welcome to join the dinner later.
+-   On day 3, the lecture on approaches for omics-type data, this
+    lecture will be combined with a Steno Thursday Global, which will be
+    open to all to attend and will be streamed online as well
+-   If you are interested in more networking with the speakers and want
+    to learn more about their research, there will be a networking
+    session and a Precision Medicine Network meeting on Friday May 31.
+    Please let us know, if you want to join
+-   Please be aware that the areas outside the lecture theater is a
+    public space where people who go to the diabetes clinic also are. Be
+    mindful of them
 :::
 
 ## Building the course
 
-<<<<<<< HEAD:sessions/introduction.qmd
-Basic, clinical and epidemiological research are often interested in whether a specific intervention has an effect on a disease. 
-Once this is established, the natural subsequent question is **WHY** this intervention had an effect?  [@vanderweele_mediation_2016].
-The subsequent and most relevant question is **HOW?**
-
-Mediation analysis answers the question regarding **HOW** a treatment/exposure/intervention impacts an outcome of interest by uncovering the underlying pathways, and mechanisms.
-
-1- The first motivation may be simply explanation and understanding.
-```{r}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
-digraph {
-  graph []
-  node [shape = plaintext]
-    X [label = 'Family history of diabetes']
-    M [label = 'genetic makeup']
-    N [label = 'shared environment']
-    Y [label = 'Type 2 diabetes']
-  edge [minlen = 2]
-    X->M
-    M->Y
-    X->N
-    N->Y
-{ rank = same; M; X; Y; }
-  { rank = min; N;}
-
-}
-")
-```
-2- Confirmation and refutation of theory
-Let's assume we estimate a familial risk of diabetes and that risk estimates follow a normal distribution at the population level. Then we select the extremes of the distribution (2.5%) and assess the relative  contribution of the genetic makeup, and risk phenotypes, among individuals with a strong/weak familial risk of type 2 diabetes. 
-
-3- To refine interventions
-Let's consider the evidence from the landmark prevention trials. The Diabetes Prevention Programme (DPP, USA), The Diabetes Prevention Study (DPS, Finland),
-and The Da Quin study(DPS, China). These studies randomized high risk individuals to either metformin or a lifestyle intervention consisting of a diet + physical activity. The main finding was a ~57% relative risk reduction in the incidence of type 2 diabetes in the lifestyle intervention group vs. metformin
-group
-
-```{r}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
-digraph {
-  graph []
-  node [shape = plaintext]
-    X [label = 'Lifestyle intervention']
-    M [label = 'Weight loss']
-    Y [label = 'Type 2 diabetes']
-  edge [minlen = 2]
-    X->M
-    M->Y
-   { rank = same; M; X; Y; }
-}
-")
-```
-
-We might be interested in further refining the intervention so as to increase the magnitude of the effect. This might be done by altering or improving components of the intervention that target a particular mechanism for the outcome and discarding those components of which perhaps are not relevant for the outcome
-
-When implementing the same lifestyle interventions in real world settings, lifestyle interventions show smaller effect and the long-term adoption and sustainability over time were some of the challenges to the effectiveness of these prevention efforts
-=======
 The course material was created using [Quarto](https://quarto.org/) to
 write the lessons and create the book format,
 [GitHub](https://github.com/) to host the [Git](https://git-scm.com/)
 repository of the material, and [GitHub
 Actions](https://github.com/features/actions) with
-[Netlify](https://www.netlify.com/) to create and host the website. The original source material for this course is found on the [`steno-aarhus/mediation-analysis-course`](https://github.com/steno-aarhus/mediation-analysis-course)
+[Netlify](https://www.netlify.com/) to create and host the website. The
+original source material for this course is found on the
+[`steno-aarhus/mediation-analysis-course`](https://github.com/steno-aarhus/mediation-analysis-course)
 GitHub repository.
 
 ## Re-use and licensing {#licensing}
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/80x15.png" alt="Creative Commons License" style="border-width:0"/></a>
->>>>>>> ac85f0735c2d8dbb3e2cac16ebd4cf7eb7ad91ad:index.qmd
 
 The course is licensed under the [Creative Commons Attribution 4.0
 International License](https://creativecommons.org/licenses/by/4.0/) so
 the material can be used, re-used, and modified, as long as there is
 attribution to this source.
 
-<<<<<<< HEAD:sessions/introduction.qmd
-```{r}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
-digraph {
-  graph []
-  node [shape = plaintext]
-    X [label = 'Lifestyle intervention']
-    M [label = 'Weight loss']
-    N [label = '?']    
-  Y [label = 'Type 2 diabetes']
-  edge [minlen = 2]
-    X->M
-    M->Y
-    X->N
-    N->Y
-   {rank = same; M; X; Y; }
-   {rank = min; N; }
-}
-}
-")
-```
-
-## Motivations for running this course:
-- Methods for conducting mediation analysis are used incorrectly. A recent systematic review of the reporting quality of studies applying mediation analysis showed that most of the studies had incomplete reporting [@rrn_systematic_2022]. This might impact both reproducibility and translation into practice. 
-- The methodological framework for conducting mediation analysis evolved rapidly in recent years. Therefore, most applied examples are outdated in mediation analysis methods. A scoping review found that between 2015 to 2019 only 29.3% of studies using mediation analysis used modern mediation analysis methods [@rijnhart_mediation_2021].
-
-::: callout-note
-## Before moving on to the first exercise. Spend 5 minutes talking to your neighbour and discuss your own motivations for participating in this course. Consider the different motivations behind conducting mediation analysis.
-
-::: callout-note
-## Exercise: Small groups work. "Understanding different study designs". Duration:30 minutes
-You will be divided into small groups of four people. Your assignment consist on reading the selected mediation analyses sections of the assigned articles and briefly present in plenum the methodological approach of your paper, and share the more relevant points discussed in your group in 3 minutes.
-Each of paper have a different study design and you will have 15 min to complete the reading task described below.
-
-### Group 1: Intervention study a
-
-Paper: [Shoer et al. 2023](https://www.nature.com/articles/s41467-023-41042-x) 
-
-- read the abstract
-- read section 'Mediation analysis' under the 'Methods' section
-- read section 'The microbiome mediates the diet’s effect' under 'Results'
-- try to understand Fig. 4.
-
-Task: explain the overall study and the mediation analysis. What does the results imply? 
-
-### Group 2: Intervention study b
-
-Paper: [Johansen et al. 2020](https://link.springer.com/article/10.1007/s00125-020-05249-7) 
-
-- read the abstract
-- read from "Single mediation analysis" under 'Statistical analysis'
-- try to understand table 4
-- read from "To explore the role of weight loss in relation to beta cell function we performed single mediation analysis" under 'Discussion'
-
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
-
-### Group 3: Cohort study
-
-Paper: [Wang et al. 2022](https://doi.org/10.1007/s00125-022-05692-8) 
-
-- read the abstract
-- read from "To test whether an association between the metabolite profile score and risk of type 2 diabetes..." under 'Statistical analysis'
-- try to understand Fig. 4
-- read the conclusion 
-
-Task: explain the overall study and the mediation analysis. What does the results imply? How did the authors interpret the results? How do you interpret the results?
-
-### Group 4: Cross-sectional study
-
-Paper: [Shi et al. 2022](https://www.nature.com/articles/s41598-022-08544-y) 
-
-- read the abstract
-- they used a specific algorithm to identify mediation. You do not have to understand how it works. Simply note whether they adjusted for specific variables in their analysis (Hint: look in the methods section)
-- Read section 'Mediation by the gut microbial species Dialister invisus' under 'Results'
-
-Task: explain the overall study design, what exposure, mediator and outcomes were they interested in? Are their results causal? 
-
-:::
-
-# References
-=======
 ## Acknowledgements
 
-The [Danish Diabetes Academy](https://www.danishdiabetesacademy.dk/)
-and [Steno Diabetes Center
-Aarhus](https://www.stenoaarhus.dk/) sponsored the course.
->>>>>>> ac85f0735c2d8dbb3e2cac16ebd4cf7eb7ad91ad:index.qmd
-
-![Steno Diabetes Center Aarhus](images/logo-sdca.png){width="55px"}
-![Danish Diabetes and Endocrinology
-Academy](https://www.ddeacademy.dk/sites/all/themes/dda/DDEA_logo_outlined.svg){width="90px"}
+The [Danish Diabetes Academy](https://www.danishdiabetesacademy.dk/) and
+[Steno Diabetes Center Aarhus](https://www.stenoaarhus.dk/) sponsored
+the course.

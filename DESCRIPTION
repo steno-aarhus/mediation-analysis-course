@@ -1,7 +1,7 @@
 Package: mediation-analysis-course
 Type: Website
-Title: "ANalysis of mechanisms"
-Version: 2022.12.07
+Title: "Analysis of mechanisms"
+Version: 1.0
 URL: https://github.com/steno-aarhus/mediation-analysis-course
 Depends: 
     R (>= 4.0.0),
@@ -10,9 +10,16 @@ Encoding: UTF-8
 LazyData: true
 License: CC BY 4.0
 Imports: 
+    CMAverse (>= 0.1.0),
     DiagrammeR,
+    downlit,
+    furrr,
     here,
+    knitr,
     mediation,
-    NetCoupler
+    NetCoupler,
+    rmarkdown,
+    survival,
+    xml2
 Remotes: 
     BS1125/CMAverse

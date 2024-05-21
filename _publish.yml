@@ -1,4 +1,4 @@
 - source: project
   netlify:
-    - id: "c1ddfe68-ad92-4cd2-aab2-c740ec5db3c3"
+    - id: "c1ddfe68-ad92-4cd2-aab2-c740ec5db3c3s"
       url: "https://analysis-of-mechanisms.netlify.app"

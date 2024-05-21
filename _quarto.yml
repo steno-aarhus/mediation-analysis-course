@@ -10,6 +10,8 @@ book:
   subtitle: "Modern mediation analysis for basic, clinical and epidemiological research in diabetes and endocrinology"
   author:
     - "Daniel B. Ibsen"
+    - "Omar Silverman"
+    - "Jie Zhang"
   site-url: "https://analysis-of-mechanisms.netlify.app"
   repo-url: "https://github.com/steno-aarhus/mediation-analysis-course"
   chapters:
@@ -29,15 +31,15 @@ book:
       - sessions/group_work_day2.qmd
       - sessions/NetCoupler-example.qmd
   appendices:
-    - LICENSE.md
+    - appendices/references.qmd
   page-footer:
     center:
       - text: "License: CC BY 4.0 {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}}"
         href: LICENSE.html
 
 bibliography:
-  - sessions/papers.bib
-csl: sessions/the-american-journal-of-clinical-nutrition.csl
+  - includes/papers.bib
+csl: includes/the-american-journal-of-clinical-nutrition.csl
 
 editor:
   markdown:
