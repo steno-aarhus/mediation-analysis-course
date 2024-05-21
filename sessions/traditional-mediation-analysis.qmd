@@ -240,7 +240,7 @@ indirect_mb
 If you recall the four criteria Originally suggested by Baron and Kenny,
 they proposed that 'Path C must be significantly different from 0 to
 ensure there is a total effect between X and Y', but this step might be
-controversial. Even if we don’t find a significant association between X
+controversial. Even if we don't find a significant association between X
 and Y, we could proceed to the next step if we have a strong theoretical
 basis for their relationship.
 :::
@@ -263,11 +263,11 @@ To do so, there are two main approaches: the Sobel test (Sobel, 1982)
 and bootstrapping (Preacher & Hayes, 2004).
 
 Here I will demonstrate that we can use the mediate() function in
-‘mediation’ package (Tingley et al. 2019) to conduct mediation analysis.
+'mediation' package (Tingley et al. 2019) to conduct mediation analysis.
 One of the very good options to conduct mediation analysis using the
 mediation package is we can get confidence interval by bootstrapping.
 
-Let’s load up the R packages.
+Let's load up the R packages.
 
 ```{r}
 library(mediation) # Mediation package
@@ -305,7 +305,7 @@ summary(results)
     ADE () to receive the total effect.
 
 -   **Prop. Mediated** describes the proportion of the effect of the IV
-    on the DV that goes through the mediator. It’s calculated by
+    on the DV that goes through the mediator. It's calculated by
     dividing the ACME (0.273) by the total effect 1.084) and yields
     0.252. The result suggests the mediator (inflammaotry biomarker)
     explains 25.2% proportion of the effect of red meat on glucose
@@ -319,7 +319,7 @@ plot(results)
 For details of the mediate() package, please refer to
 (mediation_rpackage 2014).
 
-# What do traditional approach succeed and fail?
+## What do traditional approach succeed and fail?
 
 When fulfill the criterias, simple tools like regression can be used to
 estimate a causal mediation effect.
@@ -329,6 +329,14 @@ estimate a causal mediation effect.
 -   linear relationship
 -   rare binary outcome
 
+<<<<<<< HEAD
+Go through the limitation of the traditional approach - Omar (15 min)
+- limitations of traditional approach
+- non-linearity
+- interactions
+- multiple mediators
+- confounding assumptions
+=======
 # Reporting the mediation
 
 -   assumptions
@@ -340,3 +348,10 @@ estimate a causal mediation effect.
 Go through the limitation of the traditional approach - Omar (15 min) -
 limitations of traditional approach - non-linearity - interactions -
 multi mediators
+
+# Limitations of the tradiational approach
+
+## Non-linearity and interactions
+
+## multiple mediators
+>>>>>>> 5c273a3cb57ddc7c1988dbd898a9221835c36f2e

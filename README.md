@@ -35,6 +35,10 @@ Packages used and depended on for this course are included in the
 root directory (where the `mediation-analysis-course.Rproj` file is
 located:
 
+``` r
+pak::pak()
+```
+
 You might need to connect to GitHub via a personal access token if you
 encounter a "rate limit" when installing packages:
 

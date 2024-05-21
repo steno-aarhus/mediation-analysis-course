@@ -546,10 +546,37 @@ Now, you can freely calculate the natural direct effect and indirect
 effect:
 
 ```{r}
+
 E_Y1M1
 E_Y1M0
 E_Y0M1
 E_Y0M0
+```
+
+### Controlled direct effect
+
+### Natural direct effect
+
+### Natural indirect effect
+
+## 3-way and 4-way decomposition of effects
+
+### R package example for causal mediation analysis - CMAverse-package
+
+Test of other package #install devtools, go to github website to install
+the CMAverse, Rtools
+
+```{r}
+#| eval: false
+library(CMAverse)
+
+res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
+                            mediator = "m", basec = c("w"), EMint = TRUE,
+                            mreg = list("linear"), yreg = "linear",
+                            astar = 5, a = 7, mval = list(5), 
+                            estimation = "paramfunc", inference = "delta")
+
+summary(res_rb)
 ```
 
 ### Controlled direct effect

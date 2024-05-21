@@ -76,13 +76,9 @@ If you have anything from 4.3.1 or later, it should be okay.
 
 ```{r}
 #| echo: false
-#| eval: true
-#| results: asis
-
-#install.packages("pak")
-
+#| eval: false
+install.packages("pak")
 pak::pkg_install("tidyverse")
-
 pak::pkg_install("DiagrammeR")
 pak::pkg_install("downlit")
 pak::pkg_install("furrr")
@@ -94,9 +90,7 @@ pak::pkg_install("rmarkdown")
 pak::pkg_install("survival")
 pak::pkg_install("xml2")
 pak::pkg_install("here")
-
 pak::pkg_install("BS1125/CMAverse")
-
 ```
 
 If installation of a package does not work using the "pak" package, then
@@ -104,7 +98,7 @@ use:
 
 ```{r}
 #| echo: false
-#| eval: true
+#| eval: false
 #| results: asis
 
 #install.packages("name-of-package")
