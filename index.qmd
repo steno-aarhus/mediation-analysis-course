@@ -11,6 +11,10 @@ mediation analysis and modern mediation analysis. Lastly, we will
 introduce a different approach more suitable for omics-type data taking
 a network analysis approach.
 
+Note, this is the first time we run this course. Thus, there will be
+some mistakes here and there. Please let us know so we can improve for
+next time.
+
 ## Overall learning outcomes
 
 ::: callout-note
@@ -115,3 +119,4 @@ attribution to this source.
 The [Danish Diabetes Academy](https://www.danishdiabetesacademy.dk/) and
 [Steno Diabetes Center Aarhus](https://www.stenoaarhus.dk/) sponsored
 the course.
+
