@@ -50,4 +50,4 @@ format:
   r3-theme-html
 
 execute:
-  freeze: auto
+  freeze: false
