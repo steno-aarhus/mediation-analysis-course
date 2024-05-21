@@ -23,7 +23,6 @@ contributes:
         - custom-slides.scss
       menu: true
       progress: true
-      logo: favicon.ico
 
   project:
     project:
@@ -32,7 +31,6 @@ contributes:
       execute-dir: project
 
     book:
-      favicon: "favicon.ico"
       repo-branch: main
       repo-actions: [edit, issue, source]
       search: true
