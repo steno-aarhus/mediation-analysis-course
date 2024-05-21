@@ -63,8 +63,8 @@ work, discussions and networking activities.
 | 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS)           |
 | 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                             |
 | 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                             |
-| 18:30       |                                                   | Dinner                                                                                                         |                                                                                             |
-| 20:30       |                                                   |                                                                                                                |                                                                                             |
+| 18:30       |                                                   | Social activity                                                                                                |                                                                                             |
+| 20:30       |                                                   | Dinner                                                                                                         |                                                                                             |
 
 ::: callout-note
 ## Practical information
@@ -73,8 +73,10 @@ work, discussions and networking activities.
     lunch
 -   On day 1 in the afternoon, there will be a networking activity
 -   On day 2 in the evening, we will all go for a dinner in the city of
-    Aarhus. If you have any dietary requirements, please let us know
-    today
+    Aarhus. The dinner is a buffet at Food Club Aarhus, Aaboulevarden
+    30, Aarhus C
+-   We will have a social activity before the dinner. This is optional
+    and all are also welcome to join the dinner later.
 -   On day 3, the lecture on approaches for omics-type data, this
     lecture will be combined with a Steno Thursday Global, which will be
     open to all to attend and will be streamed online as well
@@ -113,7 +115,3 @@ attribution to this source.
 The [Danish Diabetes Academy](https://www.danishdiabetesacademy.dk/) and
 [Steno Diabetes Center Aarhus](https://www.stenoaarhus.dk/) sponsored
 the course.
-
-![Steno Diabetes Center Aarhus](images/logo-sdca.png){width="55px"}
-![Danish Diabetes and Endocrinology
-Academy](https://www.ddeacademy.dk/sites/all/themes/dda/DDEA_logo_outlined.svg){width="90px"}
