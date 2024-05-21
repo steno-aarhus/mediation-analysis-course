@@ -1,28 +1,22 @@
----
-title: "group work"
-format: html
----
+# Day 1: Group work
 
-<<<<<<< HEAD:sessions/groupwork.qmd
-## Group work-day1
-=======
 ```{r}
 library(here)
 ```
-# Group work - Day 1
->>>>>>> ac85f0735c2d8dbb3e2cac16ebd4cf7eb7ad91ad:sessions/group_work_day1.qmd
 
-For the exercises, we will use the Framingham dataset. 
+For the exercises, we will use the Framingham dataset.
 
 ```{r}
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 ```
 
-The overall aim of the cohort study was to investigate effect of obesity on the risk of cardiovascular disease (CVD).
+The overall aim of the cohort study was to investigate effect of obesity
+on the risk of cardiovascular disease (CVD).
 
 ## Variables
 
-The dataset includes 'r nrow(framingham)´ participants and 'r ncol(framingham)´.
+The dataset includes 'r nrow(framingham)´ participants and 'r
+ncol(framingham)´.
 
 ```{r}
 str(framingham)
@@ -30,25 +24,36 @@ str(framingham)
 
 For the exercise on day 1, we will work with the following variables:
 
-- socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high SES)
-- smoke = smoking status (binary: 0 = no prenatal smoking, 1 = prenatal smoking)
-- educ = education ()
-- bmi = body mass index (BMI) (continuous variable in kg/m^2^)
-- CVD= (binary: 0=no, 1=yes).
-- obesity (binary: 0=normal, 1=obesity)*
+-   socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high
+    SES)
+-   smoke = smoking status (binary: 0 = no prenatal smoking, 1 =
+    prenatal smoking)
+-   educ = education ()
+-   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
+-   CVD= (binary: 0=no, 1=yes).
+-   obesity (binary: 0=normal, 1=obesity)\*
 
-There are other variables in the dataset, please take a few minutes to explore the dataset. Before we start, let's think about the research question and draw a directed acyclic graphs. You can either draw by hand or use daggity (https://www.dagitty.net/).
+There are other variables in the dataset, please take a few minutes to
+explore the dataset. Before we start, let's think about the research
+question and draw a directed acyclic graphs. You can either draw by hand
+or use daggity (https://www.dagitty.net/).
 
 [Address the following questions]{.underline}:
 
-1.    Estimate the conditional treatment effect of obesity on the prevalence of CVD (conditional on SES, or other variables based on DAG).
+1.  Estimate the conditional treatment effect of obesity on the
+    prevalence of CVD (conditional on SES, or other variables based on
+    DAG).
 
-2.    Estimate the relationship between obesity and blood pressure.
+2.  Estimate the relationship between obesity and blood pressure.
 
-3.    Fit the outcome model, with obesity as exposure, and blood pressure as outcome.
+3.  Fit the outcome model, with obesity as exposure, and blood pressure
+    as outcome.
 
-4.    Calculate the direct effect and indirect effect using the product method and difference method, and compare results from the two approaches.
+4.  Calculate the direct effect and indirect effect using the product
+    method and difference method, and compare results from the two
+    approaches.
 
-5.    Calculate the direct effect and indirect effect using the **mediation** package.
+5.  Calculate the direct effect and indirect effect using the
+    **mediation** package.
 
-6.   Discuss the limitations of the traditional approach.
+6.  Discuss the limitations of the traditional approach.
