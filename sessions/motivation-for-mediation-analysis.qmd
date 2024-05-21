@@ -5,8 +5,9 @@
 Basic, clinical and epidemiological research are often interested in
 whether a specific intervention has an effect on a disease. Once this is
 established, the natural subsequent question is **WHY** this
-intervention had an effect? [@vanderweele_mediation_2016]. The
-subsequent and most relevant question is **HOW?**
+intervention had an effect? [@vanderweele_mediation_2016].
+
+The subsequent and most relevant question is **HOW?**
 
 Mediation analysis answers the question regarding **HOW** a
 treatment/exposure/intervention impacts an outcome of interest by
@@ -37,21 +38,21 @@ digraph {
 ")
 ```
 
-2- Confirmation and refutation of theory Let's assume we estimate a
+2- Confirmation and refutation of theory. Let's assume we estimate a
 familial risk of diabetes and that risk estimates follow a normal
 distribution at the population level. Then we select the extremes of the
 distribution (2.5%) and assess the relative contribution of the genetic
 makeup, and risk phenotypes, among individuals with a strong/weak
 familial risk of type 2 diabetes.
 
-3- To refine interventions Let's consider the evidence from the landmark
-prevention trials. The Diabetes Prevention Programme (DPP, USA), The
-Diabetes Prevention Study (DPS, Finland), and The Da Quin study(DPS,
-China). These studies randomized high risk individuals to either
-metformin or a lifestyle intervention consisting of a diet + physical
-activity. The main finding was a \~57% relative risk reduction in the
-incidence of type 2 diabetes in the lifestyle intervention group vs.
-metformin group
+3- To refine interventions. Let's consider the evidence from the
+landmark prevention trials. The Diabetes Prevention Programme (DPP,
+USA), The Diabetes Prevention Study (DPS, Finland), and The Da
+Quinstudy(DPS, China). These studies randomized high risk individuals to
+either metformin or a lifestyle intervention consisting of a physical
+activity or physical activity + diet. The main finding was a \~58% risk
+reduction in the incidence of type 2 diabetes in the lifestyle
+intervention group vs. metformin group
 
 ```{r}
 # Creating The causal diagram for a mediation model
@@ -81,13 +82,6 @@ When implementing the same lifestyle interventions in real world
 settings, lifestyle interventions show smaller effect and the long-term
 adoption and sustainability over time were some of the challenges to the
 effectiveness of these prevention efforts
-
-Alongside the applied research, the methodological framework for
-conducting mediation analysis has also evolved rapidly in recent years.
-Unfortunately, most applied examples have not caught up with this
-progression in methodology. In fact, a scoping review found that between
-2015 to 2019 only 29.3% of studies using mediation analysis used modern
-mediation analysis methods [@rijnhart_mediation_2021].
 
 ```{r}
 # Creating The causal diagram for a mediation model
@@ -119,6 +113,7 @@ digraph {
     applying mediation analysis showed that most of the studies had
     incomplete reporting [@rrn_systematic_2022]. This might impact both
     reproducibility and translation into practice.
+
 -   The methodological framework for conducting mediation analysis
     evolved rapidly in recent years. Therefore, most applied examples
     are outdated in mediation analysis methods. A scoping review found
@@ -126,7 +121,7 @@ digraph {
     analysis used modern mediation analysis methods
     [@rijnhart_mediation_2021].
 
-::: callout-note \## Before moving on to the first exercise. Spend 5
+::: callout-note \## Before moving on to the first exercise. ##Spend 5
 minutes talking to your neighbour and discuss your own motivations for
 participating in this course. Consider the different motivations behind
 conducting mediation analysis.
@@ -139,14 +134,7 @@ consist on reading the selected mediation analyses sections of the
 assigned articles and briefly present in plenum the methodological
 approach of your paper, and share the more relevant points discussed in
 your group in 3 minutes. Each of paper have a different study design and
-you will have 15 min to complete the reading task described below. :::
-callout-note \## Exercise: Understanding different study designs (30
-min)
-
-You will now be placed in different groups and read selected sections of
-different mediation analyses within different study designs. You have 15
-min to complete the task. Then, each group will briefly present their
-paper, the approach used and what they thought about it.
+you will have 15 min to complete the reading task described below.
 
 ### Group 1: Intervention study a
 
@@ -186,7 +174,7 @@ Paper: [Wang et al. 2022](https://doi.org/10.1007/s00125-022-05692-8)
 -   read from "To test whether an association between the metabolite
     profile score and risk of type 2 diabetes..." under 'Statistical
     analysis'
--   try to understand Fig. 4
+-   try to understand Figure 4
 -   read the conclusion
 
 Task: explain the overall study and the mediation analysis. What does
