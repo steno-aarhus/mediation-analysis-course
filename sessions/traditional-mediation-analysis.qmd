@@ -149,6 +149,12 @@ M.
 ```{r}
 # first load the dataset
 load(here::here("data/nhanes_dataset.RData"))
+
+nhanes <- nhanes %>%
+  select(
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4=smoke,      a=x, y, m) %>%
+    na.omit()
+
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fita)
 ```
