@@ -4,7 +4,9 @@
 # Objective of this session
 
 In this session, We will get hands on practice using the framingham
-dataset. - Conduct mediation analysis using the traditional approaches
+dataset.
+
+-   Conduct mediation analysis using the traditional approaches
 
 -   Conduct mediation analysis using the 'mediaiton' R package
 
@@ -79,4 +81,3 @@ directed acyclic graphs. You can either draw by hand or use daggity
     **mediation** package.
 
 6.  Discuss the limitations of the traditional approach.
-
