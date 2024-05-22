@@ -126,8 +126,7 @@ Note, that for your own data, you may need to take missing data into
 account in another way.
 
 ```{r}
-nhanes <- read.csv(here::here("data", "nhanes.csv"))
-
+load(here::here("data/nhanes_dataset.RData"))
 # only keeping the variables we need for the example and removing missing variables
 
 nhanes <- nhanes %>%
@@ -145,7 +144,6 @@ satisfy the confounding assumptions.
 
 ```{r}
 lm_m <- lm(m ~ a + w1, data = nhanes)
-
 summary(lm_m)
 ```
 
@@ -556,9 +554,8 @@ E_Y0M0
 
 ### Natural direct effect
 
-### Natural indirect effect
-
-## 3-way and 4-way decomposition of effects
+E_Y1M1-E_Y0M1 \### Natural indirect effect E_Y1M1-E_Y1M0 \## 3-way and
+4-way decomposition of effects
 
 ### R package example for causal mediation analysis - CMAverse-package
 
@@ -569,7 +566,7 @@ Test of other package
 library(CMAverse)
 
 res_rb <- cmest(
-  data = df, model = "rb", outcome = "y", exposure = "a",
+  data = df, model = "gformula", outcome = "y", exposure = "a",
   mediator = "m", basec = c("w"), EMint = TRUE,
   mreg = list("linear"), yreg = "linear",
   astar = 5, a = 7, mval = list(5),
