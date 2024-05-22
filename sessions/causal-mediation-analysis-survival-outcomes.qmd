@@ -46,10 +46,13 @@ digraph {
 ```
 
 In earlier session,we have been familiar with the counterfactual
-concepts in causal mediation: - $Y_i(a, m)$ is the outcome achieved for
-person i if, possibly contrary to fact, exposure had been set to a and
-mediator to m. - $M_i(a)$ is the mediator achieved for person i if,
-possibly contrary to fact, exposure had been set to a.
+concepts in causal mediation:
+
+-   $Y_i(a, m)$ is the outcome achieved for person i if, possibly
+    contrary to fact, exposure had been set to a and mediator to m.
+
+-   $M_i(a)$ is the mediator achieved for person i if, possibly contrary
+    to fact, exposure had been set to a.
 
 The counterfactual variable Yi (1, m) corresponds to the death time
 observed in a double-intervention randomized trial where early
