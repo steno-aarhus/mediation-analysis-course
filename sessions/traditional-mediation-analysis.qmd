@@ -149,6 +149,13 @@ M.
 ```{r}
 # first load the dataset
 load(here::here("data/nhanes_dataset.RData"))
+library(tidyverse)
+library(dplyr)
+nhanes <- nhanes %>%
+  select(
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4=smoke,      a=x, y, m) %>%
+    na.omit()
+
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fita)
 ```
@@ -289,7 +296,7 @@ lm_m <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 # Fit outcome model
 lm_y <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
 # Run mediation analysis
-results <- mediate(lm_m, lm_y, treat = "x", mediator = "m", boot = TRUE, sims = 500)
+results <- mediate(lm_m, lm_y, treat = "a", mediator = "m", boot = TRUE, sims = 500)
 summary(results)
 ```
 
