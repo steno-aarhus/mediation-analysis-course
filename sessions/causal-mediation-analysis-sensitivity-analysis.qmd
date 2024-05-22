@@ -1,20 +1,35 @@
 # Sensitivity analysis for mediation analysis
 
+```{=html}
 <!-- ::: callout-note
 ##Add here the objective of the session and learning outcomes-->
+```
+Unmeasured or uncontrolled confounding is a common problem in
+observational studies. This is a challenge to observational research
+even in the analysis of total effects
 
-Unmeasured or uncontrolled confounding is a common problem in observational studies. This is a challenge to observational research    even in the analysis of total effects
+When we are interested in pathways and direct and indirect effects, the
+assumptions about confounding that are needed to identify these effects
+are even stronger than for total effects.
 
-When we are interested in pathways and direct and indirect effects, the assumptions about confounding that are needed to identify     these effects are even stronger than for total effects. 
+We might be worried that these assumptions are violated and that our
+estimates are biased
 
-We might be worried that these assumptions are violated and that our estimates are biased
-
-**Sensitivity analysis techniques can help assess HOW ROBUST results are to violations in the assumptions being made**
-These techniques assess the extent to which an unmeasured variable (or variables) would have to affect both the exposure and the outcome in order for the observed associations between the two to be attributable solely to confounding rather than a causal effect of the exposure on the outcome
-It can also be useful in assessing a plausible range of values for the causal effect of the exposure on the outcome corresponding to a plausible range of assumptions concerning the relationship between the unmeasured confounder and the exposure and outcome
+**Sensitivity analysis techniques can help assess HOW ROBUST results are
+to violations in the assumptions being made** These techniques assess
+the extent to which an unmeasured variable (or variables) would have to
+affect both the exposure and the outcome in order for the observed
+associations between the two to be attributable solely to confounding
+rather than a causal effect of the exposure on the outcome It can also
+be useful in assessing a plausible range of values for the causal effect
+of the exposure on the outcome corresponding to a plausible range of
+assumptions concerning the relationship between the unmeasured
+confounder and the exposure and outcome
 
 ##Sensitivity analysis for unmeasured confounding for total effects
-Consider the following  figure in which U represents an unmeasured confounder, *C* measured covariables, *A* the exposure and *Y* the outcome
+Consider the following figure in which U represents an unmeasured
+confounder, *C* measured covariables, *A* the exposure and *Y* the
+outcome
 
 ```{r, echo = FALSE}
 # Creating The causal diagram for a mediation model
@@ -38,52 +53,87 @@ digraph {
 }
 ")
 ```
-The basic idea of sensitivity analysis is to specify parameters corresponding to the relationships between *U* and *Y* and between *U* and *A* and from these, along with the observed data, to obtain “corrected” effect estimates corresponding to what would have been obtained had control been made for *U* and not only *C*.
 
-The results essentially compare:
-1- what we obtain adjusting only for measured covariables *C* with 
-2- what we would have obtained had it been possible to adjust for measured covariables *C* and unmeasured covariable(s) *U*. 
+The basic idea of sensitivity analysis is to specify parameters
+corresponding to the relationships between *U* and *Y* and between *U*
+and *A* and from these, along with the observed data, to obtain
+"corrected" effect estimates corresponding to what would have been
+obtained had control been made for *U* and not only *C*.
 
-If it is thought that adjusting for *C* and *U* together would suffice to control for confounding, then we may also interpret the results as comparing the effect estimate that is obtained adjusting only for measured covariables *C* versus the true causal effect.
+The results essentially compare: 1- what we obtain adjusting only for
+measured covariables *C* with 2- what we would have obtained had it been
+possible to adjust for measured covariables *C* and unmeasured
+covariable(s) *U*.
+
+If it is thought that adjusting for *C* and *U* together would suffice
+to control for confounding, then we may also interpret the results as
+comparing the effect estimate that is obtained adjusting only for
+measured covariables *C* versus the true causal effect.
 
 ### Continuous outcomes
-Suppose then we have obtained an estimate of the effect of the exposure A on the outcome Y conditional on measured covariables C using
-regression analysis. 
 
-We will define the bias factor B_add(*c*) on the additive scale as the difference between the expected differences in outcomes comparing A = a and A = a* conditional on covariables *C* = *c* and what we would have obtained had we been able to adjust for *U* as well.
+Suppose then we have obtained an estimate of the effect of the exposure
+A on the outcome Y conditional on measured covariables C using
+regression analysis.
 
-If the exposure is binary, then we simply have *a* = 1 and *a* * = 0.
+We will define the bias factor B_add(*c*) on the additive scale as the
+difference between the expected differences in outcomes comparing A = a
+and A = a\* conditional on covariables *C* = *c* and what we would have
+obtained had we been able to adjust for *U* as well.
 
-A  simple approach to sensitivity analysis is possible if we assume that (A3.1) *U*  is binary and (A3.2) that the effect of *U* (on the additive scale) is the same for those with exposure level *A* = *a* and exposure level *A* = *a* * (no *U* × *A* interaction).
+If the exposure is binary, then we simply have *a* = 1 and *a* \* = 0.
 
-If these assumptions hold, let γ be the effect of *U* on *Y* conditional on *A* and *C*, that is:
+A simple approach to sensitivity analysis is possible if we assume that
+(A3.1) *U* is binary and (A3.2) that the effect of *U* (on the additive
+scale) is the same for those with exposure level *A* = *a* and exposure
+level *A* = *a* \* (no *U* × *A* interaction).
+
+If these assumptions hold, let γ be the effect of *U* on *Y* conditional
+on *A* and *C*, that is:
+
 $γ = E(Y|a, c,U = 1)$ − $E(Y|a, c,U = 0)$
 
-Note that by assumption (A3.2), $γ = E(Y|a, c,U = 1)$ − $E(Y|a, c,U = 0)$ is the same for both levels of the exposure of interest. Note also that *γ* is the effect of *U* on *Y* already having adjusted for *C*; that is, in some sense the effect of *U* on *Y* not
-through *C* 
+Note that by assumption (A3.2), $γ = E(Y|a, c,U = 1)$ −
+$E(Y|a, c,U = 0)$ is the same for both levels of the exposure of
+interest. Note also that *γ* is the effect of *U* on *Y* already having
+adjusted for *C*; that is, in some sense the effect of *U* on *Y* not
+through *C*
 
-Now let *δ* denote the difference in the prevalence of the unmeasured confounder *U* for those with *A*=*a* versus those with
-*A* = *a* *, that is:
+Now let *δ* denote the difference in the prevalence of the unmeasured
+confounder *U* for those with *A*=*a* versus those with *A* = *a* \*,
+that is:
+
 $δ = P(U = 1|a, c)$ − $P(U = 1|a*, c)$
 
-Under assumptions (A3.1) and (A3.2), the bias factor is simply given by the product of these two sensitivity analysis parameters:
+Under assumptions (A3.1) and (A3.2), the bias factor is simply given by
+the product of these two sensitivity analysis parameters:
+
 $B_add(c) = γ δ$
 
-Thus to calculate the bias factor we only need to specify the effect of U on Y and the prevalence difference of U between the two exposure groups and then take the product of these two parameters. 
+Thus to calculate the bias factor we only need to specify the effect of
+U on Y and the prevalence difference of U between the two exposure
+groups and then take the product of these two parameters.
 
-Once we have calculated the bias term B_add(c), we can simply estimate our causal effect conditional on C and then subtract the
-bias factor to get the “corrected estimate”— that is, what we would have obtained if we had controlled for C and U.
+Once we have calculated the bias term B_add(c), we can simply estimate
+our causal effect conditional on C and then subtract the bias factor to
+get the "corrected estimate"--- that is, what we would have obtained if
+we had controlled for C and U.
 
-Under these simplifying assumptions (A3.1) and (A3.2), we can also get adjusted confidence intervals by simply subtractingγ δ from
-both limits of the estimated confidence intervals
+Under these simplifying assumptions (A3.1) and (A3.2), we can also get
+adjusted confidence intervals by simply subtractingγ δ from both limits
+of the estimated confidence intervals
 
-We may not believe any particular specification of the parameters γ and δ, but we could vary these parameters (based on expert knowledge or previous studies reporting estimates of the associations of the C and Y) over a range of plausible values to obtain what were thought to be a plausible range of corrected estimates.
- 
-Using this technique, we could also examine how substantial the confounding would have to be to explain away an effect
-(we could do this for the estimate and confidence interval).
+We may not believe any particular specification of the parameters γ and
+δ, but we could vary these parameters (based on expert knowledge or
+previous studies reporting estimates of the associations of the C and Y)
+over a range of plausible values to obtain what were thought to be a
+plausible range of corrected estimates.
 
+Using this technique, we could also examine how substantial the
+confounding would have to be to explain away an effect (we could do this
+for the estimate and confidence interval).
 
-
+```{=html}
 <!-- - binary outcome  
 
 
@@ -97,3 +147,5 @@ Coding part - Omar
 
 #check the mediation package and the CMAverse package for sensitivity analysis
 -->
+```
+

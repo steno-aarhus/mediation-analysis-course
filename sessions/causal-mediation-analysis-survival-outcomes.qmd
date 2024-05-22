@@ -2,6 +2,8 @@
 
 <!-- Teaching concepts - Jie (30 min) -->
 
+<!-- Daniel will look and trim down a bit - Jie (30 min) -->
+
 Coding part - Daniel Teaching concepts - Jie (30 min)
 
 # Time-to-event outcomes

@@ -125,16 +125,19 @@ intake of red meat to be per 65 g/day (i.e., 1-unit higher = 65 g/day).
 Note, that for your own data, you may need to take missing data into
 account in another way.
 
+<!-- Jie will update and put in previous section -->
+
 ```{r}
 load(here::here("data/nhanes_dataset.RData"))
 # only keeping the variables we need for the example and removing missing variables
 
 nhanes <- nhanes %>%
-  select(id = seqn, w1 = age, w2 = gender, w3 = education, a = total_meat, y = plasma_fasting_glucose, m = serum_c_reactive_protein) %>%
+  select(id = seqn, w1 = age, w2 = gender, w3 = education, a = x, y, m) %>%
   na.omit() %>%
   mutate(
-    a = a / 65, # scale to per 65 g/day
-    m = log(m) # m is not normal, so we log transform
+    a = a + 50, 
+    y = y - 50,
+    a = a/65 # scale to per 65 g/day
   )
 ```
 
@@ -193,16 +196,14 @@ nhanes %>%
   select(m) %>%
   summary()
 
-median_m_log <- round(median(nhanes$m), digits = 1)
-
-median_m <- round(exp(median(nhanes$m)), digits = 1)
+median_m <- round(median(nhanes$m), digits = 1)
 ```
 
-In this example we will set it to the median `r median_m_log` which is a
-CRP at `r median_m` which is a low level.
+In this example we will set it to the median which is a CRP at
+`r median_m` which is a low level.
 
 ```{r}
-CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5] * median_m_log) * (1 - 0)
+CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5] * median_m) * (1 - 0)
 
 round(as.numeric(CDE_m), digits = 2)
 ```
@@ -420,13 +421,19 @@ statistically significant associations.
 
 ## G-computation-based approach
 
+### Why do we need g-computation approach
+
+-   exposure-induced mediator-outcome confounding
+
+### Example
+
 Under the above mentioned assumptions, we can also calculate the
 estimate using the G-computation approach.
 
 The approach here is more manual but we also have more flexibility in
 the models with use.
 
-We will test this out using the Framgingham dataset. Our research
+We will test this out using the Framingham dataset. Our research
 question is:
 
 > Does obesity lead to higher CVD risk by increasing blood pressure?
@@ -545,64 +552,6 @@ effect:
 
 ```{r}
 
-E_Y1M1
-E_Y1M0
-E_Y0M1
-E_Y0M0
-```
-
-### Controlled direct effect
-
-### Natural direct effect
-
-E_Y1M1-E_Y0M1 \### Natural indirect effect E_Y1M1-E_Y1M0 \## 3-way and
-4-way decomposition of effects
-
-### R package example for causal mediation analysis - CMAverse-package
-
-Test of other package #install devtools, go to github website to install
-the CMAverse, Rtools
-
-```{r}
-#| eval: false
-library(CMAverse)
-
-res_rb <- cmest(data = df, model = "rb", outcome = "y", exposure = "a",
-                            mediator = "m", basec = c("w"), EMint = TRUE,
-                            mreg = list("linear"), yreg = "linear",
-                            astar = 5, a = 7, mval = list(5), 
-                            estimation = "paramfunc", inference = "delta")
-
-summary(res_rb)
-```
-
-### Controlled direct effect
-
-### Natural direct effect
-
-### Natural indirect effect
-
-## 3-way and 4-way decomposition of effects
-
-### R package example for causal mediation analysis - CMAverse-package
-
-Test of other package
-
-```{r}
-#| eval: false
-library(CMAverse)
-
-res_rb <- cmest(
-  data = df, model = "gformula", outcome = "y", exposure = "a",
-  mediator = "m", basec = c("w"), EMint = TRUE,
-  mreg = list("linear"), yreg = "linear",
-  astar = 5, a = 7, mval = list(5),
-  estimation = "paramfunc", inference = "delta"
-)
-
-summary(res_rb)
-
-
 # changing the intervention, keeping the mediator the same
 PNDE_gcomp <- round(exp(E_Y1M0 - E_Y0M0), digits = 2)
 
@@ -620,4 +569,20 @@ est_table <- data.frame(
   TNIE = TNIE_comp
 )
 est_table
+```
+
+```{r}
+#| eval: false
+library(CMAverse)
+
+res_rb <- cmest(
+  data = df, model = "gformula", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w"), EMint = TRUE,
+  mreg = list("linear"), yreg = "linear",
+  astar = 5, a = 7, mval = list(5),
+  estimation = "paramfunc", inference = "boot"
+)
+
+summary(res_rb)
+
 ```

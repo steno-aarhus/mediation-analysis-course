@@ -151,14 +151,17 @@ M.
 
 \$ (E(M\|A=a, C=c)\$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
 
+<!-- update variables names -->
+
 ```{r}
 # first load the dataset
 load(here::here("data/nhanes_dataset.RData"))
+
 library(tidyverse)
 library(dplyr)
 nhanes <- nhanes %>%
   select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4=smoke,      a=x, y, m) %>%
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke,      a=x, y, m) %>%
     na.omit()
 
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -355,4 +358,5 @@ estimate a causal mediation effect:
 -   no unmeasured confounding
 -   no exposure-mediator interaction
 -   linear relationship
+-   no interactions
 -   rare binary outcome

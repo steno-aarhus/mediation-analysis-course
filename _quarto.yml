@@ -27,6 +27,7 @@ book:
       - sessions/group_work_day1.qmd
       - sessions/causal-mediation-analysis-estimation.qmd
       - sessions/causal-mediation-analysis-survival-outcomes.qmd
+      - sessions/causal-mediation-analysis-sensitivity-analysis.qmd
       - sessions/reporting-guidelines.qmd
       - sessions/group_work_day2.qmd
       - sessions/NetCoupler-example.qmd
