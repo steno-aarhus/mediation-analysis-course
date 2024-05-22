@@ -64,8 +64,8 @@ for [Window](https://cran.r-project.org/bin/windows/base/) or
 If you have R, check the version.
 
 ```{r}
-#| echo: false
-#| eval: true
+#| echo: true
+#| eval: false
 #| results: asis
 R.Version()
 ```
@@ -75,7 +75,7 @@ If you have anything from 4.3.1 or later, it should be okay.
 ### Installing R packages
 
 ```{r}
-#| echo: false
+#| echo: true
 #| eval: false
 install.packages("pak")
 pak::pkg_install("tidyverse")
@@ -97,7 +97,7 @@ If installation of a package does not work using the "pak" package, then
 use:
 
 ```{r}
-#| echo: false
+#| echo: true
 #| eval: false
 #| results: asis
 
