@@ -1,17 +1,42 @@
 # Day 2: Group work
 
+::: callout-note
+# Objective of this session
+
+In this session, We will get hands on practice using the framingham
+dataset.
+
+-   Conduct sensitivity analyses
+
+-   Conduct multiple mediators
+
+-   
+:::
+
+For the exercises, we will continue using the Framingham dataset. From
+the group work yesterday, we have learned how to conduct a mediation
+analyses. But in real life, the research question could be more complex.
+After running the main mediation analyses, how robust the mediation
+effect is? What is there are more than 1 mediator you are interested in?
+
 ```{r}
 library(here)
 ```
-
-For the exercises, we will use the Framingham dataset.
 
 ```{r}
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 ```
 
-The overall aim of the cohort study was to investigate effect of obesity
-on the risk of cardiovascular disease (CVD).
+We will keep working the obesity and cardiovascular disease example.
+First, think about the group work yesterday, and reflect the following
+questions:
+
+-   go over the assumptions of the causal mediation, and discuss how
+    robust your estimates are
+
+-   are there interactions between obesity and hypertension?
+
+-   are there other mediators other than systolic blood pressure?
 
 ## Variables
 
