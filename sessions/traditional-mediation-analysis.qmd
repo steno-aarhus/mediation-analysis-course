@@ -343,7 +343,8 @@ For details of the mediate() package, please refer to
 
 <!-- - put in DAG in context of example to discuss limitations -->
 
--   Non-linearity and interactions
+-   Non-linearity
+-   Interactions
 -   multiple mediators
 
 ## When can we use the traditional approach
