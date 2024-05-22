@@ -96,10 +96,16 @@ Specifically, we want to understand how much a new inflammatory
 biomarker explains the relation between red meat intake and glucose
 levels.
 
-The variables used in the dataset: -exposure of interest (x): red meat
-intake: (continuous variable, grams per day) -outcome (y): plasma
-fasting glucose (continuous variable, ) -mediator (m): a new
-inflammatory biomarker (continuous variable)
+The variables used in the dataset: 
+-    exposure of interest (x): red meat
+intake: (continuous variable, grams per day) 
+
+-    outcome (y): plasma
+fasting glucose (continuous variable, ) 
+
+-    mediator (m): a new inflammatory biomarker (continuous variable)
+
+Note that the example is created to demonstrate the methods,and there is no clinical relevance of the results.
 
 Four demographic variables will be included in the analyses: age,
 gender, education, and smoking. We assume that adjusting for these four
@@ -143,7 +149,7 @@ M.
 ```{r}
 # first load the dataset
 load(here::here("data/nhanes_dataset.RData"))
-fita <- lm(m ~ x + age + gender + education_clean + smoke, data = nhanes)
+fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fita)
 ```
 
@@ -157,7 +163,7 @@ $(E(Y|A=a, M=m, C=c)$ = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
 $\theta4c$ (1.2)
 
 ```{r}
-fitb <- lm(y ~ x + m + age + gender + race + education + smoke, data = nhanes)
+fitb <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
 summary(fitb)
 ```
 
@@ -170,7 +176,7 @@ between step 2 and step 3 is that mediator is not included in the model.
 $(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (1.3)
 
 ```{r}
-fitc <- lm(y ~ x + age + gender + race + education + smoke, data = nhanes)
+fitc <- lm(y ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fitc)
 ```
 
