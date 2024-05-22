@@ -55,20 +55,48 @@ Knowledge about linear and logistic regression and experience using R.
 Over the 3 days we will combine lectures with code-along sessions, group
 work, discussions and networking activities.
 
-| Time        | May 28                                            | May 29                                                                                                         | May 30                                                                                      |
-|-------------|---------------------------------------------------|----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| 8.30-9.00   | Registration and getting started                  |                                                                                                                |                                                                                             |
-| 9.00-10.15  | Introduction to the course and the topic (DI, OS) | Recap from yesterday + Causal mediation analysis: estimation (DI, JZ)                                          | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                          |
-| 10.15-10.30 | Coffee break                                      |                                                                                                                |                                                                                             |
-| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) | Modern mediation analysis - part 3 (NH, ID)                                                 |
-| 12.00-13.00 | Lunch                                             | Lunch                                                                                                          | Lunch                                                                                       |
-| 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  | Causal mediation analysis: sensitivity analyses (OS)                                                           | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                                 |
-| 14.30-15.00 | Coffee break                                      | Coffee break                                                                                                   | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00) |
-| 15.00-16.00 | Group work + Reflections (OS, DI)                 | Modern mediation analysis - part 1 (NH, ID)                                                                    | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS)           |
-| 16.00-16.15 | Coffee break                                      | Coffee break                                                                                                   |                                                                                             |
-| 16.15-18.00 | Participants presentation in plenum               | Group work + Reflections (DI, OS)                                                                              |                                                                                             |
-| 18:30       |                                                   | Social activity                                                                                                |                                                                                             |
-| 20:30       |                                                   | Dinner                                                                                                         |                                                                                             |
+::: panel-tabset
+### May 28
+
+| Time        | May 28                                            |
+|-------------|---------------------------------------------------|
+| 8.30-9.00   | Registration and getting started                  |
+| 9.00-10.15  | Introduction to the course and the topic (DI, OS) |
+| 10.15-10.30 | Coffee break                                      |
+| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           |
+| 12.00-13.00 | Lunch                                             |
+| 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  |
+| 14.30-15.00 | Coffee break                                      |
+| 15.00-16.00 | Group work + Reflections (OS, DI)                 |
+| 16.00-16.15 | Coffee break                                      |
+| 16.15-18.00 | Participants presentation in plenum               |
+
+### May 29
+
+| Time        | May 29                                                                                                         |
+|-------------|----------------------------------------------------------------------------------------------------------------|
+| 9.00-10.15  | Recap from yesterday + Causal mediation analysis: estimation (DI, JZ)                                          |
+| 10.30-12.00 | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) |
+| 12.00-13.00 | Lunch                                                                                                          |
+| 13.00-14.30 | Causal mediation analysis: sensitivity analyses (OS)                                                           |
+| 14.30-15.00 | Coffee break                                                                                                   |
+| 15.00-16.00 | Modern mediation analysis - part 1 (NH, ID)                                                                    |
+| 16.00-16.15 | Coffee break                                                                                                   |
+| 16.15-18.00 | Group work + Reflections (DI, OS)                                                                              |
+| 18:30       | Social activity                                                                                                |
+| 20:30       | Dinner                                                                                                         |
+
+### May 30
+
+| Time        | May 30                                                                                      |
+|-------------|---------------------------------------------------------------------------------------------|
+| 9.00-10.15  | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                          |
+| 10.30-12.00 | Modern mediation analysis - part 3 (NH, ID)                                                 |
+| 12.00-13.00 | Lunch                                                                                       |
+| 13.00-14.30 | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                                 |
+| 14.30-15.00 | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00) |
+| 15.00-16.00 | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS)           |
+:::
 
 ::: callout-note
 ## Practical information
@@ -119,4 +147,3 @@ attribution to this source.
 The [Danish Diabetes Academy](https://www.danishdiabetesacademy.dk/) and
 [Steno Diabetes Center Aarhus](https://www.stenoaarhus.dk/) sponsored
 the course.
-

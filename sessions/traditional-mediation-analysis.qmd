@@ -329,6 +329,14 @@ estimate a causal mediation effect.
 -   linear relationship
 -   rare binary outcome
 
+<<<<<<< HEAD
+Go through the limitation of the traditional approach - Omar (15 min)
+- limitations of traditional approach
+- non-linearity
+- interactions
+- multiple mediators
+- confounding assumptions
+=======
 # Reporting the mediation
 
 -   assumptions
@@ -346,3 +354,4 @@ multi mediators
 ## Non-linearity and interactions
 
 ## multiple mediators
+>>>>>>> 5c273a3cb57ddc7c1988dbd898a9221835c36f2e
