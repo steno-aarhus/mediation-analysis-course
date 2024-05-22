@@ -2,6 +2,13 @@
 
 <!-- Omar 30 min -->
 
+```{r}
+#| include: false
+
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+```
+
 Basic, clinical and epidemiological research are often interested in
 whether a specific intervention has an effect on a disease. Once this is
 established, the natural subsequent question is **WHY** this
@@ -13,11 +20,13 @@ Mediation analysis answers the question regarding **HOW** a
 treatment/exposure/intervention impacts an outcome of interest by
 uncovering the underlying pathways, and mechanisms.
 
-1- The first motivation may be simply explanation and understanding.
+## Motivation for mediation analysis
+
+### The first motivation may be simply explanation and understanding
 
 ```{r}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -38,23 +47,27 @@ digraph {
 ")
 ```
 
-2- Confirmation and refutation of theory. Let's assume we estimate a
-familial risk of diabetes and that risk estimates follow a normal
-distribution at the population level. Then we select the extremes of the
-distribution (2.5%) and assess the relative contribution of the genetic
-makeup, and risk phenotypes, among individuals with a strong/weak
-familial risk of type 2 diabetes.
+### Confirmation and refutation of theory
 
-3- To refine interventions. Let's consider the evidence from the
-landmark prevention trials. The Diabetes Prevention Programme (DPP,
-USA), The Diabetes Prevention Study (DPS, Finland), and The Da
-Quinstudy(DPS, China). These studies randomized high risk individuals to
-either metformin or a lifestyle intervention consisting of a physical
-activity or physical activity + diet. The main finding was a \~58% risk
-reduction in the incidence of type 2 diabetes in the lifestyle
-intervention group vs. metformin group
+Let's assume we estimate a familial risk of diabetes and that risk
+estimates follow a normal distribution at the population level. Then we
+select the extremes of the distribution (2.5%) and assess the relative
+contribution of the genetic makeup, and risk phenotypes, among
+individuals with a strong/weak familial risk of type 2 diabetes.
+
+### To refine interventions
+
+Let's consider the evidence from the landmark prevention trials. The
+Diabetes Prevention Programme (DPP, USA), The Diabetes Prevention Study
+(DPS, Finland), and The Da Quinstudy(DPS, China). These studies
+randomized high risk individuals to either metformin or a lifestyle
+intervention consisting of a physical activity or physical activity +
+diet. The main finding was a \~58% risk reduction in the incidence of
+type 2 diabetes in the lifestyle intervention group vs. metformin group
 
 ```{r}
+#| echo: false
+
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -84,6 +97,8 @@ adoption and sustainability over time were some of the challenges to the
 effectiveness of these prevention efforts
 
 ```{r}
+#| echo: false
+
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -106,25 +121,29 @@ digraph {
 ")
 ```
 
-## Motivations for running this course:
+## Motivations for running this course
 
--   Methods for conducting mediation analysis are used incorrectly. A
-    recent systematic review of the reporting quality of studies
-    applying mediation analysis showed that most of the studies had
-    incomplete reporting [@rrn_systematic_2022]. This might impact both
-    reproducibility and translation into practice.
+### Methods for conducting mediation analysis are used incorrectly
 
--   The methodological framework for conducting mediation analysis
-    evolved rapidly in recent years. Therefore, most applied examples
-    are outdated in mediation analysis methods. A scoping review found
-    that between 2015 to 2019 only 29.3% of studies using mediation
-    analysis used modern mediation analysis methods
-    [@rijnhart_mediation_2021].
+A recent systematic review of the reporting quality of studies applying
+mediation analysis showed that most of the studies had incomplete
+reporting [@rrn_systematic_2022]. This might impact both reproducibility
+and translation into practice.
 
-::: callout-note \## Before moving on to the first exercise. ##Spend 5
-minutes talking to your neighbour and discuss your own motivations for
-participating in this course. Consider the different motivations behind
-conducting mediation analysis.
+### The methodological framework for conducting mediation analysis evolved rapidly in recent years
+
+Therefore, most applied examples are outdated in mediation analysis
+methods. A scoping review found that between 2015 to 2019 only 29.3% of
+studies using mediation analysis used modern mediation analysis methods
+[@rijnhart_mediation_2021].
+
+::: callout-note
+## Before moving on to the first exercise
+
+Spend 5 minutes talking to your neighbour and discuss your own
+motivations for participating in this course. Consider the different
+motivations behind conducting mediation analysis.
+:::
 
 ::: callout-note
 ## Exercise: Small groups work. "Understanding different study designs". Duration:30 minutes
@@ -143,7 +162,7 @@ Paper: [Shoer et al.
 
 -   read the abstract
 -   read section 'Mediation analysis' under 'Methods'
--   read section 'The microbiome mediates the diet’s effect' under
+-   read section 'The microbiome mediates the diet's effect' under
     'Results'
 -   try to understand Fig. 4.
 

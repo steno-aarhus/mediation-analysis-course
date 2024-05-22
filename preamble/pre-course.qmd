@@ -22,6 +22,8 @@ registration on the morning of the first day of the course.
 Here's a quick overview of the tasks you need to do. Specific details
 about them are found as you work through this section.
 
+<!-- -   switch positions of the tasks -->
+
 1.  Read the learning objectives in @sec-learning-objectives
 2.  Install the necessary programs in @sec-intall-r-packages
 3.  Download the data or the repository in @sec-download-data
@@ -104,6 +106,8 @@ use:
 #install.packages("name-of-package")
 
 ```
+
+<!-- -   show how to install CMAverse via devtools -->
 
 ## Download the data {#sec-download-data}
 
