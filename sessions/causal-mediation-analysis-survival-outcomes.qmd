@@ -9,22 +9,16 @@ Coding part - Daniel Teaching concepts - Jie (30 min)
 # Time-to-event outcomes
 
 Survival time and mortality are major focus in healthcare research.
-There are many studies conducting mediation analyses with time-to-event
-outcomes. Survival analysis allows investigators to study these
-important outcomes with appropriate consideration for variable follow-up
-times, censoring, and competing risks. For example, it was reported that
-first and second-generation antipsychotics medication had higher
-mortality than placebo in older adults. To disentangle the mechanisms by
-which first- and second-generation antipsychotics increase mortality,
-Jackson et al. applied causal mediation analysis to quantify the
-contribution of various medical events to the mortality who initiate
-first- versus second-generation antipsychotics. It was found that 9% of
-the mortality difference might be explained by stroke, ventricular
-arrhythmia, myocardial infarction, and pneumonia (Jackson). Another
-study examined the development in socioeconomic disparity in stroke
-progression (e.g., 30-day mortality and 30-day readmission), and the
-mediation role of the quality of early stroke care using Danish register
-data.
+There are many studies conducting mediation analyses with
+**time-to-event outcomes**. Survival analysis allows investigators to
+study these important outcomes with appropriate consideration for
+variable follow-up times, censoring, and competing risks.
+
+For example, a study investigated the effect of socioeconomic status
+(SES) on the survival time of cancer patients and how much cancer stage
+mediated the effect. They found the effect of SES on survival time was
+partially mediated by stage diagnosis (e.g., explaining 12% for lung
+cancer)
 
 ```{r}
 # Creating The causal diagram for a mediation model
@@ -45,40 +39,47 @@ digraph {
 }")
 ```
 
+::: callout-note
 In earlier session,we have been familiar with the counterfactual
 concepts in causal mediation:
 
--   $Y_i(a, m)$ is the outcome achieved for person i if, possibly
+-   $Yi(a, m)$ is the outcome achieved for person i if, possibly
     contrary to fact, exposure had been set to a and mediator to m.
 
--   $M_i(a)$ is the mediator achieved for person i if, possibly contrary
+-   $Mi(a)$ is the mediator achieved for person i if, possibly contrary
     to fact, exposure had been set to a.
 
-The counterfactual variable Yi (1, m) corresponds to the death time
-observed in a double-intervention randomized trial where early
-intervention had been used and secondary medication set to m. Likewise,
-the counterfactual variable Mi (1) is the secondary medication observed
-in a single-intervention randomized trial where early intervention had
-been used. One can combine the two counterfactuals, yielding so-called
-nested counterfactuals defined as Y (a, M (a*)). By introducing the
-nested counterfactual E\[Y (a, M (a\*))\] for a ≠ a* we can give a
-precise mathematical definition of mediation. Once you have grasped the
-core builds on comparing distributions of nested counterfactuals, these
-effects can just as easily be expressed on other scales than the
-averages. For a **survival outcome**, the outcome of interest will be
-survival time (SV). - SV (t) = P(V ≥ t) the survival function at time
-t - SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
-covariates C - λV (t) : the hazard - λV (t\|c) conditional hazard at
-time t
+One can combine the two counterfactuals, yielding so-called nested
+counterfactuals defined as
 
-If we consider Cox survival model:
-$λT (t | a, m, c) = λT (t | 0, 0, 0)eγ1a+γ2m+γ3am+γ$
+-   $Y(a, M (a\*)$.
 
-Then the total effect could be decomposed into direct and indirect
-effects on the log-hazard scale as follows:
+By introducing the nested counterfactual for a ≠ a\* we can give a
+precise mathematical definition of mediation.
+:::
 
-$log{λTaMa(t|c)}− log{λTaMa∗(t|c)}= (γ2β1 + γ3β1a)(a − a∗)$
-$log{λTaMa*(t|c)}− log{λTa*Ma∗(t|c)} = {(γ1+γ3(β0+β1a*+β'2c)γ2σ2)}(a-a*)+0.5γ3σ2(a2-a*2)$
+Once you have grasped the core builds on comparing distributions of
+nested counterfactuals, these effects can just as easily be expressed on
+other scales than the averages.
+
+The Cox proportional hazards model is commonly used for dealing with
+survival data in medical literature and can explain multiplicative
+effects under the different effect scale in mediation analysis \[20,
+21\]. Cox regression estimates the **hazard ratios** and the values were
+then used to determine the effect of the mediator variable between the
+exposure and the survival time of outcome.
+
+For a **survival outcome**, the outcome of interest will be survival
+time (SV).
+
+-   SV (t) = P(V ≥ t) the survival function at time t
+
+-   SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
+    covariates C
+
+-   λV (t) : the hazard
+
+-   λV (t\|c): conditional hazard at time
 
 ## ESTIMATING NATURAL EFFECTS MODELS
 
