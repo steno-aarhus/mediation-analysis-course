@@ -1,17 +1,27 @@
 # Day 1: Group work
 
-```{r}
-library(here)
-```
+::: callout-note
+# Objective of this session
+
+In this session, We will get hands on practice using the framingham
+dataset. - Conduct mediation analysis using the traditional approaches
+
+-   Conduct mediation analysis using the 'mediaiton' R package
+
+-   Understanding summary output with binary outcome variable
+
+-   The limitations of the traditional approaches
+:::
 
 For the exercises, we will use the Framingham dataset.
 
-```{r}
-framingham <- read.csv(here::here("data", "frmgham2.csv"))
-```
+First, load the dataset and take a few minutes to explore the variables
+in the dataset.
 
-The overall aim of the cohort study was to investigate effect of obesity
-on the risk of cardiovascular disease (CVD).
+```{r}
+library(here)
+load(here::here("data/frmghamdata.RData"))
+```
 
 ## Variables
 
@@ -22,32 +32,44 @@ ncol(framingham)´.
 str(framingham)
 ```
 
+## Research question
+
+In this exercise, we will investigate the effect of obesity on the risk
+of cardiovascular disease (CVD), and how much this relation is mediated
+by high blood pressure. **Mediation analysis** could help us answer this
+research question.
+
 For the exercise on day 1, we will work with the following variables:
 
 -   socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high
     SES)
+-   sysbp = systolic blood pressure (continous)
 -   smoke = smoking status (binary: 0 = no prenatal smoking, 1 =
     prenatal smoking)
 -   educ = education ()
 -   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
 -   CVD= (binary: 0=no, 1=yes).
--   obesity (binary: 0=normal, 1=obesity)\*
+-   obesity (binary: 0=normal, 1=obesity)
 
-There are other variables in the dataset, please take a few minutes to
-explore the dataset. Before we start, let's think about the research
-question and draw a directed acyclic graphs. You can either draw by hand
-or use daggity (https://www.dagitty.net/).
+Note: in this example, the outcome of interest is the prescence of CVD,
+which is a binary variable.
+
+Before we start, let's think about the research question and draw a
+directed acyclic graphs. You can either draw by hand or use daggity
+(https://www.dagitty.net/).
 
 [Address the following questions]{.underline}:
 
-1.  Estimate the conditional treatment effect of obesity on the
-    prevalence of CVD (conditional on SES, or other variables based on
-    DAG).
+1.  Estimate the relationship between obesity and blood pressure (fit
+    the mediator model).
 
-2.  Estimate the relationship between obesity and blood pressure.
+2.  Estimate the conditional treatment effect of obesity on the
+    prevalence of CVD (conditional on SES, or other confounding factors
+    based on DAG).
 
-3.  Fit the outcome model, with obesity as exposure, and blood pressure
-    as outcome.
+3.  Estimate the effect of blood pressure on the prevalence of CVD,
+    conditional on obesity. (conditional on SES, or other confounding
+    factors based on DAG).
 
 4.  Calculate the direct effect and indirect effect using the product
     method and difference method, and compare results from the two
@@ -57,3 +79,4 @@ or use daggity (https://www.dagitty.net/).
     **mediation** package.
 
 6.  Discuss the limitations of the traditional approach.
+
