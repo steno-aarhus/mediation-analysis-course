@@ -76,9 +76,9 @@ work, discussions and networking activities.
 | Time        | May 29                                                                                                         |
 |-------------|----------------------------------------------------------------------------------------------------------------|
 | 9.00-10.15  | Recap from yesterday + Causal mediation analysis: estimation (DI, JZ)                                          |
-| 10.30-12.00 | Causal mediation analysis: estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) |
+| 10.30-12.00 | Causal mediation analysis: Estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) |
 | 12.00-13.00 | Lunch                                                                                                          |
-| 13.00-14.30 | Causal mediation analysis: sensitivity analyses (OS)                                                           |
+| 13.00-14.30 | Causal mediation analysis: Sensitivity analyses (OS) + Reporting guidelines (DI)                               |
 | 14.30-15.00 | Coffee break                                                                                                   |
 | 15.00-16.00 | Modern mediation analysis - part 1 (NH, ID)                                                                    |
 | 16.00-16.15 | Coffee break                                                                                                   |
@@ -95,7 +95,7 @@ work, discussions and networking activities.
 | 12.00-13.00 | Lunch                                                                                       |
 | 13.00-14.30 | Modern mediation analysis - part 4 (NH, ID) (stop at 14.00)                                 |
 | 14.30-15.00 | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00) |
-| 15.00-16.00 | Code-along with NetCoupler (DI, OS) + De-brief, evaluation (15.15-16.00) (DI, OS)           |
+| 15.00-16.00 | Code-along with NetCoupler (CW, JZ) + De-brief, evaluation (15.15-16.00) (OS)               |
 :::
 
 ::: callout-note

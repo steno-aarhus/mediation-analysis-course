@@ -1,5 +1,7 @@
 # Day 2: Group work
 
+<!-- conduct causal mediation analysis, interpretation, conduct sensitivity analysis, interpretation, reporting according to guidelines - Jie will take first look  -->
+
 ::: callout-note
 # Objective of this session
 

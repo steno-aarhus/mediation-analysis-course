@@ -22,12 +22,10 @@ registration on the morning of the first day of the course.
 Here's a quick overview of the tasks you need to do. Specific details
 about them are found as you work through this section.
 
-<!-- -   switch positions of the tasks -->
-
 1.  Read the learning objectives in @sec-learning-objectives
 2.  Install the necessary programs in @sec-intall-r-packages
-3.  Download the data or the repository in @sec-download-data
-4.  Read the Code of Conduct @sec-code-of-conduct.
+3.  Read the Code of Conduct @sec-code-of-conduct
+4.  Download the data or the repository in @sec-download-data
 
 Check each section for exact details on completing these tasks.
 
@@ -103,11 +101,29 @@ use:
 #| eval: false
 #| results: asis
 
-#install.packages("name-of-package")
+install.packages("name-of-package")
 
 ```
 
-<!-- -   show how to install CMAverse via devtools -->
+If you have issues with the CMA package, you could also try this:
+
+```{r}
+#| echo: true
+#| eval: false
+#| results: asis
+
+install.packages("devtools")
+
+devtools::install_github("BS1125/CMAverse")
+
+
+```
+
+## Code of conduct {#sec-code-of-conduct}
+
+We have a [Code of Conduct](https://guides.rostools.org/conduct.html).
+If you haven't read it, **read it now**. This course is a supportive and
+safe environment for learning, so this Code of Conduct is important.
 
 ## Download the data {#sec-download-data}
 
@@ -116,6 +132,9 @@ exercises, you will need to use the datasets we have created.
 
 You can either download the entire repository (recommended) or simply
 download the data from our github.
+
+We recommend that you do not do this before Monday, May 27, in the
+afternoon as we will making updates until then.
 
 ### Download repository
 
@@ -133,14 +152,9 @@ download the data from our github.
 
 ### Download the data
 
-If you want to only download the course data. You can go to here for the
-Framingham data and here for the NHANES data. Click "download raw file"
-in the top right corner.
-
-## Code of conduct {#sec-code-of-conduct}
-
-We have a [Code of Conduct](https://guides.rostools.org/conduct.html).
-If you haven't read it, **read it now**. This course is a supportive and
-safe environment for learning, so this Code of Conduct is important.
+If you want to only download the course data. You can go to
+[here](https://github.com/steno-aarhus/mediation-analysis-course/tree/main/data)
+for the Framingham, NHANES and simulated data. Click "download raw file"
+in the top right corner after you have clicked on the specific file.
 
 See you at the course!
