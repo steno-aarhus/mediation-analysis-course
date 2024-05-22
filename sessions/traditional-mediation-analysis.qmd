@@ -16,6 +16,8 @@ a third variable-mediating variable (M). Thus, mediation analyses not
 only answer whether two variables are related, but also **why and how**.
 This can be visualized in the following figure:
 
+<!--make models as Grviz  -->
+
 ![Basic Model](/images/mediation_basic.PNG)
 
 ![Basic Mediation Model](/images/mediation_basic2.PNG)
@@ -39,10 +41,10 @@ Baron&Kenny).
 Here is the standard Equations for Mediator and Outcome (for the case of
 a continuous mediator and a continuous outcome)
 
--   ( E(M\|A=a, C=c) = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
--   ( E(Y\|A=a, M=m, C=c) = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
-    $\theta4c$ (1.2)
--   ( E(Y\|A=a, C=c) = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (1.3)
+-   E(M\|A=a, C=c) = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (3.1)
+-   E(Y\|A=a, M=m, C=c) = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
+    $\theta4c$ (3.2)
+-   E(Y\|A=a, C=c) = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (3.3)
 
 ## Empirical example in nutritional epidemiology
 
@@ -96,20 +98,21 @@ Specifically, we want to understand how much a new inflammatory
 biomarker explains the relation between red meat intake and glucose
 levels.
 
-The variables used in the dataset: 
--    exposure of interest (x): red meat
-intake: (continuous variable, grams per day) 
+The variables used in the dataset:
 
--    outcome (y): plasma
-fasting glucose (continuous variable, ) 
+-   exposure of interest (x): red meat intake: (continuous variable,
+    grams per day)
 
--    mediator (m): a new inflammatory biomarker (continuous variable)
+-   outcome (y): plasma fasting glucose (continuous variable, )
 
-Note that the example is created to demonstrate the methods,and there is no clinical relevance of the results.
+-   mediator (m): a new inflammatory biomarker (continuous variable)
+
+Note that the example is created to demonstrate the methods,and there is
+no clinical relevance of the results.
 
 Four demographic variables will be included in the analyses: age,
 gender, education, and smoking. We assume that adjusting for these four
-confounders is sufficient to block the backdoor paths. Further
+confounding is sufficient to block the backdoor paths. Further
 discussion on confounding adjustment will be covered in the following
 session. For the convenience of analysis, I have transformed the
 mediator (m) and outcome variable (y) so that they follow a normal
@@ -119,20 +122,22 @@ distribution.
 ## Method 1: Baron & Kenny (the product method)
 
 According to Baron and Kenny (1986), the following criteria need to be
-satisfied for a variable to be considered a mediator: -(i) The exposure
-should be associated with the mediator; -(ii) in the model for the
-outcome that includes both the exposure and mediator, the mediator
-should be associated with the outcome; -(iii)in the model for the
-outcome that includes only the exposure, the exposure should be
-associated with the outcome; -(iv)when controlling for the mediator, the
-association between the exposure and outcome should be reduced, with the
-strongest demonstration of mediation occuring when the path from the
-exposure to the outcome, when controlling for the mediator is zero.
+satisfied for a variable to be considered a mediator:
+
+1.  The exposure should be associated with the mediator;
+2.  Tn the model for the outcome that includes both the exposure and
+    mediator, the mediator should be associated with the outcome;
+3.  Tn the model for the outcome that includes only the exposure, the
+    exposure should be associated with the outcome;
+4.  When controlling for the mediator, the association between the
+    exposure and outcome should be reduced, with the strongest
+    demonstration of mediation occurring when the path from the exposure
+    to the outcome, when controlling for the mediator is zero.
 
 The following shows the basic steps for mediation analysis suggested by
 Baron & Kenny.
 
-## Step1-Estimate the relationship between X on M (path A)
+### Step 1: Estimate the relationship between X on M (path A)
 
 That is to check the relation between exposure (red meat) and the
 mediator (inflammatory biomarker), which corresponds to criteria (i). A
@@ -160,7 +165,7 @@ fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fita)
 ```
 
-## Step2- Estimate the relationship between M on Y controlling for X (pathB)
+### Step 2: Estimate the relationship between M on Y controlling for X (path B)
 
 That is to build the model between inflammatory biomarker and glucose
 levels, controlling for red meat intake. This step corresponds to
@@ -174,7 +179,7 @@ fitb <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
 summary(fitb)
 ```
 
-## Step 3-Estimate the relationship between X on Y-path C
+### Step 3: Estimate the relationship between X on Y-path C
 
 That is to build the model between red meat intake and glucose levels,
 without adjusting for inflammatory biomarker. The only difference
@@ -227,7 +232,7 @@ total_ma <- fitc$coefficients[2]
 total_ma
 ```
 
-## Method 2-Difference approach
+## Method 2: Difference approach
 
 The difference approach is more commonly used in epidemiologic domain.
 And the rational of this approach is to compare the effect of X on Y
@@ -258,14 +263,16 @@ and Y, we could proceed to the next step if we have a strong theoretical
 basis for their relationship.
 :::
 
-## Group work- 15 minutes
+::: callout-note
+## Group work - 15 minutes
 
--   Discuss with your group about the two tradiational approaches, did
+-   Discuss with your group about the two traditional approaches, did
     you get the same results?
 -   Discuss the scenarios under which there might be no significant
     association between X and Y.
+:::
 
-## Use mediation packages
+### Use mediation packages
 
 Now we have estimated the direct and indirect effect using the product
 and the difference methods.You might have noticed what you got so far
@@ -332,39 +339,19 @@ plot(results)
 For details of the mediate() package, please refer to
 (mediation_rpackage 2014).
 
-## What do traditional approach succeed and fail?
+## Limitations of the traditional approach
 
-When fulfill the criterias, simple tools like regression can be used to
-estimate a causal mediation effect.
+<!-- - put in DAG in context of example to discuss limitations -->
+
+-   Non-linearity and interactions
+-   multiple mediators
+
+## When can we use the traditional approach
+
+When fulfill the criteria, simple tools like regression can be used to
+estimate a causal mediation effect:
 
 -   no unmeasured confounding
 -   no exposure-mediator interaction
 -   linear relationship
 -   rare binary outcome
-
-<<<<<<< HEAD
-Go through the limitation of the traditional approach - Omar (15 min)
-- limitations of traditional approach
-- non-linearity
-- interactions
-- multiple mediators
-- confounding assumptions
-=======
-# Reporting the mediation
-
--   assumptions
--   introduction of dataset
--   difference and product method with code-along
--   linear outcome
--   binary outcome
-
-Go through the limitation of the traditional approach - Omar (15 min) -
-limitations of traditional approach - non-linearity - interactions -
-multi mediators
-
-# Limitations of the tradiational approach
-
-## Non-linearity and interactions
-
-## multiple mediators
->>>>>>> 5c273a3cb57ddc7c1988dbd898a9221835c36f2e
