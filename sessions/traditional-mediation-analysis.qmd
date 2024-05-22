@@ -279,10 +279,9 @@ need to specify which variable is an IV (treatment) and a mediator
 
 ```{r}
 # Fit mediator model
-lm_m <- lm(m ~ x + age + gender + education + smoke, data = nhanes)
 lm_m <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 # Fit outcome model
-lm_y <- lm(y ~ x + m + age + gender + education + smoke, data = nhanes)
+lm_y <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
 # Run mediation analysis
 results <- mediate(lm_m, lm_y, treat = "x", mediator = "m", boot = TRUE, sims = 500)
 summary(results)
