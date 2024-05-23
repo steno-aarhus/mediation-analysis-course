@@ -1,10 +1,11 @@
-# What is Mediation analyses?
+# What is Mediation analysis?
 
 ```{r}
 #| include: false
 library(here)
 library(DiagrammeR)
 library(tidyverse)
+library(dplyr)
 ```
 
 <!-- -   Teaching the concepts - Jie (75 min) -->
@@ -12,22 +13,59 @@ library(tidyverse)
 ::: callout-note
 # Objective of this session
 
-To learn how to conduct mediation analyses using the traditional
+To learn how to conduct mediation analysis using the traditional
 approaches, along with understanding the assumptions and limitations of
 the methods.
 :::
 
-The purpose of mediation analyses is to determine if the effect of an
+The purpose of mediation analysis is to determine if the effect of an
 independent variable (X) on a dependent variable (Y) can be explained by
-a third variable-mediating variable (M). Thus, mediation analyses not
-only answer whether two variables are related, but also **why and how**.
-This can be visualized in the following figure:
+a third variable-mediating variable (M). Thus, mediation analysis not
+only answers whether two variables are related, but also **why and
+how**. This can be visualized in the following figure:
 
 <!--make models as Grviz  -->
 
-![Basic Model](/images/mediation_basic.PNG)
+```{r echo=FALSE}
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'X']
+    Y [label = 'Y']
+  edge [minlen = 1.5]
+    X->Y [label = 'c*', xlabel = 'c']
+    X->M [taillabel = 'a']
+    M->Y [label = 'b']
+  { rank = same; X; Y }
+  { rank = min; M;}
+}")
+```
 
-![Basic Mediation Model](/images/mediation_basic2.PNG)
+```{r echo=FALSE}
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'X']
+    M [label = 'M']
+    Y [label = 'Y']
+  edge [minlen = 1.5]
+    X->Y [label = 'c*', xlabel = 'c']
+    X->M [taillabel = 'a']
+    M->Y [label = 'b']
+  { rank = same; X; Y }
+  { rank = min; M;}
+}")
+```
+
+<!-- ![Basic Model](/images/mediation_basic.PNG) -->
+
+<!-- ![Basic Mediation Model](/images/mediation_basic2.PNG) -->
 
 -   the total effect --\>c, that is the total effect of the independent
     variable on the dependent variable
@@ -41,9 +79,11 @@ The most widely used two traditional approaches to mediation analysis
 are **the difference method** and **the product method** (also known as
 Baron&Kenny).
 
-**the product method** - indirect effect=a\*b
+-   mediation effect=a\*b **the product method**
+-   mediation effect=c-c' **the difference method**
 
-**the difference method** - indirect effect=c-c'
+Note: The terms 'mediation effect' and 'indirect effect' are used
+synonymously.
 
 Here is the standard Equations for Mediator and Outcome (for the case of
 a continuous mediator and a continuous outcome)
@@ -58,20 +98,25 @@ a continuous mediator and a continuous outcome)
 In this session, we will use an example to address a question about
 mediation in nutritional epidemiology using both methods.
 
-It has been suggested that red meat is associated with higher blood
-glucose levels and a greater risk of Type 2 diabetes (T2D). However, we
-might be more interested in the mechanisms behind this relationship.
-Does red meat intake influence blood glucose levels directly or through
-other mechanisms (e.g., inflammation)?
+It has been suggested that red meat consumption is associated with
+higher blood glucose levels and an increased risk of Type 2 diabetes
+(T2D). However, our interest lies in understanding the underlying
+mechanisms of this relationship. Does red meat intake directly influence
+blood glucose levels, or does it act through intermediary factors, such
+as inflammation? Let's imagine there exists a hypothetical inflammatory
+biomarker that serves as a mediator between red meat consumption and
+blood glucose levels. Therefore, our research question aims to identify
+and quantify the mediation effect mediated by this hypothetical
+biomarker.
 
 > Does greater consumption of red meat lead to elevated levels of blood
 > glucose by mediating specific inflammation biomarkers?
 
 Based on the literature, we hypothesize that higher red meat intake is
 associated with elevated inflammatory levels, which, in turn, increase
-blood glucose, as depicted in the figure below.
+blood glucose, as depicted in the figure below.s
 
-```{r}
+```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -82,9 +127,9 @@ digraph {
     M [label = 'Inflammation']
     Y [label = 'Blood glucose']
   edge [minlen = 1.5]
-    X->Y [label = 'Path C*', xlabel = 'Path C']
-    X->M [taillabel = 'Path A']
-    M->Y [label = 'Path B']
+    X->Y [label = 'c*', xlabel = 'c']
+    X->M [taillabel = 'a']
+    M->Y [label = 'b']
   { rank = same; X; Y }
   { rank = min; M;}
 }")
@@ -96,28 +141,21 @@ digraph {
 We'll explore the relationship between red meat intake and glucose
 levels in the National Health and Nutrition Examination Survey (NHANES)
 dataset, which has been modified for this course with simulated
-variables. NHANES is a program of studies designed to assess the health
-and nutritional status of adults and children in the United States. The
-survey includes extensive data collected through interviews and physical
-examinations.
-
-Specifically, we want to understand how much a new inflammatory
-biomarker explains the relation between red meat intake and glucose
-levels.
+variables.
 
 The variables used in the dataset:
 
--   exposure of interest (x): red meat intake: (continuous variable,
+-   exposure of interest (a): red meat intake: (continuous variable,
     grams per day)
 
--   outcome (y): plasma fasting glucose (continuous variable, )
+-   outcome (y): plasma fasting glucose (continuous variable)
 
 -   mediator (m): a new inflammatory biomarker (continuous variable)
 
 Note that the example is created to demonstrate the methods,and there is
 no clinical relevance of the results.
 
-Four demographic variables will be included in the analyses: age,
+Four demographic variables will be included in the analysis: age,
 gender, education, and smoking. We assume that adjusting for these four
 confounding is sufficient to block the backdoor paths. Further
 discussion on confounding adjustment will be covered in the following
@@ -125,6 +163,18 @@ session. For the convenience of analysis, I have transformed the
 mediator (m) and outcome variable (y) so that they follow a normal
 distribution.
 :::
+
+```{r}
+# first load the dataset
+nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
+nhanes <- nhanes %>%
+  select(
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
+    a=total_redmeat,            #this is the exposure
+    m=magic_biomarker,          #this is the mediator
+    y=blood_glucose) %>%        #this is the outcome
+    na.omit()
+```
 
 ## Method 1: Baron & Kenny (the product method)
 
@@ -144,7 +194,7 @@ satisfied for a variable to be considered a mediator:
 The following shows the basic steps for mediation analysis suggested by
 Baron & Kenny.
 
-### Step 1: Estimate the relationship between X on M (path A)
+### Step 1: Estimate the relationship between X on M (path a)
 
 That is to check the relation between exposure (red meat) and the
 mediator (inflammatory biomarker), which corresponds to criteria (i). A
@@ -158,22 +208,7 @@ M.
 
 \$ (E(M\|A=a, C=c)\$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
 
-<!-- update variables names -->
-
 ```{r}
-# first load the dataset
-nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
-library(tidyverse)
-library(dplyr)
-
-nhanes <- nhanes %>%
-  select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
-    a=total_redmeat,            #this is the exposure
-    m=magic_biomarker,          #this is the mediator
-    y=blood_glucose) %>%        #this is the outcome
-    na.omit()
-
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(fita)
 ```
@@ -370,4 +405,3 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
-
