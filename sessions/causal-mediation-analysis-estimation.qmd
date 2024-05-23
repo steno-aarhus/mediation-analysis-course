@@ -2,7 +2,6 @@
 
 ```{r}
 #| include: false
-
 library(here)
 library(DiagrammeR)
 library(tidyverse)
@@ -128,17 +127,15 @@ account in another way.
 <!-- Jie will update and put in previous section -->
 
 ```{r}
-load(here::here("data/nhanes_dataset.RData"))
+nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
 # only keeping the variables we need for the example and removing missing variables
-
 nhanes <- nhanes %>%
-  select(id = seqn, w1 = age, w2 = gender, w3 = education, a = x, y, m) %>%
-  na.omit() %>%
-  mutate(
-    a = a + 50, 
-    y = y - 50,
-    a = a/65 # scale to per 65 g/day
-  )
+  select(
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
+    a=total_redmeat,            #this is the exposure
+    m=magic_biomarker,          #this is the mediator
+    y=blood_glucose) %>%        #this is the outcome
+    na.omit()
 ```
 
 We can now run a model for the mediator only adjusting for a single
@@ -146,17 +143,17 @@ variable. In practice you would adjust for many more variables to
 satisfy the confounding assumptions.
 
 ```{r}
-lm_m <- lm(m ~ a + w1, data = nhanes)
+lm_m <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 summary(lm_m)
 ```
 
-Here, we see that higher red meat intake is associated with lower CRP
-levels.
+Here, we see that higher red meat intake is associated with higher
+inflammatory biomarker.
 
 Now, we run the model for the outcome, including an interaction.
 
 ```{r}
-lm_y <- lm(y ~ a + m + a:m + w1, data = nhanes)
+lm_y <- lm(y ~ a + m + a:m + w1 + w2 + w3 + w4, data = nhanes)
 
 summary(lm_y)
 ```
@@ -199,8 +196,8 @@ nhanes %>%
 median_m <- round(median(nhanes$m), digits = 1)
 ```
 
-In this example we will set it to the median which is a CRP at
-`r median_m` which is a low level.
+In this example we will set it to the median which is inflammatory
+biomarker at `r median_m` which is a low level.
 
 ```{r}
 CDE_m <- (lm_y$coefficients[2] + lm_y$coefficients[5] * median_m) * (1 - 0)
@@ -350,8 +347,8 @@ PM <- TNIE / TE
 as.numeric(PM) * 100
 ```
 
-6.6% of the association between red meat and blood glucose is mediated
-by M, inflammation. Not a lot.
+25% of the association between red meat and blood glucose is mediated by
+M, inflammation.
 
 ### R package example for causal mediation analysis - CMAverse-package
 
@@ -421,168 +418,129 @@ statistically significant associations.
 
 ## G-computation-based approach
 
-### Why do we need g-computation approach
+::: callout-note
+# Recall no-confounding assumption of causal mediation
 
--   exposure-induced mediator-outcome confounding
+Assumptions i and ii could be satisfied in randomization trials. The
+assumption ii and iv might be problematic, particularly in observational
+studies.
+
+-   no exposure-mediator confouding
+-   no mediator-outcome confouding
+-   no exposure-outcome confouding
+-   no exposure-induced mediator-outcome confounding
+
+Assumption iv is also called post-treatment confounding, or treatment
+induced mediator-outcome confounding in randomization trials.
+:::
+
+Like the figure below, L is on the pathway between X and Y, also severs
+as a confounder of M and Y. When considering the effect on Y of changes
+to X via a specific mediator M, the presence of L is challenging and
+regression-based methods could no longer handle this situation.
+
+```{r }
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X 
+    M 
+    L
+    Y 
+  edge [minlen = 1.5]
+    X->Y 
+    X->L
+    L->Y
+    L->M
+    X->M 
+    M->Y 
+    W->X
+    W->M
+    W->Y
+  { rank = same; X; M; Y }
+  { rank = min; L;}
+  { rank = max; W;}
+}")
+```
+
+The G-computation algorithm was first introduced by Robins (refer) for
+estimating time-varying exposure causal in the presence of time-varying
+confounders of exposure effects. When estimating total effect,
+g-computation is generally equivalent to
+inverse-probability-of-treatment weighting (IPTW). But in
+high-dimensional settings, g-computation is more powerful. G-computation
+(using g-formula) could also provide an intuitive method for decomposing
+the total effect.
+
+```{r }
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X 
+    M1
+    M2
+    M3
+    L1
+    L2
+    L3
+    Y 
+  edge [minlen = 1.5]
+    X->Y 
+    X->M1
+    M1->M2
+    M2->M3
+    M3->Y 
+    X->L1
+    L1->L2
+    L2->L3
+    L3->Y
+    L1->M1
+    L1->M2
+    L2->M2
+    L2->M3
+    L3->M3
+    W->X
+    W->M1
+    W->M2
+    W->M3
+    W->Y
+  { rank = same; X; M1; M2; M3; Y }
+  { rank = min; L1;L2;L3;}
+  { rank = max; W;}
+}")
+```
 
 ### Example
 
-Under the above mentioned assumptions, we can also calculate the
-estimate using the G-computation approach.
-
-The approach here is more manual but we also have more flexibility in
-the models with use.
-
-We will test this out using the Framingham dataset. Our research
-question is:
-
-> Does obesity lead to higher CVD risk by increasing blood pressure?
-
-We load the data, rename the variables, make a few categorical variables
-and only keep the variables we need.
+I will demonstrate how to conduct g-computation in a simulated dataset.
 
 ```{r}
-framingham <- read.csv(here::here("data", "frmgham2.csv"))
-
-framingham <- framingham %>%
-  select(
-    id = RANDID,
-    BMI,
-    SYSBP,
-    y = CVD,
-    w1 = SEX,
-    w2 = CURSMOKE,
-    w3 = AGE
-  ) %>%
-  na.omit() %>%
-  mutate(
-    a = case_when(
-      BMI >= 25 ~ 1,
-      TRUE ~ 0
-    ),
-    m = case_when(
-      SYSBP >= 140 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
-  select(-BMI, -SYSBP)
+set.seed(1)
+expit <- function(x) exp(x)/(1+exp(x))
+n <- 10000
+w <- rnorm(n, mean = 1, sd = 0.2)
+a <- rbinom(n, 1, expit(0.3 + 0.5*w))
+l <- rnorm(n, mean = 1 + a + 0.5*w, sd = 0.5)
+m <- rbinom(n, 1, expit(1 + 2*a - l + 2*w))
+y <- rbinom(n, 1, expit(0.3*a + 0.8*m + 0.5*a*m - 0.3*l + 0.4*w))
+data <- data.frame(a, m, y, w, l)
 ```
 
-First, we fit the outcome regression (including interaction terms).
+Then fit models using the g-formula apparoach.
 
 ```{r}
-or_fit <- glm(y ~ a + m + w1 + w2 + a * m + m * w1 + w3,
-  family = binomial(), data = framingham
-)
-summary(or_fit)
-```
+res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure = "a",
+                 mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
+                 mreg = list("logistic"), yreg = "logistic",
+                 postcreg = list("linear"),
+                 astar = 0, a = 1, mval = list(1), 
+                 estimation = "imputation", inference = "bootstrap", nboot = 2)
 
-Based on the outcome regression model, we can predict Y under different
-scenarios. We first make a function that predict the outcome with
-different inputs for A and M. Then we use the function to predict the
-out with different combinations of A and M.
-
-```{r}
-get_EY_a_m_Wi <- function(full_data, or_fit, A, M) {
-  data_Aa_Mm_Wi <- full_data
-  data_Aa_Mm_Wi$a <- A
-  data_Aa_Mm_Wi$m <- M
-  predict(or_fit, newdata = data_Aa_Mm_Wi, type = "response")
-}
-## run prediction, for different scenarios (a=1 or 0, and m=1 or 0)
-EY_A0_M0_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 0, M = 0)
-EY_A0_M1_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 0, M = 1)
-EY_A1_M0_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 1, M = 0)
-EY_A1_M1_Wi <- get_EY_a_m_Wi(framingham, or_fit, A = 1, M = 1)
-```
-
-Next, we will run the mediation model. Also including interaction terms.
-
-```{r}
-med_fit <- glm(m ~ a * w1 + w1 * w2, family = binomial(), data = framingham)
-```
-
-We now make a new function that based on the values of A, run the
-prediction models of M. This is the nested counterfactual.
-
-```{r}
-# estimates of Pr(M = m | A = a, W = W_i), predict m based on a
-get_Pm_a_Wi <- function(full_data, med_fit, A, M) {
-  data_Aa_Wi <- full_data
-  data_Aa_Wi$a <- A
-  p <- predict(med_fit, newdata = data_Aa_Wi, type = "response")
-  if (M == 1) {
-    p
-  } else {
-    1 - p
-  }
-}
-## similary, we get the predicted values of m for different scenarios
-PM0_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 0)
-PM1_A0_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 0, M = 1)
-PM0_A1_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 1, M = 0)
-PM1_A1_Wi <- get_Pm_a_Wi(framingham, med_fit, A = 1, M = 1)
-```
-
-Finally, we calculate the predicted Y on the estimates.
-
-```{r}
-# E(E(Y | A = 1, M, W) | A = 1, W)
-EY1M1_Wi <- EY_A1_M1_Wi * PM1_A1_Wi + EY_A1_M0_Wi * PM0_A1_Wi
-# E(E(Y | A = 0, M, W) | A = 1, W)
-EY0M1_Wi <- EY_A0_M1_Wi * PM1_A1_Wi + EY_A0_M0_Wi * PM0_A1_Wi
-# E(E(Y | A = 1, M, W) | A = 0, W)
-EY1M0_Wi <- EY_A1_M1_Wi * PM1_A0_Wi + EY_A1_M0_Wi * PM0_A0_Wi
-# E(E(Y | A = 0, M, W) | A = 0, W)
-EY0M0_Wi <- EY_A0_M1_Wi * PM1_A0_Wi + EY_A0_M0_Wi * PM0_A0_Wi
-
-# Finally, we average over distribution of W to get effect estimate
-# estimate of E[Y(1, M(1))]
-E_Y1M1 <- mean(EY1M1_Wi)
-# estimate of E[Y(0, M(1))]
-E_Y0M1 <- mean(EY0M1_Wi)
-# estimate of E[Y(1, M(0))]
-E_Y1M0 <- mean(EY1M0_Wi)
-# estimate of E[Y(0, M(0))]
-E_Y0M0 <- mean(EY0M0_Wi)
-```
-
-Now, you can freely calculate the natural direct effect and indirect
-effect:
-
-```{r}
-
-# changing the intervention, keeping the mediator the same
-PNDE_gcomp <- round(exp(E_Y1M0 - E_Y0M0), digits = 2)
-
-TNDE_gcomp <- round(exp(E_Y1M1 - E_Y0M1), digits = 2)
-
-# change the mediator keeping intervention the same
-PNIE_comp <- round(exp(E_Y0M1 - E_Y0M0), digits = 2)
-
-TNIE_comp <- round(exp(E_Y1M1 - E_Y1M0), digits = 2)
-
-est_table <- data.frame(
-  PNDE = PNDE_gcomp,
-  TNDE = TNDE_gcomp,
-  PNIE = PNIE_comp,
-  TNIE = TNIE_comp
-)
-est_table
-```
-
-```{r}
-#| eval: false
-library(CMAverse)
-
-res_rb <- cmest(
-  data = df, model = "gformula", outcome = "y", exposure = "a",
-  mediator = "m", basec = c("w"), EMint = TRUE,
-  mreg = list("linear"), yreg = "linear",
-  astar = 5, a = 7, mval = list(5),
-  estimation = "paramfunc", inference = "boot"
-)
-
-summary(res_rb)
-
+summary(res_gformula)
 ```
