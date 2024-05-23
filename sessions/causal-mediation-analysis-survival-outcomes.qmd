@@ -8,19 +8,26 @@ Coding part - Daniel Teaching concepts - Jie (30 min)
 
 # Time-to-event outcomes
 
-Survival time and mortality are major focus in healthcare research.
 There are many studies conducting mediation analyses with
 **time-to-event outcomes**. Survival analysis allows investigators to
 study these important outcomes with appropriate consideration for
 variable follow-up times, censoring, and competing risks.
+Epidemiologists are particularly interested in understanding whether
+specific risk factors explain disease onset.
 
-For example, a study investigated the effect of socioeconomic status
-(SES) on the survival time of cancer patients and how much cancer stage
-mediated the effect. They found the effect of SES on survival time was
-partially mediated by stage diagnosis (e.g., explaining 12% for lung
-cancer)
+Take the red meat study for instance, we previously demonstrated higher
+red meat intake increased blood glucose. However, we might be even more
+interested in whether red meat intake increase the onset of type 2
+diabetes (T2D). If we have the diagnosis date or duration of T2D, we can
+conduct survival analyses on red meat and T2D onset.
 
-```{r echo=FA}
+Another example is the effect of risk factor on patient survival time. A
+study investigated the effect of socioeconomic status (SES) on the
+survival time of cancer patients and how much cancer stage mediated the
+effect. They found the effect of SES on survival time was partially
+mediated by stage diagnosis (e.g., explaining 12% for lung cancer)
+
+```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -28,8 +35,8 @@ digraph {
   graph []
   node [shape = plaintext]
     X [label = 'socioeconomic status']
-    M [label = 'quality of stroke care']
-    Y [label = 'stroke mortality']
+    M [label = 'stage diagnosis']
+    Y [label = 'cancer mortality']
   edge [minlen = 1.5]
     X->Y
     X->M
@@ -38,6 +45,29 @@ digraph {
   { rank = min; M;}
 }")
 ```
+
+::: callout-note
+## Could we use the traditional approach for time-to-event outcomes?
+
+So how to conduct causal mediation analysis for time-to-event outcomes?
+We introduced the difference and product methods for continuous and
+binary outcomes in previous session. It is tempting to run a linear
+regression model for the mediator and proportional hazard model for the
+outcome, then use product or difference method to estimate the direct
+effect and indirect effect.
+
+But similar as odds ratio, ''non-collaspsibility'' is a problem of the
+hazard ratio. (VanderWeele) Thus, use of Cox PH regression to
+approximately estimate indirect effects via difference or product of
+coefficients rests on the assumption that the outcome is rare (refer).
+Where the outcome is common, measures of the indirect effect or
+proportion mediated will be incorrect.
+
+To sum up, we could still use these approaches if certain criteria are
+fulfilled. Otherwise, we can use the product method to get an indication
+of whether there is mediation, but be aware that the estimate is not
+accurate.
+:::
 
 ::: callout-note
 In earlier session,we have been familiar with the counterfactual
@@ -77,72 +107,22 @@ time (SV).
 -   SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
     covariates C
 
--   λV (t) : the hazard
+-   λV (t) : the hazard at time t
 
--   λV (t\|c): conditional hazard at time
+-   λV (t\|c): conditional hazard at time t
 
 ## Assumptions of mediation analysis with a time-to-event outcome
 
 Similar as our context, mediation analysis with a time-to-event outcome
-have to satisfy below assumptions: - no unmeasured confounding of the
-exposure-outcome relation;
+have to satisfy below assumptions:
+
+-   no unmeasured confounding of the exposure-outcome relation;
 
 -   no unmeasured confounding of the mediator-outcome relation;
 
 -   no unmeasured confounding of the exposure-mediation relation;
 
 -   no exposure induced mediation-outcome confounding
-
-## Conduct mediation analysis with a time-to-event outcome
-
-So far, the survial mediation analyses was developed on a regression
-model. In particular, a NEM is a regression model for the nested
-counterfactual. Expressed as a generalized linear model (GLM), it
-becomes:
-
-$g(E[Y (a, M (a*))]) = α0 + α1a + α2a*$
-
-If, for instance, g is the logit function, then α1 would be the marginal
-natural direct effect log-OR.
-
-Estimation algorithms for NEMs are all derived under the assumptions
-listed in the preceding section, and build on the trick that first we
-duplicate the original data set, then we create an artificial exposure,
-A*, which takes on different values in the 2 replications of each
-observation. Finally, we use an auxiliary model to link the artificial
-observations (i.e., those where A ≠ A*) to the mediators, which is
-either done through weighting or through imputation. Once this is done,
-the NEM can be estimated by simply applying standard software applied to
-the extended data set and using both A and A\*, possibly along with C,
-as the model specification. This entire procedure has been automated and
-implemented in the R package medflex for any GLM type outcome model. In
-the following, we describe in detail how to estimate a NEM for a
-survival outcome with a multidimensional mediator. This is the situation
-we have in the illustrative case.
-
-::: callout-note
-## Could we use the traditional approach for time-to-event outcomes?
-
-So how to conduct causal mediation analysis for time-to-event outcomes?
-We introduced the difference and product methods for continuous and
-binary outcomes in previous session, also discuss the caveats of these
-approaches. It is still true these methods are ill-adapted to
-non-normally distributed continuous and/or censored variables, such as
-time-to-event outcomes \[Lois\]. Similar as odds ratio,
-''non-collaspsibility'' is a problem of the hazard ratio. (VanderWeele)
-Thus, use of Cox PH regression to approximately estimate indirect
-effects via difference or product of coefficients rests on the
-assumption that the outcome is rare \[21\]. Where the outcome is common,
-measures of the indirect effect or proportion mediated will be incorrect
-\[arvid\].
-
-To sum up, we could still use these approaches if certain criterias are
-fulfilled. Otherwise, we can use the product method to get a sense of
-whether there is mediation, but be aware that the estimate is not
-accurate.
-:::
-
-## Coding example
 
 ::: callout-note
 We will continue working on the obesity-CVD example in the Framingham
@@ -182,28 +162,27 @@ impact of obesity on CVD-related death (measured in years).
 
 ```{r}
 library(tidyverse)
-framingham <- read.csv(here::here("data", "frmgham2.csv"))
+framingham <- read.csv(here::here("data/framingham_dataset.csv"))
 
 framingham <- framingham %>%
   select(
-    id = RANDID,
-    BMI,
-    m = SYSBP,
-    y = CVD,
-    w1 = SEX,
-    w2 = CURSMOKE,
-    w3 = AGE,
-    y_time = TIMECVD
+    id = randid,
+    bmi,
+    m = sysbp,
+    y = cvd,
+    w1 = sex,
+    w2 = cursmoke,
+    w3 = age,
+    y_time = timecvd
   ) %>%
   na.omit() %>%
   mutate(
     a = case_when(
-      BMI >= 25 ~ 1,
+      bmi >= 25 ~ 1,
       TRUE ~ 0
     ),
     y_time = y_time / 365.25
-  ) %>%
-  select(-BMI)
+  ) 
 ```
 
 > Does obesity lead to higher CVD risk by increasing blood pressure?
