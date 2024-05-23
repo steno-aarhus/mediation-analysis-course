@@ -13,12 +13,6 @@ dataset.
 -   Conduct mediation analyses with multiple mediators
 :::
 
-For the exercises, we will continue using the Framingham dataset. From
-the group work yesterday, we have learned how to conduct a mediation
-analyses. But in real life, the research question could be more complex.
-After running the main mediation analyses, how robust the mediation
-effect is? What is there are more than 1 mediator you are interested in?
-
 ```{r}
 library(here)
 ```
@@ -29,7 +23,7 @@ framingham <- read.csv(here::here("data", "frmgham2.csv"))
 
 We will keep working the obesity and cardiovascular disease example.
 First, think about the group work yesterday, and reflect the following
-questions:
+questions with your group member.
 
 -   go over the assumptions of the causal mediation, and discuss how
     robust your estimates are
@@ -38,31 +32,6 @@ questions:
 
 -   are there other mediators other than systolic blood pressure?
 
-## Variables
-
-The dataset includes 'r nrow(framingham)´ participants and 'r
-ncol(framingham)´.
-
-```{r}
-str(framingham)
-```
-
-For the exercise on day 1, we will work with the following variables:
-
--   socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high
-    SES)
--   smoke = smoking status (binary: 0 = no prenatal smoking, 1 =
-    prenatal smoking)
--   educ = education ()
--   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
--   CVD= (binary: 0=no, 1=yes).
--   obesity (binary: 0=normal, 1=obesity)\*
-
-There are other variables in the dataset, please take a few minutes to
-explore the dataset. Before we start, let's think about the research
-question and draw a directed acyclic graphs. You can either draw by hand
-or use daggity (https://www.dagitty.net/).
-
 [Address the following questions]{.underline}: You can either use the
 **mediation** package or **CMAverse** package.
 
@@ -70,4 +39,4 @@ or use daggity (https://www.dagitty.net/).
 
 2.  Conduct a sensitivity analyses and discuss the results
 
-3.  Write a report of the study
+3.  Write a report of your mediation models
