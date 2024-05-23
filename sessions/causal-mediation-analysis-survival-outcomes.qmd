@@ -20,7 +20,7 @@ mediated the effect. They found the effect of SES on survival time was
 partially mediated by stage diagnosis (e.g., explaining 12% for lung
 cancer)
 
-```{r}
+```{r echo=FA}
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("

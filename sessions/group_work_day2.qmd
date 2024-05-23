@@ -6,11 +6,15 @@
 # Objective of this session
 
 In this session, We will get hands on practice using the framingham
-dataset.
+dataset. You will conduct a proper causal mediation analysis,
+considering:
+
+-   Conduct mediation analyses with exposure induced mediator-outcome
+    confounder or multiple mediators
 
 -   Conduct sensitivity analyses
 
--   Conduct mediation analyses with multiple mediators
+-   Report the results following the guidelines
 :::
 
 ```{r}
@@ -21,19 +25,19 @@ library(here)
 framingham <- read.csv(here::here("data", "frmgham2.csv"))
 ```
 
-We will keep working the obesity and cardiovascular disease example.
-First, think about the group work yesterday, and reflect the following
-questions with your group member.
+We will continue working the obesity and cardiovascular disease example.
+First, reflect on the group work from yesterday and discuss the
+following questions with your group members:
 
--   go over the assumptions of the causal mediation, and discuss how
-    robust your estimates are
+-   Review the assumptions of causal mediation, and discuss the
+    robustness of your estimates
 
--   are there interactions between obesity and hypertension?
+-   Are there other mediators other than systolic blood pressure?
 
--   are there other mediators other than systolic blood pressure?
+-   Are there interactions between obesity and the mediators?
 
-[Address the following questions]{.underline}: You can either use the
-**mediation** package or **CMAverse** package.
+Re-conduct the mediation analysis and address the discussion points. You
+can either use the **mediation** package or **CMAverse** package.
 
 1.  Re-do the DAG, and investigate all the potential pathways
 
