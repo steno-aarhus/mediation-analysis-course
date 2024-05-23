@@ -17,14 +17,6 @@ considering:
 -   Report the results following the guidelines
 :::
 
-```{r}
-library(here)
-```
-
-```{r}
-framingham <- read.csv(here::here("data", "frmgham2.csv"))
-```
-
 We will continue working the obesity and cardiovascular disease example.
 First, reflect on the group work from yesterday and discuss the
 following questions with your group members:
