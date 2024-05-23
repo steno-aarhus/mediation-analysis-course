@@ -81,20 +81,22 @@ time (SV).
 
 -   λV (t\|c): conditional hazard at time
 
-## ESTIMATING NATURAL EFFECTS MODELS
+## Assumptions of mediation analysis with a time-to-event outcome
 
-The topic of this section will be the class of natural effect models
-(NEMs) originally introduced by Lange et al. \[11\] and Vansterlandt et
-al. \[12\] and implemented in the R package medflex \[2\].
+Similar as our context, mediation analysis with a time-to-event outcome
+have to satisfy below assumptions: - no unmeasured confounding of the
+exposure-outcome relation;
 
-The idea underlying NEM is to phrase a mediation analysis as a multiple
-regression problem, thereby - a) parameterizing the quantities of
-interest, - b) allowing the choice of outcome model to follow the
-convention for that type of outcome (i.e., a Cox model for survival
-outcomes) -c) harvesting the extensive existing software implementing
-regression type models.
+-   no unmeasured confounding of the mediator-outcome relation;
 
-In particular, a NEM is a regression model for the nested
+-   no unmeasured confounding of the exposure-mediation relation;
+
+-   no exposure induced mediation-outcome confounding
+
+## Conduct mediation analysis with a time-to-event outcome
+
+So far, the survial mediation analyses was developed on a regression
+model. In particular, a NEM is a regression model for the nested
 counterfactual. Expressed as a generalized linear model (GLM), it
 becomes:
 
@@ -118,24 +120,8 @@ the following, we describe in detail how to estimate a NEM for a
 survival outcome with a multidimensional mediator. This is the situation
 we have in the illustrative case.
 
-Similar as our context, mediation analysis with a time-to-event outcome
-have to satisfy below assumptions: -(i) no unmeasured confounding of the
-exposure-outcome relation; -(ii) no unmeasured confounding of the
-mediator-outcome relation; -(iii) no unmeasured confounding of the
-exposure-mediation relation; -(iv) no exposure induced mediation-outcome
-confounding
-
-This means that the ratio between and the sum of and represents a
-measure of the proportion of the effect of the exposure mediated by the
-intermediate on the log-hazard scale. If there is not exposure-mediator
-interaction and the outcome is **RARE** (e.g., less than 10% by the end
-of follow-up) (ref: VanderWeele_survival), it can be shown that
-estimates of direct and indirect effects are equal to the effects we
-would have estimated through difference or product method, whose results
-coincide in this particular context.
-
 ::: callout-note
-# Could we use the traditional approach for time-to-event outcomes?
+## Could we use the traditional approach for time-to-event outcomes?
 
 So how to conduct causal mediation analysis for time-to-event outcomes?
 We introduced the difference and product methods for continuous and
@@ -156,44 +142,26 @@ whether there is mediation, but be aware that the estimate is not
 accurate.
 :::
 
-# Conduct mediation analysis with a time-to-event outcome
-
 ## Coding example
 
 ::: callout-note
 We will continue working on the obesity-CVD example in the Framingham
 dataset. The outcome of interest is death from cardiovascular diseases
 (cvd). The underlying time scale is in days, starting at participants
-entered the cohort. -The exposure of interest is obesity status at
-baseline, where a=1 indicates obese, a=0 indicates non-obese. -The
-mediator is blood pressure, the counterfactual mediator was M(a), where
-M(a) is the mediator when the exposure is obesity (1) and M(0) is the
-mediator values when the exposure is not-obese. -The nested
-counterfactual was death time. For ease of exposition, we will only
-refer to the underlying event time and event indicator when required by
-context.
+entered the cohort. - The exposure of interest is obesity status at
+baseline, where a=1 indicates obese, a=0 indicates non-obese.
+
+-The mediator is blood pressure, the counterfactual mediator was M(a),
+where M(a) is the mediator when the exposure is obesity (1) and M(0) is
+the mediator values when the exposure is not-obese.
+
+-The nested counterfactual was death time. For ease of exposition, we
+will only refer to the underlying event time and event indicator when
+required by context.
 :::
 
-The question of interest here is whether the feeling of loneliness
-mediates the impact of hearing loss on time-to-dementia (measured in
-years), accounting for mortality as a competing event.
-
-In this example, we will analyze the following variable and the survial
-outcome (time).
-
-## Step 1: Fit a parametric survival model with a Weibull error distribution to the survival times including exposure(x), mediator(m) and potentail confounders.
-
-```{r}
-```
-
-## Step 2: Create a copy of the original dataset: in the first set copy, the new variable is set to the values of the actual expsoure (A), while in the second copy, the new variable is set to the opposite value of the actual value (A\*).
-
-## Step 3: We now set the temporary exposure variable, used when fitting the imputation model in step 1, to the values in the just created exposure variable (A\*).
-
-## Step 4 and 5: For each draw of the imputed nested counterfactuals, we fit a Cox model including the exposure that was actually received (the coefficient of this variable will estimate the natural indirect log-HR), the created exposure variable (the coefficient of this variable will estimate the natural direct log-HR), and all confounders.
-
-Step 6: Finally, CIs are established by 5,000 bootstrap repetitions of
-steps 1-5.
+The question of interest here is whether the blood pressure mediates the
+impact of obesity on CVD-related death (measured in years).
 
 -   survival analysis
 -   code-along with package and setup of survival data

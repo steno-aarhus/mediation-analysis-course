@@ -1,5 +1,12 @@
 # What is Mediation analyses?
 
+```{r}
+#| include: false
+library(here)
+library(DiagrammeR)
+library(tidyverse)
+```
+
 <!-- -   Teaching the concepts - Jie (75 min) -->
 
 ::: callout-note
@@ -155,13 +162,16 @@ M.
 
 ```{r}
 # first load the dataset
-load(here::here("data/nhanes_dataset.RData"))
-
+nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
 library(tidyverse)
 library(dplyr)
+
 nhanes <- nhanes %>%
   select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke,      a=x, y, m) %>%
+    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
+    a=total_redmeat,            #this is the exposure
+    m=magic_biomarker,          #this is the mediator
+    y=blood_glucose) %>%        #this is the outcome
     na.omit()
 
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -360,3 +370,4 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
+
