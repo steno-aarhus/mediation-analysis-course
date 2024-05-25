@@ -98,21 +98,20 @@ question in nutritional epidemiology using both methods.
 
 It has been suggested that red meat consumption is associated with
 higher blood glucose levels and an increased risk of Type 2 diabetes
-(T2D). However, our interest lies in understanding the underlying
-mechanisms of this relationship. Does red meat intake directly influence
-blood glucose levels, or does it act through intermediary factors, such
-as inflammation? Let's imagine there exists a hypothetical inflammatory
-biomarker that serves as a mediator between red meat consumption and
-blood glucose levels. Therefore, we aim to evaluate the effect of red
-meat intake on blood glucose change through its effect on this magic
-inflammatory biomarker.
+(T2D). However, the mechanisms are poorly understood. One hypothesis is
+that red meat intake affects the level of inflammation, which in turn
+influence blood glucose.
+
+Does red meat intake directly influence blood glucose levels, or does it
+act through intermediary factors, such as inflammation? Let's imagine
+there exists a hypothetical inflammatory biomarker that serves as a
+mediator between red meat consumption and blood glucose levels.
+Therefore,our interest is know how much the effect of red meat on blood
+glucose is mediated by this inflammatory biomarker. The situation is
+depicted by below figure.
 
 > Does greater consumption of red meat lead to elevated levels of blood
 > glucose by mediating specific inflammation biomarkers?
-
-Based on the literature, we hypothesize that higher red meat intake is
-associated with elevated inflammatory levels, which, in turn, increase
-blood glucose, as depicted in the figure below.
 
 ```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
@@ -420,3 +419,4 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
+
