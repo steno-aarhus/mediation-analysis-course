@@ -597,9 +597,11 @@ ObsData <- datasim(n = 10000) # really large sample
 TRUE_EY.1 <- mean(ObsData$Y.1); TRUE_EY.1  # mean outcome under A = 1
 ```
 
-The Total effect if we use trational model:
+The Total effect if we use traditional model:
 
 ```{r}
+# Fit a logistic regression model predicting Y from the relevant confounders
+Q <- glm(Y ~ A + x2 + x4 + x2*x4, data = ObsData, family=binomial)
 exp(Q$coef[2])
 ```
 
@@ -645,8 +647,9 @@ m <- rbinom(n, 1, expit(1 + 2*a - l + 2*w))
 y <- rbinom(n, 1, expit(0.3*a + 0.8*m + 0.5*a*m - 0.3*l + 0.4*w))
 data <- data.frame(a, m, y, w, l)
 
-library(CMAverse
-        res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure = "a",
+
+library(CMAverse)
+res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure = "a",
                  mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
                  mreg = list("logistic"), yreg = "logistic",
                  postcreg = list("linear"),
