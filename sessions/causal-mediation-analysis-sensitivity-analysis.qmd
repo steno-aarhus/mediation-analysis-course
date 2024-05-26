@@ -141,7 +141,7 @@ Using this technique, we could also examine how substantial the
 confounding would have to be to explain away an effect (we could do this
 for the estimate and confidence interval).
 
-### Continuous Outcome with Different Sensitivity Analysis Parameters for Different Covariate Values
+### Continuous Outcome with Different Sensitivity Analysis Parameters for Different Covariable Values
 
 Suppose now that instead of focusing on effects conditional on a
 particular covariate value *C* = *c* or specifying the sensitivity
