@@ -64,10 +64,12 @@ and *A* and from these, along with the observed data, to obtain
 "corrected" effect estimates corresponding to what would have been
 obtained had control been made for *U* and not only *C*.
 
-The results essentially compare: 1- what we obtain adjusting only for
-measured covariables *C* with 2- what we would have obtained had it been
-possible to adjust for measured covariables *C* and unmeasured
-covariable(s) *U*.
+The results essentially compare:
+
+1- what we obtain adjusting only for measured covariables *C* with
+
+2- what we would have obtained had it been possible to adjust for
+measured covariables *C* and unmeasured covariable(s) *U*.
 
 If it is thought that adjusting for *C* and *U* together would suffice
 to control for confounding, then we may also interpret the results as
@@ -144,13 +146,13 @@ for the estimate and confidence interval).
 ### Continuous Outcome with Different Sensitivity Analysis Parameters for Different Covariable Values
 
 Suppose now that instead of focusing on effects conditional on a
-particular covariate value *C* = *c* or specifying the sensitivity
+particular covariable value *C* = *c* or specifying the sensitivity
 analysis parameters *γ* and *δ* to be the same for each covariable *C*,
 we were interested in the overall marginal effect averaged over the
 covariables and we wanted to specify different sensitivity analysis
 parameters for different covariable levels.
 
-Suppose then for each level of the covariates of interest *C* = *c* we
+Suppose then for each level of the covariables of interest *C* = *c* we
 specified a value for the effect of *U* on *Y*
 
 $γ(c) = E(Y|a, c,U = 1) − E(Y|a, c,U = 0)$
@@ -178,6 +180,130 @@ sample in each strata of the covariates *P(C = c*).
 
 Corrected confidence intervals could instead be obtained by
 bootstrapping.
+
+At a minimum, it may be useful to present:
+
+1- the sensitivity analysis parameters that would suffice to completely
+explain away an effect and also
+
+2- the sensitivity analysis parameters that would be required to shift
+the confidence interval to just include the null.
+
+## Sensitivity analysis for controled direct effects for a continuous outcome
+
+Assume that controlling for (*C,U*) would suffice to control for
+exposure–outcome and mediator–outcome confounding but that no data are
+available on *U* and that *U* confounds the mediator–outcome
+relationship.
+
+```{r, echo = FALSE}
+
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'X']
+    M [label = 'M']
+    C [label = 'C']
+    Y [label = 'Y']
+    U [label = 'U']
+  edge [minlen = 2]
+    C->X
+    C->Y
+    X->M
+    X->Y
+    M->Y
+    U->M
+    U->Y
+{ rank = same; C; X; M; Y;}
+  { rank = max; U;}
+}
+")
+```
+
+If we have not adjusted for *U*, then our estimates controlling only for
+*C* will be biased.
+
+We will consider estimating the controlled direct effect, CDE(*m*), with
+the mediator fixed to *m* conditional on the covariables *C = c*.
+
+Let B^CDE^~add~(*m\|c*) denote the difference between:
+
+1- the estimate of the CDE conditional on *C*
+
+2- what would have been obtained had adjustment been made for *U* as
+well.
+
+As with total effects, we will be able to use a simple formula for
+sensitivity analysis for CDE under some simplifying assumptions.
+
+Suppose that (A8.1.1) *U* is binary and (A8.2.2b) the effect of *U* on
+*Y* on the additive scale, conditional on exposure, mediator, and
+covariables, (*A,M,C*), is the same for both exposure levels *A = a* and
+*A* = *a*^\*^.
+
+Let *γm* be the effect of *U* on *Y* conditional on *A*, *C*, and *M* =
+*m*, that is:
+
+$γm = E(Y\|a,c,m,U = 1)−E(Y\|a,c,m,U = 0)$
+
+Note that by assumption (A8.2.2b) is the same for both levels of the
+exposure.
+
+Let *δm* be the difference in the prevalence of the unmeasured
+confounder for those with *A=a* versus those with *A* =*a*^\*^
+conditional on *M = m* and *C = c*, that is:
+
+$δm = P(U = 1|a,m,c)−P(U = 1|a^*,m,c)$
+
+Under assumptions (A8.1.1) and (A8.2.2b), the bias factor is simply
+given by the product of these two sensitivity-analysis parameters
+(VanderWeele, 2010a):
+
+B^CDE^~*add*~(*m*\|*c*) = *δmγm*
+
+This formula states that under assumptions (A8.1.1) and (A8.2.2b) the
+bias factor B^CDE^~add~(*m*\|*c*) for the CDE(*m*) is simply given by
+the product *δmγm*.
+
+Under these simplifying assumptions, this gives rise to a particularly
+simple sensitivity analysis technique for assessing the sensitivity of
+estimates of a controlled direct effect to an unmeasured
+mediator–outcome confounder.
+
+We can hypothesize a binary unmeasured mediator–outcome confounding
+variable *U* such that the difference in expected outcome *Y* comparing
+*U* = 1 and *U* = 0 is *γm* across strata of X conditional on *M* = *m*,
+*C* = *c* and such that the difference in the prevalence of *U*,
+comparing exposure levels *a* and *a*^\*^ (comparing the exposed and
+unexposed), is *δm* conditional on *M* =*m*, *C* = *c*.
+
+For such an unmeasured mediator–outcome confounding variable, the bias
+of our estimate of the CDE controlling just for *C* is given simply by
+*δmγm*.
+
+We can assess sensitivity to the presence of such an unmeasured
+confounding variable by varying *γm* (which is essentially the direct
+effect of *U* on *Y*) and by varying *δm*, interpreted as the prevalence
+difference of *U*, comparing exposure levels *a* and *a*^\*^ conditional
+on *M* = *m* and *C* = *c*.
+
+We can subtract the bias factor B^CDE^~add~(*m*\|*c*) = *δmγm* from the
+observed estimate to obtain a corrected estimate of the effect (what we
+would have obtained had it been possible to adjust for *U* as well).
+
+Under the simplifying assumptions (A8.1.1) and (A8.2.2b), we could also
+subtract this bias factor from both limits of a confidence interval to
+obtain a corrected confidence interval.
+
+Note that the CDE(*m*), may vary with *m*, and so for different values
+of *m* we will likely want to consider different specifications of the
+values *δm* and *γm* in the sensitivity analysis.
+
+If there is no interaction between the effects of *A* and *M* on *Y*,
+then this simple sensitivity analysis technique based on using formula
+above will also be applicable to natural direct effects as well.
 
 ```{=html}
 <!-- - binary outcome  
