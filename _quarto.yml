@@ -1,9 +1,5 @@
 project:
   type: r3-theme
-  render:
-    - "*.qmd"
-    - "*.md"
-    - "*.Rmd"
 
 book:
   title: "Analysis of mechanisms"
