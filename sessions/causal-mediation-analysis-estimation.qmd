@@ -614,9 +614,9 @@ A1Data <- A0Data <- ObsData
 # The rest of the data stays as is (for now)
 A1Data$A <- 1
 A0Data$A <- 0
-head(ObsData)
-head(A1Data)
-head(A0Data)
+A1Data$A <- 1
+A0Data$A <- 0
+exp(Q$coef[2])
 # Predict Y if A=1
 Y_A1 <- predict(Q, A1Data, type="response") 
 # Predict Y if A=0
