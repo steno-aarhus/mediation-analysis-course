@@ -29,6 +29,7 @@ book:
       - sessions/NetCoupler-example.qmd
   appendices:
     - appendices/references.qmd
+    - LICENSE.md
   page-footer:
     center:
       - text: "License: CC BY 4.0 {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}}"
