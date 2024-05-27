@@ -1,5 +1,7 @@
 # What is Mediation analysis?
 
+<!-- Jie (75 min) -->
+
 ```{r}
 #| include: false
 library(here)
@@ -7,8 +9,6 @@ library(DiagrammeR)
 library(tidyverse)
 library(dplyr)
 ```
-
-<!-- -   Teaching the concepts - Jie (75 min) -->
 
 ::: callout-note
 ## Objective of this session
@@ -18,13 +18,14 @@ approaches, along with understanding the assumptions and limitations of
 the methods.
 :::
 
-The purpose of mediation analysis is to determine if the effect of an
-independent variable (X) on a dependent variable (Y) can be explained by
-a third variable-mediating variable (M). Thus, mediation analysis not
-only answers whether two variables are related, but also **why and
-how**. This can be visualized in the following figure:
+The purpose of mediation analysis is to determine if the effect of a
+treatment (A) on an outcome (Y) can be explained by a third mediating
+variable (M). Thus, mediation analysis not only answers whether two
+variables are related, but also **why**.
 
-<!--make models as Grviz  -->
+This can be visualized in the following figures.
+
+Overall relationship between A and Y:
 
 ```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
@@ -33,14 +34,16 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'X']
+    A [label = 'A']
     Y [label = 'Y']
   edge [minlen = 1.5]
-    X->Y [label = 'c']
-  { rank = same; X; Y }
+    A->Y [label = 'c']
+  { rank = same; A; Y }
 }")
 ```
 
+Relationship between X and Y through M:
+
 ```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
@@ -48,53 +51,52 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'X']
+    A [label = 'A']
     M [label = 'M']
     Y [label = 'Y']
   edge [minlen = 1.5]
-    X->Y [label = 'c*', xlabel = 'c']
-    X->M [taillabel = 'a']
+    A->Y [label = 'c*', xlabel = 'c']
+    A->M [taillabel = 'a']
     M->Y [label = 'b']
-  { rank = same; X; Y }
+  { rank = same; A; Y }
   { rank = min; M;}
 }")
 ```
 
-<!-- ![Basic Model](/images/mediation_basic.PNG) -->
-
-<!-- ![Basic Mediation Model](/images/mediation_basic2.PNG) -->
-
 ## Traditional approaches for mediation analysis
 
-::: callout-note
-Here is the standard Equations for Mediator and Outcome (for the case of
-a continuous mediator and a continuous outcome)
+The two traditional approaches to mediation analysis are **the
+difference method** and **the product method** (also known as the Baron
+& Kenny-method).
 
--   E(M\|A=a, C=c) = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (3.1)
--   E(Y\|A=a, M=m, C=c) = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
-    $\theta4c$ (3.2)
--   E(Y\|A=a, C=c) = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (3.3)
-:::
+The traditional approach use these equations for mediator and outcome
+(for the case of a continuous mediator and a continuous outcome)
 
-The most widely used two traditional approaches to mediation analysis
-are **the difference method** and **the product method** (also known as
-Baron&Kenny).
+Mediator-model:
 
--   total effect --\>c, that is the total effect of the independent
-    variable on the dependent variable
--   direct effect --\> c', that is the effect of the independent
-    variable on the dependent variable that is not mediated by the
-    mediator
--   mediation effect=a\*b **the product method**
--   mediation effect=c-c' **the difference method**
+$E(M|A=a, C=c) = \beta_0 + \beta_1a + \beta_2c$ (3.1)
+
+Outcome model with adjustment for mediator:
+
+$E(Y|A=a, M=m, C=c) = \theta_0 + \theta_1a + \theta_2m + \theta4c$ (3.2)
+
+Outcome model without adjustment for mediator:
+
+$E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c$ (3.3)
+
+Note: - total effect --\>c, that is the total effect of the independent
+variable on the dependent variable - direct effect --\> c', that is the
+effect of the independent variable on the dependent variable that is not
+mediated by the mediator - mediation effect=a\*b **the product
+method** - mediation effect=c-c' **the difference method**
 
 Note: The terms 'mediation effect' and 'indirect effect' are used
 synonymously.
 
-## Empirical example in nutritional epidemiology
+## An example
 
 In this session, we will use an example to address a mediation research
-question in nutritional epidemiology using both methods.
+question using both traditional approaches.
 
 It has been suggested that red meat consumption is associated with
 higher blood glucose levels and an increased risk of Type 2 diabetes
@@ -103,10 +105,10 @@ that red meat intake affects the level of inflammation, which in turn
 influence blood glucose.
 
 Does red meat intake directly influence blood glucose levels, or does it
-act through intermediary factors, such as inflammation? Let's imagine
+act through intermediary mechanisms, such as inflammation? Let's imagine
 there exists a hypothetical inflammatory biomarker that serves as a
 mediator between red meat consumption and blood glucose levels.
-Therefore,our interest is know how much the effect of red meat on blood
+Therefore, our interest is now how much the effect of red meat on blood
 glucose is mediated by this inflammatory biomarker. The situation is
 depicted by below figure.
 
@@ -132,9 +134,9 @@ digraph {
 }")
 ```
 
+::: callout-note
 ## Example Dataset: A Brief Overview
 
-::: callout-note
 We'll explore the relationship between red meat intake and glucose
 levels in the National Health and Nutrition Examination Survey (NHANES)
 dataset, which has been modified for this course with simulated
@@ -153,10 +155,10 @@ The variables used in the dataset:
 
 -   mediator (m): a new inflammatory biomarker (continuous variable)
 
-Note that the example is created to demonstrate the methods,and there is
-no clinical relevance of the results. For the convenience of analysis, I
-have transformed the mediator (m) and outcome variable (y) so that they
-follow a normal distribution.
+Note that the example is created to demonstrate the methods, and there
+is no clinical relevance of the results. For the convenience of
+analysis, we have transformed the mediator (m) and outcome variable (y)
+so that they follow a normal distribution.
 
 Four demographic variables are considered in the analysis: age, gender,
 education, and smoking. We assume that adjusting for these four
@@ -183,11 +185,11 @@ nhanes <- nhanes %>%
 According to Baron and Kenny (1986), the following criteria need to be
 satisfied for a variable to be considered a mediator:
 
-1.  The exposure should be associated with the mediator;
-2.  Tn the model for the outcome that includes both the exposure and
-    mediator, the mediator should be associated with the outcome;
-3.  Tn the model for the outcome that includes only the exposure, the
-    exposure should be associated with the outcome;
+1.  The exposure should be associated with the mediator.
+2.  The model for the outcome that includes both the exposure and
+    mediator: the mediator should be associated with the outcome.
+3.  The model for the outcome that includes only the exposure: the
+    exposure should be associated with the outcome.
 4.  When controlling for the mediator, the association between the
     exposure and outcome should be reduced, with the strongest
     demonstration of mediation occurring when the path from the exposure
@@ -196,19 +198,19 @@ satisfied for a variable to be considered a mediator:
 The following shows the basic steps for mediation analysis suggested by
 Baron & Kenny.
 
-### Step 1: Estimate the relationship between X on M (path a)
+### Step 1: Estimate the relationship between A on M (path a)
 
 That is to check the relation between exposure (red meat) and the
-mediator (inflammatory biomarker), which corresponds to criteria (i). A
-mediation makes sense only if X affects M. If X and M have no
+mediator (inflammatory biomarker), which corresponds to criteria 1. A
+mediation makes sense only if A affects M. If A and M have no
 relationship, M is just a third variable that may or may not be
 associated with Y.
 
 As the mediator is a continuous variable, we can build a linear
-regression model, adjusting for confounders on the pathway between X and
+regression model, adjusting for confounders on the pathway between A and
 M.
 
-\$ (E(M\|A=a, C=c)\$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
+\$ (E(M\|A=a, C=c) = \beta\_0 + \beta\_1a + \beta\_2c\$ (3.1)
 
 ```{r}
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -221,25 +223,26 @@ this new inflammatory biomarker (an increase of 1 unit in red meat
 consumption is associated with a 25.9 unit increase in the biomarker
 level).
 
-### Step 2: Estimate the relationship between M on Y controlling for X (path b)
+### Step 2: Estimate the relationship between M on Y controlling for A (path b)
 
 That is to build the model between inflammatory biomarker and glucose
 levels, controlling for red meat intake. This step corresponds to
 criteria (ii).
 
-$(E(Y|A=a, M=m, C=c)$ = $\theta_0$ + $\theta_1a$ + $\theta_2m$ +
-$\theta4c$ (1.2)
+$(E(Y|A=a, M=m, C=c) = \theta_0 + \theta_1a + \theta_2m + \theta4c$
+(3.2)
 
 ```{r}
 fitb <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
+
 summary(fitb)
 ```
 
 After adjusting for red meat intake, the inflammatory biomarker is
 associated with higher blood glucose (an increase of 1 unit in the
-biomarker is assocaited with 0.69 unit increase in the blood glucose).
+biomarker is associated with 0.69 unit increase in the blood glucose).
 
-### Step 3: Estimate the relationship between X on Y-path c
+### Step 3: Estimate the relationship between A on Y (path c)
 
 That is to build the model between red meat intake and glucose levels,
 without adjusting for the inflammatory biomarker. The only difference
@@ -254,16 +257,14 @@ summary(fitc)
 ```
 
 We can see that red meat intake is strongly associated with higher
-glucose levels(an increase of 1 unit in red meat consumption is
+glucose levels (an increase of 1 unit in red meat consumption is
 associated with a 70.5 unit increase in the biomarker level).
 
-::: callout-note
 Then we can estimate the direct effect and indirect effect:
 
 -   **direct effect** = $\theta_1$\
 -   **indirect effect** = $\beta_1 \theta_2$\
 -   **total effect** = $\theta_1'$
-:::
 
 The *direct effect* ($\theta_1$) of red meat on glucose levels can be
 assessed by the coefficient of red meat in model b.
@@ -294,15 +295,15 @@ total_ma
 
 ## Method 2: Difference approach
 
-The difference approach is more commonly used in epidemiologic domain.
-And the rational of this approach is to compare the effect of X on Y
-without and with adding M in the models.
+The difference approach is more commonly used in epidemiology. And the
+rational of this approach is to compare the effect of A on Y without and
+with adding M in the models.
 
-If a mediation effect exists, the effect of X on Y will be attenuated
-when M is included in the regression, indicating the effect of X on Y
-goes through M. If the effect of X on Y completely disappears, M fully
-mediates between X and Y (full mediation). If the effect of X on Y still
-exists, but in a smaller magnitude, M partially mediates between X and Y
+If a mediation effect exists, the effect of A on Y will be attenuated
+when M is included in the regression, indicating the effect of A on Y
+goes through M. If the effect of A on Y completely disappears, M fully
+mediates between A and Y (full mediation). If the effect of A on Y still
+exists, but in a smaller magnitude, M partially mediates between A and Y
 (partial mediation).
 
 Back to the example, the indirect effect will be the coefficient of red
@@ -330,7 +331,7 @@ theoretical basis for their relationship.
 -   Discuss with your group about the two traditional approaches, did
     you get the same results?
 -   Discuss the scenarios under which there might be no significant
-    association between X and Y.
+    association between A and Y.
 :::
 
 ### Use mediation packages
@@ -343,7 +344,7 @@ effect is statistically significant (different from zero or not)?
 To do so, there are two main approaches: the Sobel test (Sobel, 1982)
 and bootstrapping (Preacher & Hayes, 2004).
 
-Here I will demonstrate that we can use the mediate() function in
+Here we will demonstrate that we can use the mediate() function in
 'mediation' package (Tingley et al. 2019) to conduct mediation analysis.
 One of the very good options to conduct mediation analysis using the
 mediation package is we can get confidence interval by bootstrapping.
@@ -354,23 +355,26 @@ Let's load up the R packages.
 library(mediation) # Mediation package
 ```
 
-mediate() takes two model objects as input (X → M and X + M → Y) and we
-need to specify which variable is an IV (treatment) and a mediator
-(mediator). For bootstrapping, set boot = TRUE and sims to at least 500.
+mediate() takes two model objects as input ($A \rightarrow M$ and
+$A + M \rightarrow Y$) and we need to specify which variable is an IV
+(treatment) and a mediator (mediator). For bootstrapping, set boot =
+TRUE and sims to at least 500.
 
 ```{r}
+set.seed(260524)
+
 # Fit mediator model
 lm_m <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
 # Fit outcome model
 lm_y <- lm(y ~ a + m + w1 + w2 + w3 + w4, data = nhanes)
 # Run mediation analysis
-results <- mediate(lm_m, lm_y, treat = "a", mediator = "m", boot = TRUE, sims = 500)
+results <- mediate(lm_m, lm_y, treat = "a", mediator = "m", boot = TRUE, sims = 10) #can set to 500
 
 summary(results)
 ```
 
 -   **ADE** stands for average direct effects. It describes the direct
-    effect of the x on the y when controlling for the mediator. Note
+    effect of the A on the Y when controlling for the mediator. Note
     this estimate is the same as the coefficient We got in the product
     and difference method. But be aware we are able to get *confidence
     interval* and *significance* levels for the indirect effect, not
@@ -403,11 +407,35 @@ For details of the mediate() package, please refer to
 
 ## Limitations of the traditional approach
 
-<!-- - put in DAG in context of example to discuss limitations -->
-
 -   Non-linearity
 -   Interactions
 -   Multiple mediators
+
+```{r echo=FALSE}
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'Red meat']
+    M [label = 'Inflammation']
+    Y [label = 'Blood glucose']
+    N[label = 'Insulin sensitivity']
+    A[label = 'Fasting insulin']
+  edge [minlen = 1.5]
+    X->Y 
+    X->M 
+    M->Y 
+    X->N    
+    N->Y
+    X->A    
+    A->Y
+  { rank = same; X; N; Y; }
+  { rank = min; M;}
+  { rank = max; A;}
+}")
+```
 
 ## When can we use the traditional approach
 
