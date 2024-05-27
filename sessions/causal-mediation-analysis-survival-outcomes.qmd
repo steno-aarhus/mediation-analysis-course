@@ -46,28 +46,30 @@ digraph {
 }")
 ```
 
-::: callout-note
-## Could we use the traditional approach for time-to-event outcomes?
+### Could we use the traditional approach for time-to-event outcomes?
 
 So how to conduct causal mediation analysis for time-to-event outcomes?
-We introduced the difference and product methods for continuous and
+We have introduced the difference and product methods for continuous and
 binary outcomes in previous session. It is tempting to run a linear
 regression model for the mediator and proportional hazard model for the
 outcome, then use product or difference method to estimate the direct
 effect and indirect effect.
 
-But similar as odds ratio, ''non-collaspsibility'' is a problem of the
+Similar as odds ratio, ''non-collaspsibility'' is a problem of the
 hazard ratio. (VanderWeele) Thus, use of Cox PH regression to
 approximately estimate indirect effects via difference or product of
-coefficients rests on the assumption that the outcome is rare (refer).
-Where the outcome is common, measures of the indirect effect or
-proportion mediated will be incorrect.
+coefficients rests on the assumption that the outcome is rare
+(VanderWeele). Where the outcome is common, measures of the indirect
+effect or proportion mediated will be incorrect. Tein and Mackinnon
+(2003) considered whether the product method and difference method yield
+comparable results with respect to time-to-event outcomes. They found
+that the methods coincides for the accelerated failure time model but
+not for the proportional hazards model.
 
 To sum up, we could still use these approaches if certain criteria are
 fulfilled. Otherwise, we can use the product method to get an indication
 of whether there is mediation, but be aware that the estimate is not
 accurate.
-:::
 
 ::: callout-note
 In earlier session,we have been familiar with the counterfactual
@@ -102,16 +104,31 @@ exposure and the survival time of outcome.
 For a **survival outcome**, the outcome of interest will be survival
 time (SV).
 
--   SV (t) = P(V ≥ t) the survival function at time t
+-   $SV (t) = P(V ≥ t)$ the survival function at time t
 
--   SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
+-   $SV (t\|c)=P(V ≥ t\|c)$ the survival function conditional on
     covariates C
 
--   λV (t) : the hazard at time t
+-   $λV (t)$ : the hazard at time t
 
--   λV (t\|c): conditional hazard at time t
+-   $λV (t\|c)$: conditional hazard at time t
 
-## Assumptions of mediation analysis with a time-to-event outcome
+### Definitions
+
+If we consider the survival functions for a time-to-event outcome T, we
+could decompose the survival function as follows:
+
+$STa(t) - STa*(t) = [STaMa(t)-STaMa*(t)] + [STaMa*(t)-STa*Ma*(t)]$
+
+The first expression in brackets is the natural indirect effect on the
+survival function scale and the second is the natural direct effect on
+the survival function scale.
+
+Similarly, we can demcompose the overal difference in hazards on the
+hazard scale:
+$λTa(t) - λTa*(t) = [λTaMa(t)-λTaMa*(t)] + [λTaMa*(t)-λTa*Ma*(t)]$
+
+### Assumptions of mediation analysis with a time-to-event outcome
 
 Similar as our context, mediation analysis with a time-to-event outcome
 have to satisfy below assumptions:
@@ -123,6 +140,11 @@ have to satisfy below assumptions:
 -   no unmeasured confounding of the exposure-mediation relation;
 
 -   no exposure induced mediation-outcome confounding
+
+-   Additionally, we assume that the mediator is measured for everyone
+    before the outcome occurs.
+
+### Examples
 
 ::: callout-note
 We will continue working on the obesity-CVD example in the Framingham
