@@ -1,7 +1,5 @@
 # Estimation of effects using causal mediation analysis
 
-\<\<\<\<\<\<\< style/apply-some-style-fixes
-
 ```{r setup}
 
 #| include: false
