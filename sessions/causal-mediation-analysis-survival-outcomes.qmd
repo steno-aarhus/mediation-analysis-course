@@ -2,24 +2,23 @@
 
 <!-- Teaching concepts - Jie (30 min) -->
 
-<!-- Daniel will look and trim down a bit - Jie (30 min) -->
+::: callout-note
+## Learning outcomes
 
-Coding part - Daniel Teaching concepts - Jie (30 min)
-
-# Time-to-event outcomes
+-   Perform causal mediation analysis with survival outcomes using R
+    software
+:::
 
 There are many studies conducting mediation analyses with
 **time-to-event outcomes**. Survival analysis allows investigators to
 study these important outcomes with appropriate consideration for
 variable follow-up times, censoring, and competing risks.
-Epidemiologists are particularly interested in understanding whether
-specific risk factors explain disease onset.
 
-Take the red meat study for instance, we previously demonstrated higher
-red meat intake increased blood glucose. However, we might be even more
-interested in whether red meat intake increase the onset of type 2
-diabetes (T2D). If we have the diagnosis date or duration of T2D, we can
-conduct survival analyses on red meat and T2D onset.
+Take the red meat example for instance, we previously demonstrated
+higher red meat intake increased blood glucose. However, we might be
+even more interested in whether red meat intake increase the onset of
+type 2 diabetes (T2D). If we have the diagnosis date or duration of T2D,
+we can conduct survival analyses on red meat and T2D onset.
 
 Another example is the effect of risk factor on patient survival time. A
 study investigated the effect of socioeconomic status (SES) on the
@@ -41,20 +40,19 @@ digraph {
     X->Y
     X->M
     M->Y
-  { rank = same; X; Y }
-  { rank = min; M;}
+  { rank = same; X; M; Y }
 }")
 ```
 
 ::: callout-note
 ## Could we use the traditional approach for time-to-event outcomes?
 
-So how to conduct causal mediation analysis for time-to-event outcomes?
-We introduced the difference and product methods for continuous and
-binary outcomes in previous session. It is tempting to run a linear
-regression model for the mediator and proportional hazard model for the
-outcome, then use product or difference method to estimate the direct
-effect and indirect effect.
+How to conduct causal mediation analysis for time-to-event outcomes? We
+introduced the difference and product methods for continuous and binary
+outcomes in previous session. It is tempting to run a linear regression
+model for the mediator and proportional hazard model for the outcome,
+then use product or difference method to estimate the direct effect and
+indirect effect.
 
 But similar as odds ratio, ''non-collaspsibility'' is a problem of the
 hazard ratio. (VanderWeele) Thus, use of Cox PH regression to
@@ -69,29 +67,6 @@ of whether there is mediation, but be aware that the estimate is not
 accurate.
 :::
 
-::: callout-note
-In earlier session,we have been familiar with the counterfactual
-concepts in causal mediation:
-
--   $Yi(a, m)$ is the outcome achieved for person i if, possibly
-    contrary to fact, exposure had been set to a and mediator to m.
-
--   $Mi(a)$ is the mediator achieved for person i if, possibly contrary
-    to fact, exposure had been set to a.
-
-One can combine the two counterfactuals, yielding so-called nested
-counterfactuals defined as
-
--   $Y(a, M (a\*)$.
-
-By introducing the nested counterfactual for a ≠ a\* we can give a
-precise mathematical definition of mediation.
-:::
-
-Once you have grasped the core builds on comparing distributions of
-nested counterfactuals, these effects can just as easily be expressed on
-other scales than the averages.
-
 The Cox proportional hazards model is commonly used for dealing with
 survival data in medical literature and can explain multiplicative
 effects under the different effect scale in mediation analysis \[20,
@@ -103,62 +78,24 @@ For a **survival outcome**, the outcome of interest will be survival
 time (SV).
 
 -   SV (t) = P(V ≥ t) the survival function at time t
-
 -   SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
     covariates C
-
 -   λV (t) : the hazard at time t
-
 -   λV (t\|c): conditional hazard at time t
 
-## Assumptions of mediation analysis with a time-to-event outcome
-
-Similar as our context, mediation analysis with a time-to-event outcome
-have to satisfy below assumptions:
-
--   no unmeasured confounding of the exposure-outcome relation;
-
--   no unmeasured confounding of the mediator-outcome relation;
-
--   no unmeasured confounding of the exposure-mediation relation;
-
--   no exposure induced mediation-outcome confounding
-
-::: callout-note
 We will continue working on the obesity-CVD example in the Framingham
-dataset. The outcome of interest is death from cardiovascular diseases
-(cvd). The underlying time scale is in days, starting at participants
-entered the cohort. - The exposure of interest is obesity status at
-baseline, where a=1 indicates obese, a=0 indicates non-obese.
+dataset.
 
--The mediator is blood pressure, the counterfactual mediator was M(a),
-where M(a) is the mediator when the exposure is obesity (1) and M(0) is
-the mediator values when the exposure is not-obese.
-
--The nested counterfactual was death time. For ease of exposition, we
-will only refer to the underlying event time and event indicator when
-required by context.
-:::
+The outcome of interest is death from cardiovascular diseases (cvd). The
+underlying time scale is in days, starting at participants entered the
+cohort. The exposure of interest is obesity status at baseline, where
+a=1 indicates obese, a=0 indicates non-obese. The mediator is blood
+pressure, the counterfactual mediator was M(a), where M(a) is the
+mediator when the exposure is obesity (1) and M(0) is the mediator
+values when the exposure is not-obese.
 
 The question of interest here is whether the blood pressure mediates the
 impact of obesity on CVD-related death (measured in years).
-
--   survival analysis
--   code-along with package and setup of survival data
-
-# Coding part - Daniel
-
-::: callout-note
-## Learning outcomes
-
--   Perform causal mediation analysis using R software
--   Interpret results from causal mediation analysis
-:::
-
--   survival analysis
--   code-along with package and setup of survival data
-
-<!-- Coding part - Daniel -->
 
 ```{r}
 library(tidyverse)
@@ -185,13 +122,11 @@ framingham <- framingham %>%
   ) 
 ```
 
-> Does obesity lead to higher CVD risk by increasing blood pressure?
-
 The new thing here is that we need to calculate the time to event. This
 is already done in the dataset.
 
 We need the outcome to be the time to event and specify event as the
-outcome variable.
+outcome variable. Then we use the package as before.
 
 ```{r}
 library(CMAverse)
