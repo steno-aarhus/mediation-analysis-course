@@ -1,6 +1,6 @@
 # What is Mediation analysis?
 
-```{r}
+```{r setup}
 #| include: false
 library(here)
 library(DiagrammeR)

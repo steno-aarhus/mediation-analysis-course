@@ -2,7 +2,7 @@
 
 <!-- Omar 30 min -->
 
-```{r}
+```{r setup}
 #| include: false
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)

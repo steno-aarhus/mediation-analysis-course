@@ -20,7 +20,7 @@ For the exercises, we will use the Framingham dataset.
 First, load the dataset and take a few minutes to explore the variables
 in the dataset.
 
-```{r}
+```{r setup}
 library(here)
 load(here::here("data/frmghamdata.RData"))
 ```

@@ -1,6 +1,6 @@
 # Estimation of effects using causal mediation analysis
 
-```{r}
+```{r setup}
 #| include: false
 library(here)
 library(DiagrammeR)
