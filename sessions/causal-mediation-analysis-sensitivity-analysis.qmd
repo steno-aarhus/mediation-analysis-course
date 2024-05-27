@@ -1,22 +1,33 @@
 # Sensitivity analysis for mediation analysis
 
-```{=html}
-<!-- ::: callout-note
-##Add here the objective of the session and learning outcomes-->
+```{r}
+#| include: false
+library(here)
+library(DiagrammeR)
+library(tidyverse)
+library(CMAverse)
 ```
+
+::: callout-note
+## Learning outcomes
+
+-   Suggest relevant sensitivity analyses for mediation analyses
+-   Perform sensitivity analysis for unmeasured confounding
+:::
+
 Unmeasured or uncontrolled confounding is a common problem in
 observational studies. This is a challenge to observational research
 even in the analysis of total effects.
 
-When we are interested in pathways and direct and indirect effects, the
-assumptions about confounding that are needed to identify these effects
-are even stronger than for total effects.
+When we are interested in direct and indirect effects, the assumptions
+about confounding that are needed to identify these effects are even
+stronger than for total effects.
 
 We might be worried that these assumptions are violated and that our
 estimates are biased.
 
-**Sensitivity analysis techniques can help assess HOW ROBUST results are
-to violations in the assumptions being made.**
+Sensitivity analysis techniques can help assess HOW ROBUST results are
+to violations in the assumptions being made.
 
 These techniques assess the extent to which an unmeasured variable (or
 variables) would have to affect both the exposure and the outcome in
@@ -35,7 +46,9 @@ Consider the following figure in which *U* represents an unmeasured
 confounder, *C* measured covariables, *A* the exposure and *Y* the
 outcome.
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
+
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -64,10 +77,11 @@ and *A* and from these, along with the observed data, to obtain
 "corrected" effect estimates corresponding to what would have been
 obtained had control been made for *U* and not only *C*.
 
-The results essentially compare: 1- what we obtain adjusting only for
-measured covariables *C* with 2- what we would have obtained had it been
-possible to adjust for measured covariables *C* and unmeasured
-covariable(s) *U*.
+The results essentially compare:
+
+What we obtain adjusting only for measured covariables *C* with what we
+would have obtained had it been possible to adjust for measured
+covariables *C* and unmeasured covariable(s) *U*.
 
 If it is thought that adjusting for *C* and *U* together would suffice
 to control for confounding, then we may also interpret the results as
@@ -124,7 +138,7 @@ groups and then take the product of these two parameters.
 
 Once we have calculated the bias term **B_add(c)**, we can simply
 estimate our causal effect conditional on *C* and then subtract the bias
-factor to get the "corrected estimate"--- that is, what we would have
+factor to get the "corrected estimate" - that is, what we would have
 obtained if we had controlled for *C* and *U*.
 
 Under these simplifying assumptions **(A8.1.1)** and **(A8.1.2)**, we
@@ -141,7 +155,7 @@ Using this technique, we could also examine how substantial the
 confounding would have to be to explain away an effect (we could do this
 for the estimate and confidence interval).
 
-### Continuous Outcome with Different Sensitivity Analysis Parameters for Different Covariable Values
+### Continuous outcome with different sensitivity analysis parameters for different covariable values
 
 Suppose now that instead of focusing on effects conditional on a
 particular covariate value *C* = *c* or specifying the sensitivity
@@ -171,7 +185,7 @@ $Badd=\sum~c~\{γ(c)δ(c)\}P(C=c)$
 We could then subtract this overall bias factor from our estimate
 adjusted only for *C* to obtain a corrected estimate.
 
-In this case, however, we can now longer simply subtract the bias factor
+In this case, however, we can no longer simply subtract the bias factor
 from both limits of the confidence intervals because this does not take
 into account the variability in our estimates of the proportion of the
 sample in each strata of the covariates *P(C = c*).
@@ -179,18 +193,49 @@ sample in each strata of the covariates *P(C = c*).
 Corrected confidence intervals could instead be obtained by
 bootstrapping.
 
-```{=html}
-<!-- - binary outcome  
+We first load the nhanes data:
 
+```{r}
+# first load the dataset
+nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
 
+nhanes <- nhanes %>%
+  select(
+    id = seqn,
+    w1 = age,
+    w2 = gender,
+    w3 = education_clean,
+    w4 = smoke, 
+    a = total_redmeat,            #this is the exposure
+    m = magic_biomarker,          #this is the mediator
+    y = blood_glucose) %>%        #this is the outcome
+    na.omit()
+```
 
+We then run the same example as before with red meat, inflammation and
+blood glucose.
 
-- natural direct and indirect effect
+```{r}
+res_rb_confounders <- cmest(
+  data = nhanes, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w1", "w2", "w3"), EMint = TRUE,
+  mreg = list("linear"), yreg = "linear",
+  astar = 0, a = 1, mval = list(2.5),
+  estimation = "paramfunc", inference = "delta"
+)
 
-Note: if there is time, discuss multiple mediators
+summary(res_rb_confounders)
+```
 
-Coding part - Omar
+To perform sensitivity analysis for unmeasured confounding we simply add
+another line of code.
 
-#check the mediation package and the CMAverse package for sensitivity analysis
--->
+```{r}
+uc_sens <- cmsens(
+  object = res_rb_confounders,
+  sens = "uc"
+)
+
+uc_sens
+
 ```
