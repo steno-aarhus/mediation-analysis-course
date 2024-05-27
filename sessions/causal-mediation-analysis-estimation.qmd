@@ -322,7 +322,7 @@ mediator' (i.e., the portion of the effect for which mediation is
 This is often the effect we are interested in in biomedical research for
 questions regarding mediation.
 
-### total effect
+### Total effect
 
 The total effect can be decomposed as:
 
@@ -446,7 +446,7 @@ confounder of M and Y. When considering the effect on Y of changes to X
 via a specific mediator M, the presence of L is challenging and
 regression-based methods could no longer handle this situation.
 
-Conditional on L, we successfuly block the backdoor path between
+Conditional on L, we successfully block the backdoor path between
 X-M-L-Y; but at the same time we also block the backdoor path X-L-Y,
 which represents part of the direct effect of X on Y (all the paths not
 going through M). Furthermore, if there is unmeasured confounder between
@@ -562,7 +562,7 @@ Ingredients: A, Y, and controls W
 
 -   Step 1: Model the outcome as a function of A and W.
 
--   Step 2: Duplicate the initial dataset in twocounterfactual data
+-   Step 2: Duplicate the initial dataset in two counterfactual data
     sets. In on world, set A=1; in the other, set A=0. All other
     variables keep the original values.
 

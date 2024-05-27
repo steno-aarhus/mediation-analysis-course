@@ -122,7 +122,7 @@ time (SV).
 If we consider the survival functions for a time-to-event outcome T, we
 could decompose the survival function as follows:
 
-$STa(t) - STa*(t) = [STaMa(t)-STaMa*(t)] + [STaMa*(t)-STa*Ma*(t)]$
+$ST_a(t) - ST_a*(t) = [ST_aM_a(t)-ST_aM_a*(t)] + [ST_aM_a*(t)-ST_a*M_a*(t)]$
 
 The first expression in brackets is the natural indirect effect on the
 survival function scale and the second is the natural direct effect on
@@ -130,7 +130,7 @@ the survival function scale.
 
 Similarly, we can demcompose the overal difference in hazards on the
 hazard scale:
-$λTa(t) - λTa*(t) = [λTaMa(t)-λTaMa*(t)] + [λTaMa*(t)-λTa*Ma*(t)]$
+$λT_a(t) - λT_a*(t) = [λT_aM_a(t)-λT_aM_a*(t)] + [λT_aM_a*(t)-λT_a*M_a*(t)]$
 
 ### Assumptions of mediation analysis with a time-to-event outcome
 
@@ -147,6 +147,8 @@ have to satisfy below assumptions:
 
 -   Additionally, we assume that the mediator is measured for everyone
     before the outcome occurs.
+
+When the outcome is common, we can use weight approach ()
 
 ### Examples
 
@@ -168,8 +170,6 @@ required by context.
 
 The question of interest here is whether the blood pressure mediates the
 impact of obesity on CVD-related death (measured in years).
-
-# Coding part - Daniel
 
 ::: callout-note
 ## Learning outcomes
