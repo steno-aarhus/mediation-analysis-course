@@ -444,10 +444,11 @@ studies.
 
 #### Intermediate confounding
 
-Like the figure below, L is influenced by the exposure, also severs as a
-confounder of M and Y. When considering the effect on Y of changes to X
-via a specific mediator M, the presence of L is challenging and
-regression-based methods could no longer handle this situation.
+Like @fig-intermediate-confounding below, L is influenced by the
+exposure, also severs as a confounder of M and Y. When considering the
+effect on Y of changes to X via a specific mediator M, the presence of L
+is challenging and regression-based methods could no longer handle this
+situation.
 
 Conditional on L, we successfully block the backdoor path between
 X-M-L-Y; but at the same time we also block the backdoor path X-L-Y,
@@ -457,6 +458,8 @@ L and Y, adjusting on L will induce a noncausal association among A, U
 and Y.
 
 ```{dot}
+//| label: fig-intermediate-confounding
+//| fig-cap: "Confounding by an intermediate pathway."
 digraph {
   node [shape = plaintext]
     X
@@ -660,3 +663,4 @@ res_gformula <- cmest(
 
 summary(res_gformula)
 ```
+
