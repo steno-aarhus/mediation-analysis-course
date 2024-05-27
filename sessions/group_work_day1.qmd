@@ -1,14 +1,14 @@
-# Day 1: Group work
+# Day 1 group work
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
-In this session, We will get hands on practice using the framingham
+In this session, We will get hands on practice using the Framingham
 dataset.
 
 -   Conduct mediation analysis using the traditional approaches
 
--   Conduct mediation analysis using the 'mediaiton' R package
+-   Conduct mediation analysis using the 'mediation' R package
 
 -   Understanding summary output with binary outcome variable
 
@@ -51,10 +51,10 @@ For the exercise on day 1, we will work with the following variables:
     prenatal smoking)
 -   educ = education ()
 -   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
--   CVD= (binary: 0=no, 1=yes).
 -   obesity (binary: 0=normal, 1=obesity)
+-   CVD = (binary: 0=no, 1=yes).
 
-Note: in this example, the outcome of interest is the prescence of CVD,
+Note: in this example, the outcome of interest is the presence of CVD,
 which is a binary variable.
 
 Before we start, let's think about the research question and draw a

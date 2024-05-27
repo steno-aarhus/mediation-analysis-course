@@ -64,7 +64,7 @@ work, discussions and networking activities.
 | 8.30-9.00   | Registration and getting started                  |
 | 9.00-10.15  | Introduction to the course and the topic (DI, OS) |
 | 10.15-10.30 | Coffee break                                      |
-| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           |
+| 10.30-12.00 | Traditional mediation analysis (JZ)               |
 | 12.00-13.00 | Lunch                                             |
 | 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  |
 | 14.30-15.00 | Coffee break                                      |
