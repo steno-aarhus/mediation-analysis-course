@@ -1,8 +1,6 @@
 # What is Mediation analysis?
 
-<!-- Jie (75 min) -->
-
-```{r}
+```{r setup}
 #| include: false
 library(here)
 library(DiagrammeR)
@@ -11,7 +9,7 @@ library(dplyr)
 ```
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
 To learn how to conduct mediation analysis using the traditional
 approaches, along with understanding the assumptions and limitations of
@@ -169,15 +167,16 @@ session.
 
 ```{r}
 # first load the dataset
-nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
+nhanes <- read_csv(here::here("data/nhanes_dataset.csv"))
 
 nhanes <- nhanes %>%
   select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
-    a=total_redmeat,            #this is the exposure
-    m=magic_biomarker,          #this is the mediator
-    y=blood_glucose) %>%        #this is the outcome
-    na.omit()
+    id = seqn, w1 = age, w2 = gender, w3 = education_clean, w4 = smoke,
+    a = total_redmeat, # this is the exposure
+    m = magic_biomarker, # this is the mediator
+    y = blood_glucose
+  ) %>% # this is the outcome
+  na.omit()
 ```
 
 ## Method 1: Baron & Kenny (the product method)

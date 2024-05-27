@@ -136,7 +136,7 @@ impact of obesity on CVD-related death (measured in years).
 
 ```{r}
 library(tidyverse)
-framingham <- read.csv(here::here("data/framingham_dataset.csv"))
+framingham <- read_csv(here::here("data/framingham_dataset.csv"))
 
 framingham <- framingham %>%
   select(
@@ -156,7 +156,7 @@ framingham <- framingham %>%
       TRUE ~ 0
     ),
     y_time = y_time / 365.25
-  ) 
+  )
 ```
 
 The new thing here is that we need to calculate the time to event. This
