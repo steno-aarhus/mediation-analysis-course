@@ -148,7 +148,7 @@ have to satisfy below assumptions:
 -   Additionally, we assume that the mediator is measured for everyone
     before the outcome occurs.
 
-When the outcome is common, we can use weight approach ()
+When the outcome is common, we can use weight approach (Lange 2012)
 
 ### Examples
 
