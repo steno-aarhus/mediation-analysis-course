@@ -2,12 +2,6 @@
 
 <!-- Omar 30 min -->
 
-```{r setup}
-#| include: false
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-```
-
 Basic, clinical and epidemiological research are often interested in
 whether a specific intervention has an effect on a disease. Once this is
 established, the natural subsequent question is **WHY** this

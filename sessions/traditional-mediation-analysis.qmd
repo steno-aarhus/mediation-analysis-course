@@ -3,7 +3,6 @@
 ```{r setup}
 #| include: false
 library(here)
-library(DiagrammeR)
 library(tidyverse)
 library(dplyr)
 ```
@@ -404,4 +403,3 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
-
