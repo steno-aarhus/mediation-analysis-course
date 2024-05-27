@@ -450,7 +450,7 @@ Conditional on L, we successfully block the backdoor path between
 X-M-L-Y; but at the same time we also block the backdoor path X-L-Y,
 which represents part of the direct effect of X on Y (all the paths not
 going through M). Furthermore, if there is unmeasured confounder between
-L and Y, adjusting on L will induce a noncausal association between A U
+L and Y, adjusting on L will induce a noncausal association among A, U
 and Y.
 
 ```{r  echo=FALSE }
@@ -484,7 +484,7 @@ digraph {
 }")
 ```
 
-#### Time-varying confouding
+#### Time-varying confounding
 
 ```{r  echo=FALSE }
 # Creating The causal diagram for a mediation model
@@ -595,6 +595,8 @@ datasim <- function(n) {
 set.seed(120110) # for reproducibility
 ObsData <- datasim(n = 10000) # really large sample
 TRUE_EY.1 <- mean(ObsData$Y.1); TRUE_EY.1  # mean outcome under A = 1
+TRUE_EY.0 <- mean(ObsData$Y.0); TRUE_EY.0 
+TRUE_MOR <- (TRUE_EY.1*(1 - TRUE_EY.0))/((1 - TRUE_EY.1)*TRUE_EY.0); TRUE_MOR # true marginal OR
 ```
 
 The Total effect if we use traditional model:
@@ -614,9 +616,6 @@ A1Data <- A0Data <- ObsData
 # The rest of the data stays as is (for now)
 A1Data$A <- 1
 A0Data$A <- 0
-A1Data$A <- 1
-A0Data$A <- 0
-exp(Q$coef[2])
 # Predict Y if A=1
 Y_A1 <- predict(Q, A1Data, type="response") 
 # Predict Y if A=0
