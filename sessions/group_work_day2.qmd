@@ -3,7 +3,7 @@
 <!-- conduct causal mediation analysis, interpretation, conduct sensitivity analysis, interpretation, reporting according to guidelines - Jie will take first look  -->
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
 In this session, We will get hands on practice using the framingham
 dataset. You will conduct a proper causal mediation analysis,

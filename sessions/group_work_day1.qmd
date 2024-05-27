@@ -1,7 +1,7 @@
 # Day 1: Group work
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
 In this session, We will get hands on practice using the framingham
 dataset.
