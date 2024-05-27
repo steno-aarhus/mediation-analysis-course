@@ -48,8 +48,6 @@ digraph {
 
 ### Confirmation and refutation of theory
 
-<!-- DBI: this section is a little unclear. There are 2 mediators in the example above. -->
-
 Let's assume we estimate a familial risk of diabetes and that risk
 estimates follow a normal distribution at the population level. Then we
 select the extremes of the distribution (2.5%) and assess the relative
