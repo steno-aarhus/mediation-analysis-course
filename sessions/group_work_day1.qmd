@@ -1,21 +1,16 @@
-# Day 1: Group work
+# Day 1 group work
+
+This is the group work for the first day. You will get hands on practice
+using the Framingham dataset.
 
 ::: callout-note
-# Objective of this session
-
-In this session, We will get hands on practice using the framingham
-dataset.
+## Objective of this session
 
 -   Conduct mediation analysis using the traditional approaches
-
--   Conduct mediation analysis using the 'mediaiton' R package
-
+-   Conduct mediation analysis using the 'mediation' R package
 -   Understanding summary output with binary outcome variable
-
 -   The limitations of the traditional approaches
 :::
-
-For the exercises, we will use the Framingham dataset.
 
 First, load the dataset and take a few minutes to explore the variables
 in the dataset.
@@ -51,11 +46,12 @@ For the exercise on day 1, we will work with the following variables:
     prenatal smoking)
 -   educ = education ()
 -   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
--   CVD= (binary: 0=no, 1=yes).
 -   obesity (binary: 0=normal, 1=obesity)
+-   CVD = (binary: 0=no, 1=yes).
 
-Note: in this example, the outcome of interest is the prescence of CVD,
-which is a binary variable.
+Note: in this example, the outcome of interest is the presence of CVD,
+which is a binary variable. We will not think about time-to-event
+outcomes for now. More on this will come later.
 
 Before we start, let's think about the research question and draw a
 directed acyclic graphs. You can either draw by hand or use daggity
@@ -66,17 +62,17 @@ directed acyclic graphs. You can either draw by hand or use daggity
 1.  Estimate the relationship between obesity and blood pressure (fit
     the mediator model).
 
-2.  Estimate the conditional treatment effect of obesity on the
-    prevalence of CVD (conditional on SES, or other confounding factors
-    based on DAG).
+2.  Estimate the effect of obesity on the prevalence of CVD, adjusting
+    for SES, or other confounding factors based on your DAG.
 
 3.  Estimate the effect of blood pressure on the prevalence of CVD,
-    conditional on obesity. (conditional on SES, or other confounding
-    factors based on DAG).
+    adjusting for obesity and other confounding factors based on your
+    DAG.
 
-4.  Calculate the direct effect and indirect effect using the product
-    method and difference method, and compare results from the two
-    approaches.
+4.  Now, calculate the direct effect and indirect effect using the
+    product method and difference method, and compare results from the
+    two approaches. Note: you do not need to estimate the confidence
+    intervals.
 
 5.  Calculate the direct effect and indirect effect using the
     **mediation** package.

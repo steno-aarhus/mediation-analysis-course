@@ -1,38 +1,36 @@
 # Day 2: Group work
 
-<!-- conduct causal mediation analysis, interpretation, conduct sensitivity analysis, interpretation, reporting according to guidelines - Jie will take first look  -->
-
 ::: callout-note
 # Objective of this session
 
-In this session, We will get hands on practice using the framingham
+In this session, We will get hands on practice using the Framingham
 dataset. You will conduct a proper causal mediation analysis,
 considering:
 
--   Conduct mediation analyses with exposure induced mediator-outcome
-    confounder or multiple mediators
-
+-   Conduct causal mediation analyses with exposure induced
+    mediator-outcome confounder or multiple mediators
 -   Conduct sensitivity analyses
-
 -   Report the results following the guidelines
 :::
 
-We will continue working the obesity and cardiovascular disease example.
+We will continue working with the obesity and cardiovascular disease
+example.
+
 First, reflect on the group work from yesterday and discuss the
 following questions with your group members:
 
 -   Review the assumptions of causal mediation, and discuss the
     robustness of your estimates
-
--   Are there other mediators other than systolic blood pressure?
-
+-   Are there other mediators than systolic blood pressure?
 -   Are there interactions between obesity and the mediators?
 
 Re-conduct the mediation analysis and address the discussion points. You
 can either use the **mediation** package or **CMAverse** package.
 
-1.  Re-do the DAG, and investigate all the potential pathways
+1.  Re-do the DAG, and investigate the potential pathways
 
-2.  Conduct a sensitivity analyses and discuss the results
+2.  Perform a causal mediation analysis
 
-3.  Write a report of your mediation models
+3.  Conduct a sensitivity analyses and discuss the results
+
+4.  Write a short report of your mediation models
