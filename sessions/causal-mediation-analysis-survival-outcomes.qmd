@@ -118,7 +118,7 @@ have to satisfy below assumptions:
 
 When the outcome is common, we can use weight approach (Lange 2012)
 
-::: callout-note
+## Example
 
 We will continue working on the obesity-CVD example in the Framingham
 dataset.
