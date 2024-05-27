@@ -2,12 +2,6 @@
 
 <!-- Omar 30 min -->
 
-```{r setup}
-#| include: false
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-```
-
 Basic, clinical and epidemiological research are often interested in
 whether a specific intervention has an effect on a disease. Once this is
 established, the natural subsequent question is **why** this
@@ -21,27 +15,21 @@ uncovering the underlying pathways, and mechanisms.
 
 ### Explanation and understanding
 
-```{r}
-#| echo: false
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'Family history of diabetes']
-    M [label = 'genetic makeup']
-    N [label = 'shared environment']
-    Y [label = 'Type 2 diabetes']
+    X [label = "Family history of diabetes"]
+    M [label = "genetic makeup"]
+    N [label = "shared environment"]
+    Y [label = "Type 2 diabetes"]
   edge [minlen = 2]
-    X->M
-    M->Y
-    X->N
-    N->Y
-{ rank = same; M; X; Y; }
-  { rank = min; N;}
-
+    X -> M
+    M -> Y
+    X -> N
+    N -> Y
+  { rank = same; M; X; Y; }
+  { rank = min; N; }
 }
-")
 ```
 
 ### Confirmation and refutation of theory
@@ -65,24 +53,17 @@ diet. The main finding was a \~58% lower risk of incidence type 2
 diabetes in the lifestyle intervention group compared to the metformin
 group
 
-```{r}
-#| echo: false
-
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'Lifestyle intervention']
-    M [label = 'Weight loss']
-    Y [label = 'Type 2 diabetes']
+    X [label = "Lifestyle intervention"]
+    M [label = "Weight loss"]
+    Y [label = "Type 2 diabetes"]
   edge [minlen = 2]
-    X->M
-    M->Y
+    X -> M
+    M -> Y
    { rank = same; M; X; Y; }
 }
-")
 ```
 
 We might be interested in further refining the intervention so as to
@@ -96,27 +77,21 @@ settings, lifestyle interventions show smaller effect and the long-term
 adoption and sustainability over time were some of the challenges to the
 effectiveness of these prevention efforts
 
-```{r}
-#| echo: false
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'Lifestyle intervention']
-    M [label = 'Weight loss']
-    N [label = '?']
-  Y [label = 'Type 2 diabetes']
+    X [label = "Lifestyle intervention"]
+    M [label = "Weight loss"]
+    N [label = "?"]
+    Y [label = "Type 2 diabetes"]
   edge [minlen = 2]
-    X->M
-    M->Y
-    N->M
+    X -> M
+    M -> Y
+    N -> M
+    N -> Y
    {rank = same; M; X; Y; }
    {rank = min; N; }
 }
-}
-")
 ```
 
 ## Motivations for running this course

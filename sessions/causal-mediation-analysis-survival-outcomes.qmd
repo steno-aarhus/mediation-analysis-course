@@ -26,22 +26,19 @@ survival time of cancer patients and how much cancer stage mediated the
 effect. They found the effect of SES on survival time was partially
 mediated by stage diagnosis, explaining 12% for lung cancer.
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'socioeconomic status']
-    M [label = 'stage diagnosis']
-    Y [label = 'cancer mortality']
+    X [label = "socioeconomic status"]
+    M [label = "stage diagnosis"]
+    Y [label = "cancer mortality"]
   edge [minlen = 1.5]
-    X->Y
-    X->M
-    M->Y
-  { rank = same; X; M; Y }
-}")
+    X -> Y
+    X -> M
+    M -> Y
+  { rank = same; X; Y; }
+  { rank = min; M; }
+}
 ```
 
 ### Conduct causal mediation analysis for time-to-event outcomes

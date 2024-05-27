@@ -3,7 +3,6 @@
 ```{r setup}
 #| include: false
 library(here)
-library(DiagrammeR)
 ```
 
 In this session we will go over fundamental concepts of causal inference

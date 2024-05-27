@@ -79,7 +79,6 @@ If you have anything from 4.3.1 or later, it should be okay.
 #| eval: false
 install.packages("pak")
 pak::pkg_install("tidyverse")
-pak::pkg_install("DiagrammeR")
 pak::pkg_install("downlit")
 pak::pkg_install("furrr")
 pak::pkg_install("here")

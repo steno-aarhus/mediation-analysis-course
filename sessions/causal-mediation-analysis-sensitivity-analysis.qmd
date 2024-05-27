@@ -46,29 +46,22 @@ Consider the following figure in which *U* represents an unmeasured
 confounder, *C* measured covariables, *A* the exposure and *Y* the
 outcome.
 
-```{r}
-#| echo: false
-
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    C [label = 'C']
-    A [label = 'A']
-    Y [label = 'Y']
-    U [label = 'U']
+    C [label = "C"]
+    A [label = "A"]
+    Y [label = "Y"]
+    U [label = "U"]
   edge [minlen = 2]
-    A->Y
-    C->A
-    C->Y
-    U->A
-    U->Y
-{rank = same; C; A; Y; }
-{rank = max; U ; }
+    A -> Y
+    C -> A
+    C -> Y
+    U -> A
+    U -> Y
+  {rank = same; C; A; Y; }
+  {rank = max; U; }
 }
-")
 ```
 
 The basic idea of sensitivity analysis is to specify parameters
@@ -208,29 +201,19 @@ exposure--outcome and mediator--outcome confounding but that no data are
 available on *U* and that *U* confounds the mediator--outcome
 relationship.
 
-```{r, echo = FALSE}
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'X']
-    M [label = 'M']
-    C [label = 'C']
-    Y [label = 'Y']
-    U [label = 'U']
-  edge [minlen = 2]
-    C->X
-    C->Y
-    X->M
-    X->Y
-    M->Y
-    U->M
-    U->Y
-{ rank = same; C; X; M; Y;}
-  { rank = max; U;}
+    C -> X
+    C -> Y
+    X -> M
+    X -> Y
+    M -> Y
+    U -> M
+    U -> Y
+  { rank = same; C; X; M; Y; }
+  { rank = max; U; }
 }
-")
 ```
 
 If we have not adjusted for *U*, then our estimates controlling only for
@@ -334,29 +317,19 @@ If we assume an unmeasured mediator--outcome confounder *U* as in the
 next figure, we can use these same techniques and the same parameters to
 do sensitivity analysis for *NDE* as well.
 
-```{r, echo = FALSE}
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'X']
-    M [label = 'M']
-    C [label = 'C']
-    Y [label = 'Y']
-    U [label = 'U']
-  edge [minlen = 2]
-    C->X
-    C->Y
-    X->M
-    X->Y
-    M->Y
-    U->M
-    U->Y
-{ rank = same; C; X; M; Y;}
-  { rank = max; U;}
+    C -> X
+    C -> Y
+    X -> M
+    X -> Y
+    M -> Y
+    U -> M
+    U -> Y
+  { rank = same; C; X; M; Y; }
+  { rank = max; U; }
 }
-")
 ```
 
 For *NIE*, we can use of the decomposition property of the total effect.

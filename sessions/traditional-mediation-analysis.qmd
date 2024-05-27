@@ -3,7 +3,6 @@
 ```{r setup}
 #| include: false
 library(here)
-library(DiagrammeR)
 library(tidyverse)
 library(dplyr)
 ```
@@ -25,40 +24,27 @@ This can be visualized in the following figures.
 
 Overall relationship between A and Y:
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
-  node [shape = plaintext]
-    A [label = 'A']
-    Y [label = 'Y']
-  edge [minlen = 1.5]
-    A->Y [label = 'c']
-  { rank = same; A; Y }
-}")
+    graph [rankdir = "LR"]
+    node [shape = plaintext]
+    edge [minlen = 1.5]
+    A -> Y [label = "C"]
+}
 ```
 
 Relationship between X and Y through M:
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    A [label = 'A']
-    M [label = 'M']
-    Y [label = 'Y']
   edge [minlen = 1.5]
-    A->Y [label = 'c*', xlabel = 'c']
-    A->M [taillabel = 'a']
-    M->Y [label = 'b']
-  { rank = same; A; Y }
-  { rank = min; M;}
-}")
+  A -> Y [label = "c*", xlabel = "c"]
+  A -> M [taillabel = "a"]
+  M -> Y [label = "b"]
+  { rank = same; A; Y; }
+  { rank = min; M; }
+}
 ```
 
 ## Traditional approaches for mediation analysis
@@ -113,23 +99,20 @@ depicted by below figure.
 > Does greater consumption of red meat lead to elevated levels of blood
 > glucose by mediating specific inflammation biomarkers?
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'Red meat']
-    M [label = 'Inflammation']
-    Y [label = 'Blood glucose']
+  X [label = "Red meat"]
+  M [label = "Inflammation"]
+  Y [label = "Blood glucose"]
   edge [minlen = 1.5]
-    X->Y [label = 'c*', xlabel = 'c']
-    X->M [taillabel = 'a']
-    M->Y [label = 'b']
+  X -> Y [label = "c*", xlabel = "c"]
+  X -> M [taillabel = "a"]
+  M -> Y [label = "b"]
   { rank = same; X; Y }
-  { rank = min; M;}
-}")
+  { rank = min; M; }
+}
 ```
 
 ::: callout-note
@@ -446,4 +429,3 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
-
