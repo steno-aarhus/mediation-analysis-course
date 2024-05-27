@@ -197,7 +197,6 @@ available on *U* and that *U* confounds the mediator–outcome
 relationship.
 
 ```{r, echo = FALSE}
-
 library(DiagrammeR)
 grViz("
 digraph {
@@ -322,7 +321,6 @@ next figure, we can use these same techniques and the same parameters to
 do sensitivity analysis for NDE as well.
 
 ```{r, echo = FALSE}
-
 library(DiagrammeR)
 grViz("
 digraph {

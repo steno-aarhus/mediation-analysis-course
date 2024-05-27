@@ -205,7 +205,7 @@ framingham <- framingham %>%
       TRUE ~ 0
     ),
     y_time = y_time / 365.25
-  ) 
+  )
 ```
 
 > Does obesity lead to higher CVD risk by increasing blood pressure?

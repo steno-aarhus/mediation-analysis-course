@@ -131,11 +131,16 @@ nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
 # only keeping the variables we need for the example and removing missing variables
 nhanes <- nhanes %>%
   select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
-    a=total_redmeat,            #this is the exposure
-    m=magic_biomarker,          #this is the mediator
-    y=blood_glucose) %>%        #this is the outcome
-    na.omit()
+    id = seqn, 
+    w1 = age, 
+    w2 = gender, 
+    w3 = education_clean, 
+    w4 = smoke,
+    a = total_redmeat, # this is the exposure
+    m = magic_biomarker, # this is the mediator
+    y = blood_glucose # this is the outcome
+  ) %>% 
+  na.omit()
 ```
 
 We can now run a model for the mediator only adjusting for a single
@@ -154,7 +159,6 @@ Now, we run the model for the outcome, including an interaction.
 
 ```{r}
 lm_y <- lm(y ~ a + m + a:m + w1 + w2 + w3 + w4, data = nhanes)
-
 summary(lm_y)
 ```
 
@@ -455,26 +459,25 @@ and Y.
 
 ```{r  echo=FALSE }
 # Creating The causal diagram for a mediation model
-
 library(DiagrammeR)
 grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X 
-    M 
+    X
+    M
     L
     U [fontcolor = red]
-    Y 
+    Y
   edge [minlen = 1.5]
-    X->Y 
+    X->Y
     X->L
     L->Y
     L->M
     U->L
     U->Y
-    X->M 
-    M->Y 
+    X->M
+    M->Y
     W->X
     W->M
     W->Y
@@ -506,35 +509,35 @@ digraph {
     L1
     L2
     Lt
-    Y 
+    Y
   edge [minlen = 1.5]
     X0 -> X1
     X1 -> X2
     X2 -> Xt
-    Xt -> Y  
+    Xt -> Y
     M0 -> M1
     M1 -> M2
     M2 -> Mt
     Mt -> Y
     L0 -> L1
-    L1 -> L2     
-    L2 -> Lt   
+    L1 -> L2
+    L2 -> Lt
     X0 -> M0
     X1 -> M1
     X2 -> M2
     Xt -> Mt
     L0 -> X0
-    L1 -> X1     
-    L2 -> X2     
-    Lt -> Xt  
+    L1 -> X1
+    L2 -> X2
+    Lt -> Xt
     Lt -> Y
     X0 -> L1
     X1 -> L2
     X2 -> Lt
-    W -> L0  
-    W -> L1     
-    W -> L2     
-    W -> Lt 
+    W -> L0
+    W -> L1
+    W -> L2
+    W -> Lt
     W -> Y
   { rank = min; W;}
   { rank = same; L0; L1; L2; Lt }
@@ -580,30 +583,33 @@ Ingredients: A, Y, and controls W
 I will demonstrate how to conduct g-computation in a simulated dataset.
 
 ```{r}
-datasim <- function(n) { 
-  x1 <- rbinom(n, size = 1, prob = 0.5) 
+datasim <- function(n) {
+  x1 <- rbinom(n, size = 1, prob = 0.5)
   x2 <- rbinom(n, size = 1, prob = 0.65)
   x3 <- rnorm(n, 0, 1)
   x4 <- rnorm(n, 0, 1)
-  A <- rbinom(n, size = 1, prob = plogis(-1.6 + 2.5*x2 + 2.2*x3 + 0.6*x4 + 0.4*x2*x4)) 
-  Y.1 <- rbinom(n, size = 1, prob = plogis(-0.7 + 1 - 0.15*x1 + 0.45*x2 + 0.20*x4 + 0.4*x2*x4)) 
-  Y.0 <- rbinom(n, size = 1, prob = plogis(-0.7 + 0 - 0.15*x1 + 0.45*x2 + 0.20*x4 + 0.4*x2*x4)) 
-  Y <- Y.1*A + Y.0*(1 - A) 
-  data.frame(x1, x2, x3, x4, A, Y, Y.1, Y.0) 
-} 
+  A <- rbinom(n, size = 1, prob = plogis(-1.6 + 2.5 * x2 + 2.2 * x3 + 0.6 * x4 + 0.4 * x2 * x4))
+  Y.1 <- rbinom(n, size = 1, prob = plogis(-0.7 + 1 - 0.15 * x1 + 0.45 * x2 + 0.20 * x4 + 0.4 * x2 * x4))
+  Y.0 <- rbinom(n, size = 1, prob = plogis(-0.7 + 0 - 0.15 * x1 + 0.45 * x2 + 0.20 * x4 + 0.4 * x2 * x4))
+  Y <- Y.1 * A + Y.0 * (1 - A)
+  data.frame(x1, x2, x3, x4, A, Y, Y.1, Y.0)
+}
 
 set.seed(120110) # for reproducibility
 ObsData <- datasim(n = 10000) # really large sample
-TRUE_EY.1 <- mean(ObsData$Y.1); TRUE_EY.1  # mean outcome under A = 1
-TRUE_EY.0 <- mean(ObsData$Y.0); TRUE_EY.0 
-TRUE_MOR <- (TRUE_EY.1*(1 - TRUE_EY.0))/((1 - TRUE_EY.1)*TRUE_EY.0); TRUE_MOR # true marginal OR
+TRUE_EY.1 <- mean(ObsData$Y.1)
+TRUE_EY.1 # mean outcome under A = 1
+TRUE_EY.0 <- mean(ObsData$Y.0)
+TRUE_EY.0
+TRUE_MOR <- (TRUE_EY.1 * (1 - TRUE_EY.0)) / ((1 - TRUE_EY.1) * TRUE_EY.0)
+TRUE_MOR # true marginal OR
 ```
 
 The Total effect if we use traditional model:
 
 ```{r}
 # Fit a logistic regression model predicting Y from the relevant confounders
-Q <- glm(Y ~ A + x2 + x4 + x2*x4, data = ObsData, family=binomial)
+Q <- glm(Y ~ A + x2 + x4 + x2 * x4, data = ObsData, family = binomial)
 exp(Q$coef[2])
 ```
 
