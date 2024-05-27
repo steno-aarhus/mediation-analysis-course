@@ -457,12 +457,8 @@ going through M). Furthermore, if there is unmeasured confounder between
 L and Y, adjusting on L will induce a noncausal association among A, U
 and Y.
 
-```{r  echo=FALSE }
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
     X
     M
@@ -470,31 +466,27 @@ digraph {
     U [fontcolor = red]
     Y
   edge [minlen = 1.5]
-    X->Y
-    X->L
-    L->Y
-    L->M
-    U->L
-    U->Y
-    X->M
-    M->Y
-    W->X
-    W->M
-    W->Y
+    X -> Y
+    X -> L
+    L -> Y
+    L -> M
+    U -> L
+    U -> Y
+    X -> M
+    M -> Y
+    W -> X
+    W -> M
+    W -> Y
   { rank = same; X; M; Y }
-  { rank = min; L;}
-  { rank = max; W;}
-}")
+  { rank = min; L; }
+  { rank = max; W; }
+}
 ```
 
 #### Time-varying confounding
 
-```{r  echo=FALSE }
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
     W
     X0
@@ -539,11 +531,11 @@ digraph {
     W -> L2
     W -> Lt
     W -> Y
-  { rank = min; W;}
+  { rank = min; W; }
   { rank = same; L0; L1; L2; Lt }
   { rank = same; X0; X1; X2; Xt }
   { rank = same; M0; M1; M2; Mt; Y }
-}")
+}
 ```
 
 ### G-computation

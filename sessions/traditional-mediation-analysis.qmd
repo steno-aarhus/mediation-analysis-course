@@ -26,38 +26,25 @@ how**. This can be visualized in the following figure:
 
 <!--make models as Grviz  -->
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
-  node [shape = plaintext]
-    X [label = 'X']
-    Y [label = 'Y']
-  edge [minlen = 1.5]
-    X->Y [label = 'c']
-  { rank = same; X; Y }
-}")
+    graph [rankdir = "LR"]
+    node [shape = plaintext]
+    edge [minlen = 1.5]
+    X -> Y [label = "C"]
+}
 ```
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
-  graph []
   node [shape = plaintext]
-    X [label = 'X']
-    M [label = 'M']
-    Y [label = 'Y']
   edge [minlen = 1.5]
-    X->Y [label = 'c*', xlabel = 'c']
-    X->M [taillabel = 'a']
-    M->Y [label = 'b']
-  { rank = same; X; Y }
-  { rank = min; M;}
-}")
+  X -> Y [label = "c*", xlabel = "c"]
+  X -> M [taillabel = "a"]
+  M -> Y [label = "b"]
+  { rank = same; X; Y; }
+  { rank = min; M; }
+}
 ```
 
 <!-- ![Basic Model](/images/mediation_basic.PNG) -->
@@ -113,23 +100,20 @@ depicted by below figure.
 > Does greater consumption of red meat lead to elevated levels of blood
 > glucose by mediating specific inflammation biomarkers?
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
-grViz("
+```{dot}
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'Red meat']
-    M [label = 'Inflammation']
-    Y [label = 'Blood glucose']
+  X [label = "Red meat"]
+  M [label = "Inflammation"]
+  Y [label = "Blood glucose"]
   edge [minlen = 1.5]
-    X->Y [label = 'c*', xlabel = 'c']
-    X->M [taillabel = 'a']
-    M->Y [label = 'b']
+  X -> Y [label = "c*", xlabel = "c"]
+  X -> M [taillabel = "a"]
+  M -> Y [label = "b"]
   { rank = same; X; Y }
-  { rank = min; M;}
-}")
+  { rank = min; M; }
+}
 ```
 
 ## Example Dataset: A Brief Overview
