@@ -4,16 +4,14 @@
 
 <!-- Daniel will look and trim down a bit - Jie (30 min) -->
 
-Coding part - Daniel Teaching concepts - Jie (30 min)
+<!-- Coding part - Daniel Teaching concepts - Jie (30 min)  -->
 
-# Time-to-event outcomes
+## Time-to-event outcomes
 
 There are many studies conducting mediation analyses with
-**time-to-event outcomes**. Survival analysis allows investigators to
-study these important outcomes with appropriate consideration for
-variable follow-up times, censoring, and competing risks.
-Epidemiologists are particularly interested in understanding whether
-specific risk factors explain disease onset.
+**time-to-event outcomes**. Survival analysis allows researchers to
+study these outcomes while considering follow-up times, censoring, and
+competing risks.
 
 Take the red meat study for instance, we previously demonstrated higher
 red meat intake increased blood glucose. However, we might be even more
@@ -25,7 +23,7 @@ Another example is the effect of risk factor on patient survival time. A
 study investigated the effect of socioeconomic status (SES) on the
 survival time of cancer patients and how much cancer stage mediated the
 effect. They found the effect of SES on survival time was partially
-mediated by stage diagnosis (e.g., explaining 12% for lung cancer)
+mediated by stage diagnosis, explaining 12% for lung cancer.
 
 ```{r echo=FALSE}
 # Creating The causal diagram for a mediation model
@@ -46,28 +44,43 @@ digraph {
 }")
 ```
 
-::: callout-note
-## Could we use the traditional approach for time-to-event outcomes?
+### Conduct causal mediation analysis for time-to-event outcomes
 
-So how to conduct causal mediation analysis for time-to-event outcomes?
-We introduced the difference and product methods for continuous and
+#### Product method for time-to-event outcomes
+
+The Cox proportional hazards model is commonly used for dealing with
+survival data in medical literature. Cox regression estimates the
+**hazard ratios** and the values are then used to determine the effect
+of the mediator variable between the exposure and the survival time of
+outcome.
+
+Could we use the traditional approach for time-to-event outcomes? We
+have introduced the difference and product methods for continuous and
 binary outcomes in previous session. It is tempting to run a linear
 regression model for the mediator and proportional hazard model for the
 outcome, then use product or difference method to estimate the direct
 effect and indirect effect.
 
-But similar as odds ratio, ''non-collaspsibility'' is a problem of the
-hazard ratio. (VanderWeele) Thus, use of Cox PH regression to
+However, 'non-collaspsibility' is a problem of the hazard ratio as odds
+ratio (VanderWeele). Therefore, use of Cox PH regression to
 approximately estimate indirect effects via difference or product of
-coefficients rests on the assumption that the outcome is rare (refer).
-Where the outcome is common, measures of the indirect effect or
-proportion mediated will be incorrect.
+coefficients rests on the assumption that the outcome is **rare**
+(VanderWeele).
 
-To sum up, we could still use these approaches if certain criteria are
-fulfilled. Otherwise, we can use the product method to get an indication
-of whether there is mediation, but be aware that the estimate is not
-accurate.
-:::
+Where the outcome is common, measures of the indirect effect or
+proportion mediated will be incorrect. Tein and Mackinnon (2003)
+considered whether the product method and difference method yield
+comparable results with respect to time-to-event outcomes. They found
+that the methods coincides for the accelerated failure time model but
+not for the proportional hazards model.
+
+To sum up, we can only use the traditional approaches for rare outcomes.
+Otherwise, we can use the product method to get an indication of whether
+there is mediation, but be aware that the estimate is not accurate.
+
+#### Causal mediation for time-to-event outcomes
+
+So how to conduct causal mediation analysis for time-to-event outcomes?
 
 ::: callout-note
 In earlier session,we have been familiar with the counterfactual
@@ -92,26 +105,34 @@ Once you have grasped the core builds on comparing distributions of
 nested counterfactuals, these effects can just as easily be expressed on
 other scales than the averages.
 
-The Cox proportional hazards model is commonly used for dealing with
-survival data in medical literature and can explain multiplicative
-effects under the different effect scale in mediation analysis \[20,
-21\]. Cox regression estimates the **hazard ratios** and the values were
-then used to determine the effect of the mediator variable between the
-exposure and the survival time of outcome.
-
 For a **survival outcome**, the outcome of interest will be survival
 time (SV).
 
--   SV (t) = P(V ≥ t) the survival function at time t
+-   $SV (t) = P(V ≥ t)$ the survival function at time t
 
--   SV (t\|c)=P(V ≥ t\|c) the survival function conditional on
+-   $SV (t\|c)=P(V ≥ t\|c)$ the survival function conditional on
     covariates C
 
--   λV (t) : the hazard at time t
+-   $λV (t)$ : the hazard at time t
 
--   λV (t\|c): conditional hazard at time t
+-   $λV (t\|c)$: conditional hazard at time t
 
-## Assumptions of mediation analysis with a time-to-event outcome
+#### Definitions
+
+If we consider the survival functions for a time-to-event outcome T, we
+could decompose the survival function as follows:
+
+$ST_a(t) - ST_a*(t) = [ST_aM_a(t)-ST_aM_a*(t)] + [ST_aM_a*(t)-ST_a*M_a*(t)]$
+
+The first expression in brackets is the natural indirect effect on the
+survival function scale and the second is the natural direct effect on
+the survival function scale.
+
+Similarly, we can demcompose the overal difference in hazards on the
+hazard scale:
+$λT_a(t) - λT_a*(t) = [λT_aM_a(t)-λT_aM_a*(t)] + [λT_aM_a*(t)-λT_a*M_a*(t)]$
+
+### Assumptions of mediation analysis with a time-to-event outcome
 
 Similar as our context, mediation analysis with a time-to-event outcome
 have to satisfy below assumptions:
@@ -123,6 +144,13 @@ have to satisfy below assumptions:
 -   no unmeasured confounding of the exposure-mediation relation;
 
 -   no exposure induced mediation-outcome confounding
+
+-   Additionally, we assume that the mediator is measured for everyone
+    before the outcome occurs.
+
+When the outcome is common, we can use weight approach ()
+
+### Examples
 
 ::: callout-note
 We will continue working on the obesity-CVD example in the Framingham
@@ -142,11 +170,6 @@ required by context.
 
 The question of interest here is whether the blood pressure mediates the
 impact of obesity on CVD-related death (measured in years).
-
--   survival analysis
--   code-along with package and setup of survival data
-
-# Coding part - Daniel
 
 ::: callout-note
 ## Learning outcomes

@@ -12,7 +12,7 @@
 ## AGReMA checklist
 
 Recent reviews on mediation analyses have suggested that the reporting
-og documentation from these studies were insuffucient interpretation of
+og documentation from these studies were insufficient interpretation of
 the results and application for meta-analysis.
 
 Based on this, a group of researchers have using a comprehensive
