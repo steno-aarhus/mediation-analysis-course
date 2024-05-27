@@ -484,6 +484,37 @@ digraph {
 }")
 ```
 
+```{r  echo=FALSE }
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    W [label = 'SEP']
+    X [label = 'Alcohol intake']
+    M [label = 'GGT']
+    L [label = 'BMI']
+    U 
+    Y [label = 'SBP']
+  edge [minlen = 1.5]
+    X->Y 
+    X->L
+    L->Y
+    L->M
+    U->L
+    U->Y
+    X->M 
+    M->Y 
+    W->X
+    W->M
+    W->L
+    W->Y
+  { rank = same; X; M; Y }
+  { rank = min; L; w}
+}")
+```
+
 #### Time-varying confounding
 
 ```{r  echo=FALSE }
