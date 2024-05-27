@@ -1,4 +1,4 @@
-# What is Mediation analysis?
+# Traditional mediation analysis
 
 ```{r setup}
 #| include: false
@@ -467,3 +467,5 @@ estimate a causal mediation effect:
 -   no exposure-mediator interaction
 -   linear relationship
 -   rare binary outcome
+
+## References

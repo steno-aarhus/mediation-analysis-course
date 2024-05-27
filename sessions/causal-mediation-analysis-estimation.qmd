@@ -39,6 +39,7 @@ digraph {
   edge [minlen = 2]
     A->M
     M->Y
+    A->Y
     W->A
     W->Y
     W->M
