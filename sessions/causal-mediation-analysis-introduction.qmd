@@ -1,12 +1,6 @@
 # Introduction to causal mediation analysis
 
-<<<<<<< style/apply-some-style-fixes
 ```{r setup}
-=======
-<!-- Daniel 90 min -->
-
-```{r}
->>>>>>> main
 #| include: false
 library(here)
 library(DiagrammeR)

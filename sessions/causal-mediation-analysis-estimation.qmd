@@ -1,12 +1,9 @@
 # Estimation of effects using causal mediation analysis
 
-<<<<<<< style/apply-some-style-fixes
-```{r setup}
-=======
-<!-- Daniel 120 min -->
+\<\<\<\<\<\<\< style/apply-some-style-fixes
 
-```{r}
->>>>>>> main
+```{r setup}
+
 #| include: false
 library(here)
 library(DiagrammeR)
@@ -95,7 +92,7 @@ explain the intuition behind the estimands. Similar equations exist for
 other types and combinations of variables.
 
 ```{r}
-<<<<<<< style/apply-some-style-fixes
+
 nhanes <- read_csv(here::here("data/nhanes_dataset.csv"))
 # only keeping the variables we need for the example and removing missing variables
 nhanes <- nhanes %>%
@@ -110,22 +107,6 @@ nhanes <- nhanes %>%
     y = blood_glucose # this is the outcome
   ) %>% 
   na.omit()
-=======
-# first load the dataset
-nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
-
-nhanes <- nhanes %>%
-  select(
-    id = seqn,
-    w1 = age,
-    w2 = gender,
-    w3 = education_clean,
-    w4 = smoke, 
-    a = total_redmeat,            #this is the exposure
-    m = magic_biomarker,          #this is the mediator
-    y = blood_glucose) %>%        #this is the outcome
-    na.omit()
->>>>>>> main
 ```
 
 We can now run a model for the mediator only adjusting for a single
@@ -143,12 +124,8 @@ inflammatory biomarker.
 Now, we run the model for the outcome, including an interaction.
 
 ```{r}
-<<<<<<< style/apply-some-style-fixes
-lm_y <- lm(y ~ a + m + a:m + w1 + w2 + w3 + w4, data = nhanes)
-=======
 lm_y <- lm(y ~ a + m + a:m + w1, data = nhanes)
 
->>>>>>> main
 summary(lm_y)
 ```
 
@@ -683,16 +660,6 @@ y <- rbinom(n, 1, expit(0.3 * a + 0.8 * m + 0.5 * a * m - 0.3 * l + 0.4 * w))
 data <- data.frame(a, m, y, w, l)
 
 library(CMAverse)
-<<<<<<< style/apply-some-style-fixes
-res_gformula <- cmest(
-  data = data, model = "gformula", outcome = "y", exposure = "a",
-  mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
-  mreg = list("logistic"), yreg = "logistic",
-  postcreg = list("linear"),
-  astar = 0, a = 1, mval = list(1),
-  estimation = "imputation", inference = "bootstrap", nboot = 2
-)
-=======
 
 res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure = "a",
                  mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
@@ -700,7 +667,7 @@ res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure =
                  postcreg = list("linear"),
                  astar = 0, a = 1, mval = list(1), 
                  estimation = "imputation", inference = "bootstrap", nboot = 2)
->>>>>>> main
 
 summary(res_gformula)
 ```
+
