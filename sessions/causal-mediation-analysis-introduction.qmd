@@ -88,8 +88,7 @@ treatment a = 1.
 
 ### Definition of a causal effect
 
-More formally we can now define a causal effect
-(@hernan_definition_2004):
+More formally we can now define a causal effect @hernan_definition_2004:
 
 $E[Y^{a=1} = 1] - E[Y^{a=0} = 1] \ne 0$
 
@@ -234,7 +233,7 @@ dataset.
 
 A DAG contains nodes and arrows. It cannot be circular. @fig-dag shows
 the different types of variables in a DAG and rules for paths
-(@tennant_use_2021).
+@tennant_use_2021.
 
 ![Components of a DAG, including the common types of variables and
 paths. From @tennant_use_2021](/images/dag-overview.PNG){#fig-dag}
