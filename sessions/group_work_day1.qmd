@@ -23,13 +23,12 @@ in the dataset.
 ```{r}
 library(here)
 load(here::here("data/frmghamdata.RData"))
-
 ```
 
 ## Variables
 
-The dataset includes 'r nrow(frmgham)´ participants and 'r
-ncol(frmgham)´.
+The dataset includes `r nrow(frmgham)` participants and
+`r ncol(frmgham)`.
 
 ```{r}
 str(frmgham)
