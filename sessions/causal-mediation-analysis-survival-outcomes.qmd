@@ -156,3 +156,6 @@ res_rb_coxph <- cmest(
 
 summary(res_rb_coxph)
 ```
+
+## References
+
