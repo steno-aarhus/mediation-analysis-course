@@ -99,7 +99,7 @@ The first expression in brackets is the natural indirect effect on the
 survival function scale and the second is the natural direct effect on
 the survival function scale.
 
-Similarly, we can demcompose the overal difference in hazards on the
+Similarly, we can demcompose the overall difference in hazards on the
 hazard scale:
 
 $λT_a(t) - λT_a*(t) = [λT_aM_a(t)-λT_aM_a*(t)] + [λT_aM_a*(t)-λT_a*M_a*(t)]$
