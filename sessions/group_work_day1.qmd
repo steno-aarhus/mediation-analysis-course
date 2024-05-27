@@ -12,16 +12,15 @@
 First, load the dataset and take a few minutes to explore the variables
 in the dataset.
 
-```{r}
+```{r setup}
 library(here)
 load(here::here("data/frmghamdata.RData"))
-
 ```
 
 ## Variables
 
-The dataset includes 'r nrow(frmgham)´ participants and 'r
-ncol(frmgham)´.
+The dataset includes `r nrow(frmgham)` participants and
+`r ncol(frmgham)`.
 
 ```{r}
 str(frmgham)

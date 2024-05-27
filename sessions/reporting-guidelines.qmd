@@ -4,7 +4,7 @@ In this session we will use some time to understand the reporting
 guidelines for mediation analysis as these are seldom used in practice.
 
 ::: callout-note
-## The overall course objective
+## The overall session objectives
 
 -   Present results from mediation analysis according to the current
     mediation analysis reporting guidelines

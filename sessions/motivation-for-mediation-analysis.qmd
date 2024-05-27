@@ -2,9 +2,8 @@
 
 <!-- Omar 30 min -->
 
-```{r}
+```{r setup}
 #| include: false
-
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 ```
@@ -99,7 +98,6 @@ effectiveness of these prevention efforts
 
 ```{r}
 #| echo: false
-
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -108,7 +106,7 @@ digraph {
   node [shape = plaintext]
     X [label = 'Lifestyle intervention']
     M [label = 'Weight loss']
-    N [label = '?']    
+    N [label = '?']
   Y [label = 'Type 2 diabetes']
   edge [minlen = 2]
     X->M
