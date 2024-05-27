@@ -1,5 +1,7 @@
 # Introduction to causal mediation analysis
 
+<!-- Daniel 90 min -->
+
 ```{r}
 #| include: false
 
@@ -7,14 +9,9 @@ library(here)
 library(DiagrammeR)
 ```
 
-<!-- Daniel 90 min -->
-
 In this session we will go over fundamental concepts of causal inference
 in general and then focus more specifically on causal mediation
-analysis. For the mediation analysis, this introduction targets the
-controlled direct effect, the indirect and direct effect as overall
-concepts. In the next sessions, we will dive further into additional
-estimands and decompositions of the effects.
+analysis.
 
 ::: callout-note
 ## Learning outcomes
@@ -91,7 +88,8 @@ treatment a = 1.
 
 ### Definition of a causal effect
 
-More formally we can now define a causal effect (ref:Hernan2004):
+More formally we can now define a causal effect
+(@hernan_definition_2004):
 
 $E[Y^{a=1} = 1] - E[Y^{a=0} = 1] \ne 0$
 
@@ -122,8 +120,6 @@ received treatment (A = 0).
 pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, w = w))
 pred_y0 <- predict(lm_y, newdata = data.frame(a = 0, w = w))
 ```
-
-<!-- fix the figures -->
 
 We can now get the causal effect, which is the average of the difference
 in the treatment effect in each group. Or put more formally
@@ -160,8 +156,8 @@ observe the outcome under different treatments.
 When we only have a subset of the outcomes, we have an association. This
 is illustrated in @fig-causation-association.
 
-![Causation vs association. From Hernan
-2004](/images/causation-association.PNG){#fig-causation-association}
+![Causation vs association. From
+@hernan_definition_2004](/images/causation-association.PNG){#fig-causation-association}
 
 If we want to infer a causal effect (i.e., what would have happened, had
 everyone done A=1 vs A=0), we need three assumptions to be fulfilled:
@@ -238,10 +234,10 @@ dataset.
 
 A DAG contains nodes and arrows. It cannot be circular. @fig-dag shows
 the different types of variables in a DAG and rules for paths
-(ref:Tennant2021).
+(@tennant_use_2021).
 
 ![Components of a DAG, including the common types of variables and
-paths. From Tennant et al. 2021](/images/dag-overview.PNG){#fig-dag}
+paths. From @tennant_use_2021](/images/dag-overview.PNG){#fig-dag}
 
 ## Causal mediation analysis
 
@@ -251,79 +247,43 @@ mediation seek to understand how the paths behave under circumstances
 different from the observed circumstances (e.g., interventions).
 
 Causal mediation analysis is an extension of the traditional approach
-by: - outlining all confounding assumptions needed - handling
-non-linearity and interaction - clearly defining estimands of interest
+by:
+
+-   outlining all confounding assumptions needed
+-   handling non-linearity and interaction
+-   clearly defining estimands of interest
 
 ## Confounding assumptions
 
 By using DAGs, the assumptions about confounding are made much more
 explicit.
 
-Fig. 3. DAG under *no intermediate confounders* of the mediator-outcome
-relation affected by treatment
+DAG under no mediator-outcome relation affected by treatment:
 
-``` {.tikz embed_mode="link" scale="3" filename="example" format="svg"}
-\dimendef\prevdepth=0
-\pgfdeclarelayer{background}
-\pgfsetlayers{background,main}
-\usetikzlibrary{arrows,positioning}
-\tikzset{
->=stealth',
-punkt/.style={
-rectangle,
-rounded corners,
-draw=black, very thick,
-text width=6.5em,
-minimum height=2em,
-text centered},
-pil/.style={
-->,
-thick,
-shorten <=2pt,
-shorten >=2pt,}
+```{r}
+#| echo: false
+
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    W [label = 'W']
+    A [label = 'A']
+    M [label = 'M']
+    Y [label = 'Y']
+  edge [minlen = 2]
+    A->M
+    M->Y
+    W->A
+    W->Y
+    W->M
+{rank = same; W; A; M; Y; }
 }
-\newcommand{\Vertex}[2]
-{\node[minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$#2$};
-}
-\newcommand{\VertexR}[2]
-{\node[rectangle, draw, minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$#2$};
-}
-\newcommand{\ArrowR}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) to[bend right=30] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\ArrowL}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) to[bend left=45] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\EdgeL}[3]
-{ \begin{pgfonlayer}{background}
-\draw[dashed,#3] (#1) to[bend right=-45] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\Arrow}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) -- +(#2);
-\end{pgfonlayer}
-}
-\begin{tikzpicture}
-  \Vertex{-4, 0}{W}
-  \Vertex{0, 0}{M}
-  \Vertex{-2, 0}{A}
-  \Vertex{2, 0}{Y}
-  \Arrow{W}{A}{black}
-  \Arrow{A}{M}{black}
-  \Arrow{M}{Y}{black}
-  \ArrowL{W}{Y}{black}
-  \ArrowL{A}{Y}{black}
-  \ArrowL{W}{M}{black}
-\end{tikzpicture}
+")
 ```
 
-In Fig 3. we can see that we not only have to take confounding between
-the treatment and outcome into account, but we also have to take
+We can see that we not only have to take confounding between the
+treatment and outcome into account, but we also have to take
 mediator-outcome ($A \leftarrow W \rightarrow Y$) confounding into
 account.
 
@@ -341,79 +301,41 @@ cannot be ruled out.
 
 In addition, we can have a more complicated situation where the
 treatment also impacts another mediator that is also a mediator-outcome
-confounder. This is illustrated in Fig. 4.
+confounder.
 
-Fig. 4. DAG under intermediate confounders of the mediator-outcome
-relation affected by treatment
+DAG where the mediator-outcome relation is affected by treatment:
 
-``` {.tikz embed_mode="link" scale="3" filename="example" format="svg"}
-\dimendef\prevdepth=0
-\pgfdeclarelayer{background}
-\pgfsetlayers{background,main}
-\usetikzlibrary{arrows,positioning}
-\tikzset{
->=stealth',
-punkt/.style={
-rectangle,
-rounded corners,
-draw=black, very thick,
-text width=6.5em,
-minimum height=2em,
-text centered},
-pil/.style={
-->,
-thick,
-shorten <=2pt,
-shorten >=2pt,}
+```{r}
+#| echo: false
+
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    W1 [label = 'W1']
+    A [label = 'A']
+    M [label = 'M']
+    Y [label = 'Y']
+    W2 [label = 'W2']
+  edge [minlen = 2]
+    A->M
+    M->Y
+    W1->A
+    W1->Y
+    W1->M
+    W2->M
+    W2->Y
+    A->W2
+    W1->W2
+{rank = same; W1; A; M; Y; }
+{rank = max; W2 ; }
 }
-\newcommand{\Vertex}[2]
-{\node[minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$#2$};
-}
-\newcommand{\VertexR}[2]
-{\node[rectangle, draw, minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$#2$};
-}
-\newcommand{\ArrowR}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) to[bend right=30] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\ArrowL}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) to[bend left=45] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\EdgeL}[3]
-{ \begin{pgfonlayer}{background}
-\draw[dashed,#3] (#1) to[bend right=-45] (#2);
-\end{pgfonlayer}
-}
-\newcommand{\Arrow}[3]
-{ \begin{pgfonlayer}{background}
-\draw[->,#3] (#1) -- +(#2);
-\end{pgfonlayer}
-}
-\begin{tikzpicture}
-  \Vertex{0, -1}{Z}
-  \Vertex{-4, 0}{W}
-  \Vertex{0, 0}{M}
-  \Vertex{-2, 0}{A}
-  \Vertex{2, 0}{Y}
-  \ArrowR{W}{Z}{black}
-  \Arrow{Z}{M}{black}
-  \Arrow{W}{A}{black}
-  \Arrow{A}{M}{black}
-  \Arrow{M}{Y}{black}
-  \Arrow{A}{Z}{black}
-  \Arrow{Z}{Y}{black}
-  \ArrowL{W}{Y}{black}
-  \ArrowL{A}{Y}{black}
-  \ArrowL{W}{M}{black}
-\end{tikzpicture}
+")
 ```
 
 From the DAG rules, we have a special problem that we cannot solve with
-traditional regression approaches. If we adjust for Z we open the
-backdoor path from $Z \leftarrow W \rightarrow Y$. We will work on how
+traditional regression approaches. If we adjust for W2 we open the
+backdoor path from $W1 \leftarrow W2 \rightarrow Y$. We will work on how
 to solve this problem later in the course.
 
 ## Non-linearity and interactions
@@ -540,6 +462,9 @@ intervention.
 
 ### Interaction effects
 
+More information on the interaction effects can be found in
+@vanderweele_unification_2014.
+
 Reference interaction:
 
 $INT_{ref} = PNDE - CDE$
@@ -557,6 +482,9 @@ Effect decomposition is important when we want to assess relative
 contributions such as the proportion mediated and eliminated.
 
 TE = PNDE + TNIE = TNDE + PNIE
+
+More information about decomposition of effects can be found in
+@vanderweele_unification_2014.
 
 ### Proportions
 
@@ -624,27 +552,30 @@ Stay in the same groups that you did the previous exercise.
 ## Two trials
 
 It is possible to conduct two randomized controlled trials to
-investigate mediation (ref:Imai). One approach is the so-called parallel
-design. Two randomized controlled trials are conducted in parallel. The
-first investigates the effect of the treatment on the outcome (i.e.,
-total effect). In the second trial we randomize both the treatment and
-the mediator.
+investigate mediation (@imai_experimental_2013). One approach is the
+so-called parallel design. Two randomized controlled trials are
+conducted in parallel. The first investigates the effect of the
+treatment on the outcome (i.e., total effect). In the second trial we
+randomize both the treatment and the mediator.
 
 For example, one could use transcranial magnetic stimulation (TMS) to
 investigate if activation of specific brain regions mediate the
 propensity to accept more unfair monetary offers in a bidding game
-called the "ultimatum game" (ref: Knoch 2006). First, you conduct an
-experiment with unfair bidding and acceptance. Then one conducts the
-same experiment but with manipulation of the mediator, here TMS to
-activate a certain brain region.
+called the "ultimatum game" (@knoch_diminishing_2006). First, you
+conduct an experiment with unfair bidding and acceptance. Then one
+conducts the same experiment but with manipulation of the mediator, here
+TMS to activate a certain brain region.
 
 A key assumption here is consistency. The subjects should not know the
 receive the extra intervention.
 
-There is also a crossover version (ref: Imai). Here, we first randomize
-the order of the treatment and control, then observe the effect on
-mediator and outcome. Then we assign the opposite treatment status and
-to the value of the mediator that was observed in the first period.
+There is also a crossover version (@imai_experimental_2013). Here, we
+first randomize the order of the treatment and control, then observe the
+effect on mediator and outcome. Then we assign the opposite treatment
+status and to the value of the mediator that was observed in the first
+period.
 
 In addition to consistency there is the assumption of no carry-over
 effects.
+
+## References
