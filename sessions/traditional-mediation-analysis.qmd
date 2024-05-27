@@ -403,11 +403,35 @@ For details of the mediate() package, please refer to
 
 ## Limitations of the traditional approach
 
-<!-- - put in DAG in context of example to discuss limitations -->
-
 -   Non-linearity
 -   Interactions
 -   Multiple mediators
+
+```{r echo=FALSE}
+# Creating The causal diagram for a mediation model
+library(DiagrammeR)
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X [label = 'Red meat']
+    M [label = 'Inflammation']
+    Y [label = 'Blood glucose']
+    N[label = 'Insulin sensitivity']
+    A[label = 'Fasting insulin']
+  edge [minlen = 1.5]
+    X->Y 
+    X->M 
+    M->Y 
+    X->N    
+    N->Y
+    X->A    
+    A->Y
+  { rank = same; X; N; Y; }
+  { rank = min; M;}
+  { rank = max; A;}
+}")
+```
 
 ## When can we use the traditional approach
 
