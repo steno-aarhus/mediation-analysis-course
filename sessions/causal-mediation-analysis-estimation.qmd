@@ -127,7 +127,7 @@ account in another way.
 <!-- Jie will update and put in previous section -->
 
 ```{r}
-nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
+nhanes <- read_csv(here::here("data/nhanes_dataset.csv"))
 # only keeping the variables we need for the example and removing missing variables
 nhanes <- nhanes %>%
   select(

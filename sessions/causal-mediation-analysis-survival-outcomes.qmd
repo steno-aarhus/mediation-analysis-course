@@ -185,7 +185,7 @@ impact of obesity on CVD-related death (measured in years).
 
 ```{r}
 library(tidyverse)
-framingham <- read.csv(here::here("data/framingham_dataset.csv"))
+framingham <- read_csv(here::here("data/framingham_dataset.csv"))
 
 framingham <- framingham %>%
   select(
