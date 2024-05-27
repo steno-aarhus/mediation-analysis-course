@@ -1,9 +1,7 @@
 # Reporting guidelines {#sec-reporting-guidelines}
 
-## Overall learning outcomes
-
 ::: callout-note
-## The overall course objective
+## The overall session objectives
 
 -   Present results from mediation analysis according to the current
     mediation analysis reporting guidelines
