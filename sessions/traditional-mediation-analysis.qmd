@@ -1,8 +1,6 @@
-# What is Mediation analysis?
+# Traditional mediation analysis
 
-<!-- Jie (75 min) -->
-
-```{r}
+```{r setup}
 #| include: false
 library(here)
 library(DiagrammeR)
@@ -11,11 +9,11 @@ library(dplyr)
 ```
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
-To learn how to conduct mediation analysis using the traditional
-approaches, along with understanding the assumptions and limitations of
-the methods.
+-   To learn how to conduct mediation analysis using the traditional
+    approaches.
+-   Understanding the assumptions and limitations of the methods.
 :::
 
 The purpose of mediation analysis is to determine if the effect of a
@@ -27,9 +25,9 @@ This can be visualized in the following figures.
 
 Overall relationship between A and Y:
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+```{r}
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -42,11 +40,11 @@ digraph {
 }")
 ```
 
-Relationship between X and Y through M:
+Relationship between A and Y through M:
 
 ```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -66,8 +64,8 @@ digraph {
 ## Traditional approaches for mediation analysis
 
 The two traditional approaches to mediation analysis are **the
-difference method** and **the product method** (also known as the Baron
-& Kenny-method).
+difference method** and **the product method**; also known as the Baron
+& Kenny-method @baron_moderatormediator_1986.
 
 The traditional approach use these equations for mediator and outcome
 (for the case of a continuous mediator and a continuous outcome)
@@ -84,11 +82,18 @@ Outcome model without adjustment for mediator:
 
 $E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c$ (3.3)
 
-Note: - total effect --\>c, that is the total effect of the independent
-variable on the dependent variable - direct effect --\> c', that is the
-effect of the independent variable on the dependent variable that is not
-mediated by the mediator - mediation effect=a\*b **the product
-method** - mediation effect=c-c' **the difference method**
+Note:
+
+-   total effect=$\theta_1'$ , that is the total effect of the
+    independent variable on the dependent variable
+
+-   direct effect=$\theta_1$', that is the effect of the independent
+    variable on the dependent variable that is not mediated by the
+    mediator
+
+-   mediation effect=$\beta1*\theta_2$ (the product method)
+
+-   mediation effect='$\theta_1'-\theta_1$ (the difference method)
 
 Note: The terms 'mediation effect' and 'indirect effect' are used
 synonymously.
@@ -116,8 +121,8 @@ depicted by below figure.
 > glucose by mediating specific inflammation biomarkers?
 
 ```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -148,7 +153,7 @@ intake of red meat to be per 65 g/day (i.e., 1-unit higher = 65 g/day).
 
 The variables used in the dataset:
 
--   exposure of interest (a): red meat intake: (continuous variable,
+-   exposure of interest (a): red meat intake (continuous variable,
     grams per day)
 
 -   outcome (y): plasma fasting glucose (continuous variable)
@@ -168,27 +173,29 @@ session.
 :::
 
 ```{r}
-# first load the dataset
-nhanes <- read.csv(here::here("data/nhanes_dataset.csv"))
+
+nhanes <- read_csv(here::here("data/nhanes_dataset.csv"))
 
 nhanes <- nhanes %>%
   select(
-    id = seqn,  w1 = age,  w2 = gender,  w3 = education_clean, w4 = smoke, 
-    a=total_redmeat,            #this is the exposure
-    m=magic_biomarker,          #this is the mediator
-    y=blood_glucose) %>%        #this is the outcome
-    na.omit()
+    id = seqn, w1 = age, w2 = gender, w3 = education_clean, w4 = smoke,
+    a = total_redmeat, # this is the exposure
+    m = magic_biomarker, # this is the mediator
+    y = blood_glucose # this is the outcome
+  ) %>% 
+  na.omit()
 ```
 
 ## Method 1: Baron & Kenny (the product method)
 
-According to Baron and Kenny (1986), the following criteria need to be
-satisfied for a variable to be considered a mediator:
+According to Baron and Kenny (1986) @baron_moderatormediator_1986, the
+following criteria need to be satisfied for a variable to be considered
+a mediator:
 
 1.  The exposure should be associated with the mediator.
-2.  The model for the outcome that includes both the exposure and
+2.  In the model for the outcome that includes both the exposure and
     mediator: the mediator should be associated with the outcome.
-3.  The model for the outcome that includes only the exposure: the
+3.  In the model for the outcome that includes only the exposure: the
     exposure should be associated with the outcome.
 4.  When controlling for the mediator, the association between the
     exposure and outcome should be reduced, with the strongest
@@ -210,11 +217,14 @@ As the mediator is a continuous variable, we can build a linear
 regression model, adjusting for confounders on the pathway between A and
 M.
 
-\$ (E(M\|A=a, C=c) = \beta\_0 + \beta\_1a + \beta\_2c\$ (3.1)
+<<<<<<< HEAD
+$(E(M|A=a, C=c)$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (3.1)
+=======
+$(E(M|A=a, C=c) = \beta_0 + \beta_1a + \beta_2c$ (3.1)
+>>>>>>> 5eb5707a7c3872d816a5ed1b26e604c087142cb1
 
 ```{r}
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
-
 summary(fita)
 ```
 
@@ -248,17 +258,20 @@ That is to build the model between red meat intake and glucose levels,
 without adjusting for the inflammatory biomarker. The only difference
 between step 2 and step 3 is that mediator is not included in the model.
 
-$(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (1.3)
+<<<<<<< HEAD
+$(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (3.3)
+=======
+$(E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c$ (1.3)
+>>>>>>> 5eb5707a7c3872d816a5ed1b26e604c087142cb1
 
 ```{r}
 fitc <- lm(y ~ a + w1 + w2 + w3 + w4, data = nhanes)
-
 summary(fitc)
 ```
 
 We can see that red meat intake is strongly associated with higher
 glucose levels (an increase of 1 unit in red meat consumption is
-associated with a 70.5 unit increase in the biomarker level).
+associated with a 70.5 unit increase in the blood glucose.
 
 Then we can estimate the direct effect and indirect effect:
 
@@ -312,9 +325,16 @@ meat in model b (adjusting for m), which equals to 17.8.
 
 ```{r}
 indirect_mb <- fitc$coefficients[2] - fitb$coefficients[2]
-
 indirect_mb
 ```
+
+::: callout-note
+The algebraic equivalence of the indirect effect using the product
+method and the difference method will coincide for a continuous outcome
+on the difference scale (MacKinnon 1995). However, the two methods
+diverge when using a binary outcome and logistic regression. (MacKinnon
+and Dwyer 1993).
+:::
 
 ::: callout-note
 Recall the four criteria suggested by Baron and Kenny. One of the
@@ -341,13 +361,14 @@ and the difference methods.You might have noticed what you got so far
 are only point estimates, but what if you want to see if this mediation
 effect is statistically significant (different from zero or not)?
 
-To do so, there are two main approaches: the Sobel test (Sobel, 1982)
-and bootstrapping (Preacher & Hayes, 2004).
+To do so, there are two main approaches: the Sobel test
+@sobel_asymptotic_1982 and bootstrapping @preacher_spss_2004.
 
 Here we will demonstrate that we can use the mediate() function in
-'mediation' package (Tingley et al. 2019) to conduct mediation analysis.
-One of the very good options to conduct mediation analysis using the
-mediation package is we can get confidence interval by bootstrapping.
+'mediation' package @tingley_mediation_2014 to conduct mediation
+analysis. One of the very good options to conduct mediation analysis
+using the mediation package is we can get confidence interval by
+bootstrapping.
 
 Let's load up the R packages.
 
@@ -403,7 +424,7 @@ plot(results)
 ```
 
 For details of the mediate() package, please refer to
-(mediation_rpackage 2014).
+@tingley_mediation_2014.
 
 ## Limitations of the traditional approach
 
@@ -411,9 +432,9 @@ For details of the mediate() package, please refer to
 -   Interactions
 -   Multiple mediators
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+```{r}
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -445,6 +466,6 @@ estimate a causal mediation effect:
 -   no unmeasured confounding
 -   no exposure-mediator interaction
 -   linear relationship
--   no interactions
 -   rare binary outcome
 
+## References

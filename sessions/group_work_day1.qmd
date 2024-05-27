@@ -1,8 +1,5 @@
 # Day 1 group work
 
-This is the group work for the first day. You will get hands on practice
-using the Framingham dataset.
-
 ::: callout-note
 ## Objective of this session
 
@@ -15,16 +12,16 @@ using the Framingham dataset.
 First, load the dataset and take a few minutes to explore the variables
 in the dataset.
 
-```{r}
+```{r setup}
 library(here)
-load(here::here("data/frmghamdata.RData"))
 
+load(here::here("data/frmghamdata.RData"))
 ```
 
 ## Variables
 
-The dataset includes 'r nrow(frmgham)´ participants and 'r
-ncol(frmgham)´.
+The dataset includes `r nrow(frmgham)` participants and
+`r ncol(frmgham)`.
 
 ```{r}
 str(frmgham)

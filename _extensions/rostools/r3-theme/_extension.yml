@@ -40,7 +40,6 @@ contributes:
 
     csl: vancouver.csl
 
-    callout-appearance: minimal
     reference-location: margin
     crossref:
       chapters: true
