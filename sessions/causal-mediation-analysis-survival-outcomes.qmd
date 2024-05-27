@@ -85,18 +85,43 @@ For a **survival outcome**, the outcome of interest will be survival
 time (SV).
 
 -   $SV (t) = P(V ≥ t)$ the survival function at time t
-
 -   $SV (t\|c)=P(V ≥ t\|c)$ the survival function conditional on
     covariates C
-
 -   $λV (t)$ : the hazard at time t
-
 -   $λV (t\|c)$: conditional hazard at time t
 
-### Example
+If we consider the survival functions for a time-to-event outcome T, we
+could decompose the survival function as follows:
 
-::: callout-note We will continue working on the obesity-CVD example in
-the Framingham dataset.
+$ST_a(t) - ST_a*(t) = [ST_aM_a(t)-ST_aM_a*(t)] + [ST_aM_a*(t)-ST_a*M_a*(t)]$
+
+The first expression in brackets is the natural indirect effect on the
+survival function scale and the second is the natural direct effect on
+the survival function scale.
+
+Similarly, we can demcompose the overal difference in hazards on the
+hazard scale:
+
+$λT_a(t) - λT_a*(t) = [λT_aM_a(t)-λT_aM_a*(t)] + [λT_aM_a*(t)-λT_a*M_a*(t)]$
+
+### Assumptions of mediation analysis with a time-to-event outcome
+
+Similar as our context, mediation analysis with a time-to-event outcome
+have to satisfy below assumptions:
+
+-   no unmeasured confounding of the exposure-outcome relation;
+-   no unmeasured confounding of the mediator-outcome relation;
+-   no unmeasured confounding of the exposure-mediation relation;
+-   no exposure induced mediation-outcome confounding
+-   Additionally, we assume that the mediator is measured for everyone
+    before the outcome occurs.
+
+When the outcome is common, we can use weight approach (Lange 2012)
+
+::: callout-note
+
+We will continue working on the obesity-CVD example in the Framingham
+dataset.
 
 The outcome of interest is death from cardiovascular diseases (CVD). The
 underlying time scale is in days, starting at participants entered the
@@ -158,4 +183,3 @@ summary(res_rb_coxph)
 ```
 
 ## References
-

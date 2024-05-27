@@ -548,10 +548,10 @@ digraph {
 
 ### G-computation
 
-The G-computation algorithm was first introduced by Robins (refer) for
-estimating time-varying exposure causal in the presence of time-varying
-confounders of exposure effects. When estimating total effect,
-g-computation is generally equivalent to
+The G-computation algorithm was first introduced by Robins 1986 (refer)
+for estimating time-varying exposure causal in the presence of
+time-varying confounders of exposure effects. When estimating total
+effect, g-computation is generally equivalent to
 inverse-probability-of-treatment weighting (IPTW). But in
 high-dimensional settings, g-computation is more powerful. G-computation
 (using g-formula) could also provide an intuitive method for decomposing
@@ -642,7 +642,7 @@ c(MOR_gcomp, RD_gcomp) |> round(digits = 2)
 ```
 
 The demo shows how to estimate total effect using g-computation. If you
-would like to estimate PNDE, TNIT, PNIE, TNDE, then you also need to
+would like to estimate PNDE, TNIE, PNIE, TNDE, then you also need to
 predict two potential mediators observed in a hypothetical world in
 which all individuals are intervention (A=1) or non-intervention (A=0).
 
