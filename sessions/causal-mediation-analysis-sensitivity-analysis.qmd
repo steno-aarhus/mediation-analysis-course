@@ -82,7 +82,7 @@ Suppose then we have obtained an estimate of the effect of the exposure
 *A* on the outcome *Y* conditional on measured covariables *C* using
 regression analysis.
 
-We will define the bias factor **B_add(*c*)** on the additive scale as
+We will define the bias factor **B~add~(*c*)** on the additive scale as
 the difference between the expected differences in outcomes comparing
 *A* = *a* and *A* = *a*^\*^ conditional on covariables *C* = *c* and
 what we would have obtained had we been able to adjust for *U* as well.
@@ -118,13 +118,13 @@ Under assumptions **(A8.1.1)** and **(A8.2.2)**, the bias factor is
 simply given by the product of these two sensitivity analysis
 parameters:
 
-$B_add(c) = γδ$
+$B_{add}(c) = γδ$
 
 Thus to calculate the bias factor we only need to specify the effect of
 *U* on *Y* and the prevalence difference of *U* between the two exposure
 groups and then take the product of these two parameters.
 
-Once we have calculated the bias term **B_add(c)**, we can simply
+Once we have calculated the bias term **B~*add*~(*c*)**, we can simply
 estimate our causal effect conditional on *C* and then subtract the bias
 factor to get the "corrected estimate"--- that is, what we would have
 obtained if we had controlled for *C* and *U*.
@@ -162,13 +162,13 @@ exposure status *A* = *a* and *A* = *a*^\*^ and covariables *C* = *c*
 
 $δ(c) = P(U = 1|a, c)−P(U = 1|a^*, c)$
 
-We could then obtain an overall bias factor, **Badd**, by taking the
+We could then obtain an overall bias factor, **B~add~**, by taking the
 product of the bias factors in each strata of *C* and then averaging
 these over *C*, weighting each strata of *C* according to what
 proportion of the sample was in that strata. The overall bias factor is
 then
 
-$Badd=\sum~c~\{γ(c)δ(c)\}P(C=c)$
+$B_{add}=\sum~c~\{γ(c)δ(c)\}P(C=c)$
 
 We could then subtract this overall bias factor from our estimate
 adjusted only for *C* to obtain a corrected estimate.
@@ -176,7 +176,7 @@ adjusted only for *C* to obtain a corrected estimate.
 In this case, however, we can now longer simply subtract the bias factor
 from both limits of the confidence intervals because this does not take
 into account the variability in our estimates of the proportion of the
-sample in each strata of the covariates *P(C = c*).
+sample in each strata of the covariables *P(C = c*).
 
 Corrected confidence intervals could instead be obtained by
 bootstrapping.
@@ -225,23 +225,23 @@ digraph {
 If we have not adjusted for *U*, then our estimates controlling only for
 *C* will be biased.
 
-We will consider estimating the controlled direct effect, CDE(*m*), with
-the mediator fixed to *m* conditional on the covariables *C = c*.
+We will consider estimating the controlled direct effect, *CDE*(*m*),
+with the mediator fixed to *m* conditional on the covariables *C* = *c*.
 
-Let B^CDE^~add~(*m\|c*) denote the difference between:
+Let \*B\^{CDE}\_{add}*(*m*\|*c\*) denote the difference between:
 
-1- the estimate of the CDE conditional on *C*
+1- the estimate of the *CDE* conditional on *C*
 
 2- what would have been obtained had adjustment been made for *U* as
 well.
 
 As with total effects, we will be able to use a simple formula for
-sensitivity analysis for CDE under some simplifying assumptions.
+sensitivity analysis for *CDE* under some simplifying assumptions.
 
 Suppose that (A8.1.1) *U* is binary and (A8.2.2b) the effect of *U* on
 *Y* on the additive scale, conditional on exposure, mediator, and
-covariables, (*A,M,C*), is the same for both exposure levels *A = a* and
-*A* = *a*^\*^.
+covariables, (*A,M,C*), is the same for both exposure levels *A* = *a*
+and *A* = *a*^\*^.
 
 Let *γm* be the effect of *U* on *Y* conditional on *A*, *C*, and *M* =
 *m*, that is:
@@ -252,8 +252,8 @@ Note that by assumption (A8.2.2b) is the same for both levels of the
 exposure.
 
 Let *δm* be the difference in the prevalence of the unmeasured
-confounder for those with *A=a* versus those with *A* =*a*^\*^
-conditional on *M = m* and *C = c*, that is:
+confounder for those with *A* = *a* versus those with *A* = *a*^\*^
+conditional on *M* = *m* and *C* = *c*, that is:
 
 $δm = P(U = 1|a,m,c) − P(U = 1|a^*,m,c)$
 
@@ -261,15 +261,15 @@ Under assumptions (A8.1.1) and (A8.2.2b), the bias factor is simply
 given by the product of these two sensitivity-analysis parameters
 (VanderWeele, 2010a):
 
-B^CDE^~*add*~(*m*\|*c*) = *δmγm*
+\*B\^{CDE}\_{add}*(*m*\|*c*) =* δmγm\*
 
 This formula states that under assumptions (A8.1.1) and (A8.2.2b) the
-bias factor B^CDE^~add~(*m*\|*c*) for the CDE(*m*) is simply given by
-the product *δmγm*.
+bias factor B\^{CDE}\_{add}(*m*\|*c*) for the *CDE*(*m*) is simply given
+by the product *δmγm*.
 
 Under these simplifying assumptions, this gives rise to a particularly
 simple sensitivity analysis technique for assessing the sensitivity of
-estimates of a CDE to an unmeasured mediator–outcome confounder.
+estimates of a *CDE* to an unmeasured mediator–outcome confounder.
 
 We can hypothesize a binary unmeasured mediator–outcome confounding
 variable *U* such that the difference in expected outcome *Y* comparing
@@ -283,20 +283,21 @@ of our estimate of the CDE controlling just for *C* is given simply by
 *δmγm*.
 
 We can assess sensitivity to the presence of such an unmeasured
-confounding variable by varying *γm* (which is essentially the direct
-effect of *U* on *Y*) and by varying *δm*, interpreted as the prevalence
-difference of *U*, comparing exposure levels *a* and *a*^\*^ conditional
-on *M* = *m* and *C* = *c*.
+confounding variable by varying *γm* (which is the direct effect of *U*
+on *Y*) and by varying *δm*, interpreted as the prevalence difference of
+*U*, comparing exposure levels *a* and *a*^\*^ conditional on *M* = *m*
+and *C* = *c*.
 
-We can subtract the bias factor B^CDE^~add~(*m*\|*c*) = *δmγm* from the
-observed estimate to obtain a corrected estimate of the effect (what we
-would have obtained had it been possible to adjust for *U* as well).
+We can subtract the bias factor \*B\^{CDE}\_{add}*(*m*\|*c*) =* δmγm\*
+from the observed estimate to obtain a corrected estimate of the effect
+(what we would have obtained had it been possible to adjust for *U* as
+well).
 
 Under the simplifying assumptions (A8.1.1) and (A8.2.2b), we could also
 subtract this bias factor from both limits of a confidence interval to
 obtain a corrected confidence interval.
 
-Note that the CDE(*m*), may vary with *m*, and so for different values
+Note that the *CDE*(*m*), may vary with *m*, and so for different values
 of *m* we will likely want to consider different specifications of the
 values *δm* and *γm* in the sensitivity analysis.
 
@@ -304,22 +305,23 @@ If there is no interaction between the effects of *A* and *M* on *Y*,
 then this simple sensitivity analysis technique based on using formula
 above will also be applicable to natural direct effects as well.
 
-## Sensitivity analysis for natural dircect and indirect effects
+## Sensitivity analysis for natural direct and indirect effects
 
-### Sensitivity analysis for natural dircect and indirect effects in the abscence of exposure-mediator interction
+### Sensitivity analysis for natural direct and indirect effects in the abscence of exposure-mediator interaction
 
 A simple setting in which we can employ sensitivity analysis for natural
-direct (NDE) and indirect effects (NIE) is when NDE and CDE coincide.
+direct (*NDE*) and indirect effects (*NIE*) is when th *NDE* and *CDE*
+coincide.
 
 This occurs when the four confounding assumptions are satisfied and
 there is no exposure–mediator interaction in the statistical model.
 
 If this is the case, we can use the sensitivity analysis techniques for
-CDE.
+*CDE*.
 
 If we assume an unmeasured mediator–outcome confounder *U* as in the
 next figure, we can use these same techniques and the same parameters to
-do sensitivity analysis for NDE as well.
+do sensitivity analysis for *NDE* as well.
 
 ```{r, echo = FALSE}
 
@@ -347,33 +349,33 @@ digraph {
 ")
 ```
 
-For NIE, we can use of the decomposition property of the total effect.
+For *NIE*, we can use of the decomposition property of the total effect.
 
 Let's assume that we have unmeasured mediator–outcome, even if this
-present and our estimates of the NDE and NIE are biased, the NDE and NIE
-themselves will still combine to the correct total effect.
+present and our estimates of the *NDE* and *NIE* are biased, the *NDE*
+and *NIE* themselves will still combine to the correct total effect.
 
 Because a mediator–outcome confounder does not confound the
 exposure-outcome relationship, we can still obtain valid estimates of
 the total effect.
 
 And, it turns out that the combination of the DE and IE do constitute a
-consistent estimator of the total effect, even though the DE and IE
-estimators will themselves be biased for the true NDE and NIE.
+consistent estimator of the total effect, even though the *DE* and *IE*
+estimators will themselves be biased for the true *NDE* and *NIE*.
 
 Knowing that the DE and IE estimates combine to a valid estimate of the
 total effect then allows us to employ the sensitivity analysis
-techniques for CDE for NIE as well.
+techniques for *CDE* for *NIE* as well.
 
 To do so, we use the negation (on the additive scale) of the bias
-formulas that we used for CDE (and NDE). Thus on the additive scale, for
-a continuous outcome, our bias factor for the NDE would simply be:
+formulas that we used for *CDE* (and *NDE*). Thus on the additive scale,
+for a continuous outcome, our bias factor for the *NDE* would simply be:
 
 −*δmγm*
 
 and we could subtract this from the estimate and both limits of the
 confidence interval to obtain a corrected estimate and confidence
-interval for the NIE.
+interval for the *NIE*.
 
 ```{=html}
 <!-- - binary outcome  
