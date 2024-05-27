@@ -102,7 +102,6 @@ use:
 #| results: asis
 
 install.packages("name-of-package")
-
 ```
 
 If you have issues with the CMA package, you could also try this:
@@ -115,8 +114,6 @@ If you have issues with the CMA package, you could also try this:
 install.packages("devtools")
 
 devtools::install_github("BS1125/CMAverse")
-
-
 ```
 
 ## Code of conduct {#sec-code-of-conduct}

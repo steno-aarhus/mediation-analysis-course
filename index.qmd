@@ -27,17 +27,18 @@ mechanisms.
 
 The more specific learning outcomes include:
 
--   Explain the theoretical concepts and statistical methods regarding
-    traditional and modern mediation analysis applied to basic, clinical
-    and epidemiological research on diabetes and endocrine diseases
--   Perform traditional, causal and modern mediation analysis using R
-    software
--   Present results from mediation analysis according to the current
+-   **Explain** the theoretical concepts and statistical methods
+    regarding traditional and modern mediation analysis applied to
+    basic, clinical and epidemiological research on diabetes and
+    endocrine diseases
+-   **Perform** traditional, causal and modern mediation analysis using
+    R software
+-   **Present** results from mediation analysis according to the current
     mediation analysis reporting guidelines
--   Interpret results from mediation analysis and suggest relevant
+-   **Interpret** results from mediation analysis and suggest relevant
     sensitivity analyses for mediation analyses
--   Discuss the strengths, limitations and assumptions of traditional,
-    causal and modern mediation analysis
+-   **Discuss** the strengths, limitations and assumptions of
+    traditional, causal and modern mediation analysis
 
 ### The target audience
 
@@ -63,28 +64,28 @@ work, discussions and networking activities.
 | 8.30-9.00   | Registration and getting started                  |
 | 9.00-10.15  | Introduction to the course and the topic (DI, OS) |
 | 10.15-10.30 | Coffee break                                      |
-| 10.30-12.00 | Traditional mediation analysis (JZ, OS)           |
+| 10.30-12.00 | Traditional mediation analysis (JZ)               |
 | 12.00-13.00 | Lunch                                             |
 | 13.00-14.30 | Causal mediation analysis: introduction (DI, OS)  |
 | 14.30-15.00 | Coffee break                                      |
 | 15.00-16.00 | Group work + Reflections (OS, DI)                 |
 | 16.00-16.15 | Coffee break                                      |
-| 16.15-18.00 | Participants presentation in plenum               |
+| 16.15-18.00 | Participants presentations in speed-dating format |
 
 ### May 29
 
-| Time        | May 29                                                                                                         |
-|-------------|----------------------------------------------------------------------------------------------------------------|
-| 9.00-10.15  | Recap from yesterday + Causal mediation analysis: estimation (DI, JZ)                                          |
-| 10.30-12.00 | Causal mediation analysis: Estimation (cont.) (DI, JZ) + Causal mediation analysis: survival outcomes (DI, JZ) |
-| 12.00-13.00 | Lunch                                                                                                          |
-| 13.00-14.30 | Causal mediation analysis: Sensitivity analyses (OS) + Reporting guidelines (DI)                               |
-| 14.30-15.00 | Coffee break                                                                                                   |
-| 15.00-16.00 | Modern mediation analysis - part 1 (NH, ID)                                                                    |
-| 16.00-16.15 | Coffee break                                                                                                   |
-| 16.15-18.00 | Group work + Reflections (DI, OS)                                                                              |
-| 18:30       | Social activity                                                                                                |
-| 20:30       | Dinner                                                                                                         |
+| Time        | May 29                                                                                                 |
+|-------------|--------------------------------------------------------------------------------------------------------|
+| 9.00-10.15  | Recap from yesterday + Causal mediation analysis: estimation (DI)                                      |
+| 10.30-12.00 | Causal mediation analysis: Estimation (cont.) (DI) + Causal mediation analysis: survival outcomes (JZ) |
+| 12.00-13.00 | Lunch                                                                                                  |
+| 13.00-14.30 | Causal mediation analysis: Sensitivity analyses (OS) + Reporting guidelines (DI)                       |
+| 14.30-15.00 | Coffee break                                                                                           |
+| 15.00-16.00 | Modern mediation analysis - part 1 (NH, ID)                                                            |
+| 16.00-16.15 | Coffee break                                                                                           |
+| 16.15-18.00 | Group work + Reflections (DI, OS)                                                                      |
+| 18:30       | Social activity                                                                                        |
+| 20:30       | Dinner at Food Club Aarhus                                                                             |
 
 ### May 30
 
@@ -103,7 +104,10 @@ work, discussions and networking activities.
 
 -   There will be served coffee and tea in the break and a sandwich for
     lunch
--   On day 1 in the afternoon, there will be a networking activity
+-   On day 1 in the afternoon, there will be a networking activity. We
+    will do a speed-dating introduction to each other's research
+    projects, whether you plan to use mediation analysis and what you
+    hope to learn from this course.
 -   On day 2 in the evening, we will all go for a dinner in the city of
     Aarhus. The dinner is a buffet at Food Club Aarhus, Aaboulevarden
     30, Aarhus C
@@ -115,10 +119,10 @@ work, discussions and networking activities.
 -   If you are interested in more networking with the speakers and want
     to learn more about their research, there will be a networking
     session and a Precision Medicine Network meeting on Friday May 31.
-    Please let us know, if you want to join
+    Please let us know, if you want to join ASAP.
 -   Please be aware that the areas outside the lecture theater is a
     public space where people who go to the diabetes clinic also are. Be
-    mindful of them
+    mindful of them.
 :::
 
 ## Building the course

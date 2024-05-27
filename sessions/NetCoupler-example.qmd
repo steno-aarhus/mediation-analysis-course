@@ -1,6 +1,6 @@
 # NetCoupler
 
-```{r}
+```{r setup}
 #| include: false
 library(here)
 library(DiagrammeR)
@@ -57,14 +57,14 @@ The input for NetCoupler includes:
     confounders to adjust for.
 
 The final output is the modeling results along with the results from
-NetCoupler’s classification. Results can then be displayed as a joint
+NetCoupler's classification. Results can then be displayed as a joint
 network model in graphical format.
 
 There are a few key assumptions to consider before using NetCoupler for
 your own research purposes.
 
-1.  -omics data is the basis for the network. We haven’t tested this on
-    non-omics datasets, so can’t guarantee it works as intended.
+1.  -omics data is the basis for the network. We haven't tested this on
+    non-omics datasets, so can't guarantee it works as intended.
 2.  The variables used for the metabolic network are numerical
 3.  Metabolic data should have a theoretical network underlying it.
 4.  Missing data are not used in any of the NetCoupler processes.
@@ -73,7 +73,9 @@ your own research purposes.
 
 To install the official CRAN version, use:
 
-```{r, eval=FALSE}
+```{r}
+#| eval: false
+
 install.packages("NetCoupler")
 ```
 

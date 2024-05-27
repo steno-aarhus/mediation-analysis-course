@@ -2,31 +2,28 @@
 
 <!-- Omar 30 min -->
 
-```{r}
+```{r setup}
 #| include: false
-
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 ```
 
 Basic, clinical and epidemiological research are often interested in
 whether a specific intervention has an effect on a disease. Once this is
-established, the natural subsequent question is **WHY** this
+established, the natural subsequent question is **why** this
 intervention had an effect? [@vanderweele_mediation_2016].
 
-The subsequent and most relevant question is **HOW?**
-
-Mediation analysis answers the question regarding **HOW** a
+Mediation analysis answers the question regarding **why** a
 treatment/exposure/intervention impacts an outcome of interest by
 uncovering the underlying pathways, and mechanisms.
 
 ## Motivation for mediation analysis
 
-### The first motivation may be simply explanation and understanding
+### Explanation and understanding
 
 ```{r}
 #| echo: false
-
+library(DiagrammeR)
 grViz("
 digraph {
   graph []
@@ -49,6 +46,8 @@ digraph {
 
 ### Confirmation and refutation of theory
 
+<!-- DBI: this section is a little unclear. There are 2 mediators in the example above. -->
+
 Let's assume we estimate a familial risk of diabetes and that risk
 estimates follow a normal distribution at the population level. Then we
 select the extremes of the distribution (2.5%) and assess the relative
@@ -59,11 +58,12 @@ individuals with a strong/weak familial risk of type 2 diabetes.
 
 Let's consider the evidence from the landmark prevention trials. The
 Diabetes Prevention Programme (DPP, USA), The Diabetes Prevention Study
-(DPS, Finland), and The Da Quinstudy(DPS, China). These studies
+(DPS, Finland), and The Da Quin study (DPS, China). These studies
 randomized high risk individuals to either metformin or a lifestyle
 intervention consisting of a physical activity or physical activity +
-diet. The main finding was a \~58% risk reduction in the incidence of
-type 2 diabetes in the lifestyle intervention group vs. metformin group
+diet. The main finding was a \~58% lower risk of incidence type 2
+diabetes in the lifestyle intervention group compared to the metformin
+group
 
 ```{r}
 #| echo: false
@@ -98,7 +98,6 @@ effectiveness of these prevention efforts
 
 ```{r}
 #| echo: false
-
 # Creating The causal diagram for a mediation model
 library(DiagrammeR)
 grViz("
@@ -107,13 +106,12 @@ digraph {
   node [shape = plaintext]
     X [label = 'Lifestyle intervention']
     M [label = 'Weight loss']
-    N [label = '?']    
+    N [label = '?']
   Y [label = 'Type 2 diabetes']
   edge [minlen = 2]
     X->M
     M->Y
-    X->N
-    N->Y
+    N->M
    {rank = same; M; X; Y; }
    {rank = min; N; }
 }
@@ -146,14 +144,14 @@ motivations behind conducting mediation analysis.
 :::
 
 ::: callout-note
-## Exercise: Small groups work. "Understanding different study designs". Duration:30 minutes
+## Exercise: "Understanding different study designs". Duration: 30 minutes
 
 You will be divided into small groups of four people. Your assignment
 consist on reading the selected mediation analyses sections of the
 assigned articles and briefly present in plenum the methodological
 approach of your paper, and share the more relevant points discussed in
-your group in 3 minutes. Each of paper have a different study design and
-you will have 15 min to complete the reading task described below.
+your group in 3 minutes. Each paper has a different study design and you
+will have 15 min to complete the reading task described below.
 
 ### Group 1: Intervention study a
 
