@@ -1,6 +1,6 @@
 # Survival outcomes
 
-<!-- Teaching concepts - Jie (30 min) -->
+<!-- Jie (30 min) -->
 
 ::: callout-note
 ## Learning outcomes
@@ -8,6 +8,8 @@
 -   Perform causal mediation analysis with survival outcomes using R
     software
 :::
+
+## Time-to-event outcomes
 
 There are many studies conducting mediation analyses with
 **time-to-event outcomes**. Survival analysis allows investigators to
@@ -27,8 +29,9 @@ effect. They found the effect of SES on survival time was partially
 mediated by stage diagnosis, explaining 12% for lung cancer.
 
 ```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
+
 library(DiagrammeR)
+
 grViz("
 digraph {
   graph []
@@ -44,22 +47,13 @@ digraph {
 }")
 ```
 
-### Conduct causal mediation analysis for time-to-event outcomes
-
-How to conduct causal mediation analysis for time-to-event outcomes? We
-introduced the difference and product methods for continuous and binary
-outcomes in previous session. It is tempting to run a linear regression
-model for the mediator and proportional hazard model for the outcome,
-then use product or difference method to estimate the direct effect and
-indirect effect.
-
-#### Product method for time-to-event outcomes
-
 The Cox proportional hazards model is commonly used for dealing with
 survival data in medical literature. Cox regression estimates the
 **hazard ratios** and the values are then used to determine the effect
 of the mediator variable between the exposure and the survival time of
 outcome.
+
+## Cox model for common outcomes
 
 Could we use the traditional approach for time-to-event outcomes? We
 have introduced the difference and product methods for continuous and
@@ -69,42 +63,23 @@ outcome, then use product or difference method to estimate the direct
 effect and indirect effect.
 
 However, 'non-collaspsibility' is a problem of the hazard ratio as odds
-ratio (VanderWeele). Therefore, use of Cox PH regression to
+ratio @vanderweele_mediation_2016. Therefore, use of Cox regression to
 approximately estimate indirect effects via difference or product of
 coefficients rests on the assumption that the outcome is **rare**
-(VanderWeele).
+@vanderweele_mediation_2016.
 
 Where the outcome is common, measures of the indirect effect or
-proportion mediated will be incorrect. Tein and Mackinnon (2003)
-considered whether the product method and difference method yield
-comparable results with respect to time-to-event outcomes. They found
-that the methods coincides for the accelerated failure time model but
-not for the proportional hazards model.
+proportion mediated will be incorrect. Tein and Mackinnon considered
+whether the product method and difference method yield comparable
+results with respect to time-to-event outcomes @tein_estimating_2003.
+They found that the methods coincides for the accelerated failure time
+model but not for the proportional hazards model.
 
 To sum up, we can only use the traditional approaches for rare outcomes.
 Otherwise, we can use the product method to get an indication of whether
 there is mediation, but be aware that the estimate is not accurate.
 
 ### Causal mediation for time-to-event outcomes
-
-::: callout-note
-In earlier session,we have been familiar with the counterfactual
-concepts in causal mediation:
-
--   $Yi(a, m)$ is the outcome achieved for person i if, possibly
-    contrary to fact, exposure had been set to a and mediator to m.
-
--   $Mi(a)$ is the mediator achieved for person i if, possibly contrary
-    to fact, exposure had been set to a.
-
-One can combine the two counterfactuals, yielding so-called nested
-counterfactuals defined as
-
--   $Y(a, M (a\*)$.
-
-By introducing the nested counterfactual for a ≠ a\* we can give a
-precise mathematical definition of mediation.
-:::
 
 For a **survival outcome**, the outcome of interest will be survival
 time (SV).
@@ -118,12 +93,12 @@ time (SV).
 
 -   $λV (t\|c)$: conditional hazard at time t
 
-### Examples
+### Example
 
 ::: callout-note We will continue working on the obesity-CVD example in
 the Framingham dataset.
 
-The outcome of interest is death from cardiovascular diseases (cvd). The
+The outcome of interest is death from cardiovascular diseases (CVD). The
 underlying time scale is in days, starting at participants entered the
 cohort. The exposure of interest is obesity status at baseline, where
 a=1 indicates obese, a=0 indicates non-obese. The mediator is blood
@@ -136,6 +111,7 @@ impact of obesity on CVD-related death (measured in years).
 
 ```{r}
 library(tidyverse)
+
 framingham <- read_csv(here::here("data/framingham_dataset.csv"))
 
 framingham <- framingham %>%
@@ -155,7 +131,7 @@ framingham <- framingham %>%
       bmi >= 25 ~ 1,
       TRUE ~ 0
     ),
-    y_time = y_time / 365.25
+    y_time = y_time / 365.25 #change time-scale to years
   )
 ```
 
