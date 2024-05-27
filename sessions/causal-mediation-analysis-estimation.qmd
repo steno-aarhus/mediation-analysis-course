@@ -623,20 +623,20 @@ A1Data <- A0Data <- ObsData
 A1Data$A <- 1
 A0Data$A <- 0
 # Predict Y if A=1
-Y_A1 <- predict(Q, A1Data, type="response") 
+Y_A1 <- predict(Q, A1Data, type = "response")
 # Predict Y if A=0
-Y_A0 <- predict(Q, A0Data, type="response") 
+Y_A0 <- predict(Q, A0Data, type = "response")
 # Taking a look at the predictions
-data.frame(Y_A1=head(Y_A1), Y_A0=head(Y_A0), TRUE_Y=head(ObsData$Y)) |> round(digits = 2)
+data.frame(Y_A1 = head(Y_A1), Y_A0 = head(Y_A0), TRUE_Y = head(ObsData$Y)) |> round(digits = 2)
 
 # Mean outcomes in the two worlds
 pred_A1 <- mean(Y_A1)
 pred_A0 <- mean(Y_A0)
 # Marginal odds ratio
-MOR_gcomp <- (pred_A1*(1 - pred_A0))/((1 - pred_A1)*pred_A0)
+MOR_gcomp <- (pred_A1 * (1 - pred_A0)) / ((1 - pred_A1) * pred_A0)
 # ATE (risk difference)
 RD_gcomp <- pred_A1 - pred_A0
-c(MOR_gcomp, RD_gcomp) |> round(digits=2)
+c(MOR_gcomp, RD_gcomp) |> round(digits = 2)
 ```
 
 The demo shows how to estimate total effect using g-computation. If you
@@ -647,23 +647,25 @@ We recommend take the advantage of R packages to do the work :)
 
 ```{r}
 set.seed(1)
-expit <- function(x) exp(x)/(1+exp(x))
+expit <- function(x) exp(x) / (1 + exp(x))
 n <- 10000
 w <- rnorm(n, mean = 1, sd = 0.2)
-a <- rbinom(n, 1, expit(0.3 + 0.5*w))
-l <- rnorm(n, mean = 1 + a + 0.5*w, sd = 0.5)
-m <- rbinom(n, 1, expit(1 + 2*a - l + 2*w))
-y <- rbinom(n, 1, expit(0.3*a + 0.8*m + 0.5*a*m - 0.3*l + 0.4*w))
+a <- rbinom(n, 1, expit(0.3 + 0.5 * w))
+l <- rnorm(n, mean = 1 + a + 0.5 * w, sd = 0.5)
+m <- rbinom(n, 1, expit(1 + 2 * a - l + 2 * w))
+y <- rbinom(n, 1, expit(0.3 * a + 0.8 * m + 0.5 * a * m - 0.3 * l + 0.4 * w))
 data <- data.frame(a, m, y, w, l)
 
 
 library(CMAverse)
-res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure = "a",
-                 mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
-                 mreg = list("logistic"), yreg = "logistic",
-                 postcreg = list("linear"),
-                 astar = 0, a = 1, mval = list(1), 
-                 estimation = "imputation", inference = "bootstrap", nboot = 2)
+res_gformula <- cmest(
+  data = data, model = "gformula", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w"), postc = "l", EMint = TRUE,
+  mreg = list("logistic"), yreg = "logistic",
+  postcreg = list("linear"),
+  astar = 0, a = 1, mval = list(1),
+  estimation = "imputation", inference = "bootstrap", nboot = 2
+)
 
 summary(res_gformula)
 ```
