@@ -4,7 +4,7 @@
 
 ```{r setup}
 #| include: false
-# Creating The causal diagram for a mediation model
+
 library(DiagrammeR)
 ```
 
@@ -23,7 +23,7 @@ uncovering the underlying pathways, and mechanisms.
 
 ```{r}
 #| echo: false
-library(DiagrammeR)
+
 grViz("
 digraph {
   graph []
@@ -46,8 +46,6 @@ digraph {
 
 ### Confirmation and refutation of theory
 
-<!-- DBI: this section is a little unclear. There are 2 mediators in the example above. -->
-
 Let's assume we estimate a familial risk of diabetes and that risk
 estimates follow a normal distribution at the population level. Then we
 select the extremes of the distribution (2.5%) and assess the relative
@@ -57,19 +55,17 @@ individuals with a strong/weak familial risk of type 2 diabetes.
 ### To refine interventions
 
 Let's consider the evidence from the landmark prevention trials. The
-Diabetes Prevention Programme (DPP, USA), The Diabetes Prevention Study
-(DPS, Finland), and The Da Quin study (DPS, China). These studies
-randomized high risk individuals to either metformin or a lifestyle
-intervention consisting of a physical activity or physical activity +
-diet. The main finding was a \~58% lower risk of incidence type 2
-diabetes in the lifestyle intervention group compared to the metformin
-group
+Diabetes Prevention Programme @knowler_reduction_2002, The Diabetes
+Prevention Study @tuomilehto_prevention_2001, and The Da Quin study
+@pan_effects_1997. These studies randomized high risk individuals to
+either metformin or a lifestyle intervention consisting of a physical
+activity or physical activity + diet. The main finding was a \~58% lower
+risk of incidence type 2 diabetes in the lifestyle intervention group
+compared to the metformin group
 
 ```{r}
 #| echo: false
 
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
 grViz("
 digraph {
   graph []
@@ -98,8 +94,7 @@ effectiveness of these prevention efforts
 
 ```{r}
 #| echo: false
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+
 grViz("
 digraph {
   graph []
