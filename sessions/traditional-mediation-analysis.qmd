@@ -208,7 +208,7 @@ As the mediator is a continuous variable, we can build a linear
 regression model, adjusting for confounders on the pathway between X and
 M.
 
-\$ (E(M\|A=a, C=c)\$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
+$(E(M|A=a, C=c)$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (1.1)
 
 ```{r}
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -419,4 +419,3 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
-
