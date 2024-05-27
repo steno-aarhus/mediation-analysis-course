@@ -1,8 +1,5 @@
 # Day 1 group work
 
-This is the group work for the first day. You will get hands on practice
-using the Framingham dataset.
-
 ::: callout-note
 ## Objective of this session
 

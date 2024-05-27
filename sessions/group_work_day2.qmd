@@ -1,7 +1,7 @@
 # Day 2: Group work
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
 In this session, We will get hands on practice using the Framingham
 dataset. You will conduct a proper causal mediation analysis,

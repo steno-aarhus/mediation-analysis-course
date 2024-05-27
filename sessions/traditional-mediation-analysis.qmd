@@ -11,7 +11,7 @@ library(dplyr)
 ```
 
 ::: callout-note
-# Objective of this session
+## Objective of this session
 
 To learn how to conduct mediation analysis using the traditional
 approaches, along with understanding the assumptions and limitations of
