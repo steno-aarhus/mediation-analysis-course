@@ -22,11 +22,11 @@ uncovering the underlying pathways, and mechanisms.
 
 ## Motivation for mediation analysis
 
-### The first motivation may be simply explanation and understanding
+### Explanation and understanding
 
 ```{r}
 #| echo: false
-
+library(DiagrammeR)
 grViz("
 digraph {
   graph []
@@ -112,8 +112,7 @@ digraph {
   edge [minlen = 2]
     X->M
     M->Y
-    X->N
-    N->Y
+    N->M
    {rank = same; M; X; Y; }
    {rank = min; N; }
 }
