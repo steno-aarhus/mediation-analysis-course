@@ -11,9 +11,9 @@ library(dplyr)
 ::: callout-note
 ## Objective of this session
 
-To learn how to conduct mediation analysis using the traditional
-approaches, along with understanding the assumptions and limitations of
-the methods.
+-   To learn how to conduct mediation analysis using the traditional
+    approaches.
+-   Understanding the assumptions and limitations of the methods.
 :::
 
 The purpose of mediation analysis is to determine if the effect of a
@@ -25,9 +25,9 @@ This can be visualized in the following figures.
 
 Overall relationship between A and Y:
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+```{r}
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -43,8 +43,8 @@ digraph {
 Relationship between X and Y through M:
 
 ```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -64,8 +64,8 @@ digraph {
 ## Traditional approaches for mediation analysis
 
 The two traditional approaches to mediation analysis are **the
-difference method** and **the product method** (also known as the Baron
-& Kenny-method).
+difference method** and **the product method**; also known as the Baron
+& Kenny-method @baron_moderatormediator_1986.
 
 The traditional approach use these equations for mediator and outcome
 (for the case of a continuous mediator and a continuous outcome)
@@ -114,8 +114,8 @@ depicted by below figure.
 > glucose by mediating specific inflammation biomarkers?
 
 ```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -166,7 +166,7 @@ session.
 :::
 
 ```{r}
-# first load the dataset
+
 nhanes <- read_csv(here::here("data/nhanes_dataset.csv"))
 
 nhanes <- nhanes %>%
@@ -174,15 +174,16 @@ nhanes <- nhanes %>%
     id = seqn, w1 = age, w2 = gender, w3 = education_clean, w4 = smoke,
     a = total_redmeat, # this is the exposure
     m = magic_biomarker, # this is the mediator
-    y = blood_glucose
-  ) %>% # this is the outcome
+    y = blood_glucose # this is the outcome
+  ) %>% 
   na.omit()
 ```
 
 ## Method 1: Baron & Kenny (the product method)
 
-According to Baron and Kenny (1986), the following criteria need to be
-satisfied for a variable to be considered a mediator:
+According to Baron and Kenny (1986) @baron_moderatormediator_1986, the
+following criteria need to be satisfied for a variable to be considered
+a mediator:
 
 1.  The exposure should be associated with the mediator.
 2.  The model for the outcome that includes both the exposure and
@@ -209,7 +210,7 @@ As the mediator is a continuous variable, we can build a linear
 regression model, adjusting for confounders on the pathway between A and
 M.
 
-\$ (E(M\|A=a, C=c) = \beta\_0 + \beta\_1a + \beta\_2c\$ (3.1)
+$(E(M|A=a, C=c) = \beta_0 + \beta_1a + \beta_2c$ (3.1)
 
 ```{r}
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -247,7 +248,7 @@ That is to build the model between red meat intake and glucose levels,
 without adjusting for the inflammatory biomarker. The only difference
 between step 2 and step 3 is that mediator is not included in the model.
 
-$(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (1.3)
+$(E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c$ (1.3)
 
 ```{r}
 fitc <- lm(y ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -340,13 +341,14 @@ and the difference methods.You might have noticed what you got so far
 are only point estimates, but what if you want to see if this mediation
 effect is statistically significant (different from zero or not)?
 
-To do so, there are two main approaches: the Sobel test (Sobel, 1982)
-and bootstrapping (Preacher & Hayes, 2004).
+To do so, there are two main approaches: the Sobel test
+@sobel_asymptotic_1982 and bootstrapping @preacher_spss_2004.
 
 Here we will demonstrate that we can use the mediate() function in
-'mediation' package (Tingley et al. 2019) to conduct mediation analysis.
-One of the very good options to conduct mediation analysis using the
-mediation package is we can get confidence interval by bootstrapping.
+'mediation' package @tingley_mediation_2014 to conduct mediation
+analysis. One of the very good options to conduct mediation analysis
+using the mediation package is we can get confidence interval by
+bootstrapping.
 
 Let's load up the R packages.
 
@@ -402,7 +404,7 @@ plot(results)
 ```
 
 For details of the mediate() package, please refer to
-(mediation_rpackage 2014).
+@tingley_mediation_2014.
 
 ## Limitations of the traditional approach
 
@@ -410,9 +412,9 @@ For details of the mediate() package, please refer to
 -   Interactions
 -   Multiple mediators
 
-```{r echo=FALSE}
-# Creating The causal diagram for a mediation model
-library(DiagrammeR)
+```{r}
+#| echo: false
+
 grViz("
 digraph {
   graph []
@@ -446,4 +448,3 @@ estimate a causal mediation effect:
 -   linear relationship
 -   no interactions
 -   rare binary outcome
-
