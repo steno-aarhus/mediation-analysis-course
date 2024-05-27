@@ -270,6 +270,7 @@ digraph {
   edge [minlen = 2]
     A->M
     M->Y
+    A->Y
     W->A
     W->Y
     W->M
@@ -316,6 +317,7 @@ digraph {
   edge [minlen = 2]
     A->M
     M->Y
+    A->Y
     W1->A
     W1->Y
     W1->M
@@ -330,9 +332,10 @@ digraph {
 ```
 
 From the DAG rules, we have a special problem that we cannot solve with
-traditional regression approaches. If we adjust for W2 we open the
-backdoor path from $W1 \leftarrow W2 \rightarrow Y$. We will work on how
-to solve this problem later in the course.
+traditional regression approaches. If we adjust for W2 we open a
+backdoor path by adjusting for the collider
+$W1 \rightarrow W2 \leftarrow A$. We will work on how to solve this
+problem later in the course.
 
 ## Non-linearity and interactions
 
@@ -575,3 +578,4 @@ In addition to consistency there is the assumption of no carry-over
 effects.
 
 ## References
+

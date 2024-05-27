@@ -1,7 +1,5 @@
 # Estimation of effects using causal mediation analysis
 
-\<\<\<\<\<\<\< style/apply-some-style-fixes
-
 ```{r setup}
 
 #| include: false
@@ -548,10 +546,10 @@ digraph {
 
 ### G-computation
 
-The G-computation algorithm was first introduced by Robins 1986 (refer)
-for estimating time-varying exposure causal in the presence of
-time-varying confounders of exposure effects. When estimating total
-effect, g-computation is generally equivalent to
+The G-computation algorithm was first introduced by Robins 1986
+@robins_new_1986 for estimating time-varying exposure causal in the
+presence of time-varying confounders of exposure effects. When
+estimating total effect, g-computation is generally equivalent to
 inverse-probability-of-treatment weighting (IPTW). But in
 high-dimensional settings, g-computation is more powerful. G-computation
 (using g-formula) could also provide an intuitive method for decomposing
@@ -670,4 +668,3 @@ res_gformula <- cmest(data = data, model = "gformula", outcome = "y", exposure =
 
 summary(res_gformula)
 ```
-
