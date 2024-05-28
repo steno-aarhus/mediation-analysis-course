@@ -432,27 +432,27 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X
-    M
-    L
-    U [fontcolor = red]
-    Y
-  edge [minlen = 1.5]
-    X->Y
-    X->L
-    L->Y
+    W [label = 'W']
+    A [label = 'A']
+    M [label = 'M']
+    Y [label = 'Y']
+    L [label = 'L']
+    U [label = 'U']
+  edge [minlen = 2]
+    A->M
+    A->L
     L->M
+    L->Y
+    M->Y
+    A->Y
+    W->A
+    W->Y
+    W->M
     U->L
     U->Y
-    X->M
-    M->Y
-    W->X
-    W->M
-    W->Y
-  { rank = same; X; M; Y }
-  { rank = min; L;}
-  { rank = max; W;}
-}")
+{rank = same; W; A; M; Y; }
+}
+")
 ```
 
 ### Time-varying confounding
@@ -478,7 +478,7 @@ digraph {
     L2
     Lt
     Y
-  edge [minlen = 1.5]
+  edge [minlen = 2]
     X0 -> X1
     X1 -> X2
     X2 -> Xt
@@ -572,9 +572,10 @@ ObsData <- datasim(n = 10000) # really large sample
 TRUE_EY.1 <- mean(ObsData$Y.1)
 TRUE_EY.1 # mean outcome under A = 1
 TRUE_EY.0 <- mean(ObsData$Y.0)
+TRUE_EY.0
 # True average causal effect
 TRUE_ACE <- TRUE_EY.1 - TRUE_EY.0
-TRUE_EY.1 - TRUE_EY.0
+TRUE_ACE  
 TRUE_MOR <- (TRUE_EY.1 * (1 - TRUE_EY.0)) / ((1 - TRUE_EY.1) * TRUE_EY.0)
 TRUE_MOR # true marginal OR
 ```
@@ -632,7 +633,6 @@ A0Data_M1$M <- M_A1
 # Predict the outcomes for these scenarios
 Y_A1_M0 <- predict(outcome_model, newdata = A1Data_M0, type = "response")
 Y_A0_M1 <- predict(outcome_model, newdata = A0Data_M1, type = "response")
-data.frame(Y_A1_M1 = head(Y_A1_M1), Y_A0_M0 = head(Y_A0_M0),Y_A1_M0 = head(Y_A1_M0),Y_A0_M1 = head(Y_A0_M1))
 ```
 
 Step 4: Compute the average effects
@@ -647,18 +647,15 @@ total_effect <- mean_Y_A1 - mean_Y_A0
 # Total effect
 total_effect 
 
+# Calculate the Marginal Odds Ratio using g-computation predictions
+gcomp_MOR <- (mean_Y_A1 * (1 - mean_Y_A0)) / ((1 - mean_Y_A1) * mean_Y_A0)
+
+
 # Calculate the average outcomes under counterfactual scenarios
-mean_Y_A1 <- mean(Y_A1_M1)
-mean_Y_A0 <- mean(Y_A0_M0)
 mean_Y_A1_M0 <- mean(Y_A1_M0)
 mean_Y_A0_M1 <- mean(Y_A0_M1)
 mean_Y_A1_M1 <- mean(Y_A1_M1)
 mean_Y_A0_M0 <- mean(Y_A0_M0)
-# Calculate the total effect
-gcomp_ACE <- mean_Y_A1 - mean_Y_A0
-gcomp_ACE
-# Calculate the Marginal Odds Ratio using g-computation predictions
-gcomp_MOR <- (mean_Y_A1 * (1 - mean_Y_A0)) / ((1 - mean_Y_A1) * mean_Y_A0)
 ```
 
 We recommend take the advantage of R packages to do the work
