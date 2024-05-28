@@ -178,7 +178,6 @@ res_rb_coxph <- cmest(
   estimation = "imputation", inference = "bootstrap"
 )
 
-
 summary(res_rb_coxph)
 ```
 
