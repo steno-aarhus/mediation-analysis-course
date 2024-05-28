@@ -13,7 +13,9 @@ whether a specific intervention has an effect on a disease. Once this is
 established, the natural subsequent question is **why** this
 intervention had an effect? [@vanderweele_mediation_2016].
 
-Mediation analysis answers the question regarding **why** a
+The subsequent and most relevant question is **HOW?**
+
+Mediation analysis answers the question regarding **HOW** a
 treatment/exposure/intervention impacts an outcome of interest by
 uncovering the underlying pathways, and mechanisms.
 
@@ -39,7 +41,6 @@ digraph {
     N->Y
 { rank = same; M; X; Y; }
   { rank = min; N;}
-
 }
 ")
 ```

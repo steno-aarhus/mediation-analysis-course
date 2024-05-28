@@ -94,8 +94,8 @@ Suppose then we have obtained an estimate of the effect of the exposure
 *A* on the outcome *Y* conditional on measured covariables *C* using
 regression analysis.
 
-We will define the bias factor **B~add~(*c*)** on the additive scale as
-the difference between the expected differences in outcomes comparing
+We will define the bias factor **B~*add*~(*c*)** on the additive scale
+as the difference between the expected differences in outcomes comparing
 *A* = *a* and *A* = *a*^\*^ conditional on covariables *C* = *c* and
 what we would have obtained had we been able to adjust for *U* as well.
 
@@ -126,11 +126,11 @@ that is:
 
 $δ = P(U = 1|a,c)$ − $P(U = 1|a^*,c)$
 
-Under assumptions **(A8.1.1)** and **(A8.2.2)**, the bias factor is
+Under assumptions **(A8.1.1)** and **(A8.1.2)**, the bias factor is
 simply given by the product of these two sensitivity analysis
 parameters:
 
-$B_{add}(c) = γδ$
+$B_{add}(c) = γδ$ **(8.1)**
 
 Thus to calculate the bias factor we only need to specify the effect of
 *U* on *Y* and the prevalence difference of *U* between the two exposure
@@ -192,6 +192,66 @@ sample in each strata of the covariables *P(C = c*).
 
 Corrected confidence intervals could instead be obtained by
 bootstrapping.
+
+### Binary outcomes
+
+Sensitivity analysis approach for odds ratios or risk ratio estimates of
+the effect of the exposure *A* on outcome *Y*, conditional on the
+covariables *C* obtained from a logistic regression model.
+
+The bias factor is defined as **B~*mult*~(*c*)** on the multiplicative
+scale as the ratio of:
+
+1- the risk ratio (or odds ratio, with a **rare outcome**) comparing *A*
+= *a* and *A* = *a*^\*^ conditional on covariables *C*= *c* and
+
+2- what we would have obtained as the risk ratio (or odds ratio) had we
+been able to condition on both C and U.
+
+We now make the simplifying assumptions that **(A8.1.3)** *U* is binary
+and that **(A8.1.2b)** the effect of *U* (on the risk ratio scale) is
+the same for those with exposure level *A* = *a* and exposure level *A*
+= *a*^\*^ (no *U* × *A* interaction on the risk ratio scale).
+
+If these assumptions hold, we will let *γ* be the effect of *U* on *Y*
+conditional on *A* and *C* on the risk ratio scale, that is:
+
+$\frac{γ = P(Y = 1\|a, c,U = 1)}{P(Y = 1\|a, c,U = 0)}$
+
+By assumption **(A8.1.2b)**
+
+$\frac{γ = P(Y=1\|a,c,U=1)}{P(Y=1\|a,c,U=0)}$
+
+is the same for both levels of the exposure.
+
+This is the effect of *U* on *Y* adjusted for *C*; this is the effect of
+*U* on *Y* not through C.
+
+Under assumptions (A8.1.1) and (A8.1.2b), the bias factor on the
+multiplicative scale is given by:
+
+$B_{mult}(c) = \frac{1+(γ −1)P(U = 1\|a,c)}{1+(γ −1)P(U = 1\|a∗, c)}$
+**(8.2)**
+
+We can use the bias formula by specifying the effect of *U* on *Y* on
+the risk ratio scale and the prevalence of *U* among those with exposure
+levels *A* = *a* and *A* = *a*^\*^.
+
+Once we have calculated the bias term B\~*mult\~*(*c*), we can estimate
+our risk ratio controlling only for *C* (if the outcome is rare, fit a
+logistic regression) and we divide our estimate by B~mult~(*c*) to get
+the corrected estimate for risk ratio—that is, what we would have
+obtained if we had adjusted for *U* as well.
+
+Under the simplifying assumptions of (A8.1.1) and (A8.1.2b), we can also
+obtain corrected confidence intervals by dividing both limits of the
+confidence interval by B\~*mult\~*(*c*).
+
+Note that to use the bias factor in (8.2), we must specify the
+prevalence of the unmeasured confounder in both exposure groups *P*(*U*
+= 1\|*a*, *c*) and *P*(*U* = 1\|*a*^\*^, *c*), not just the difference
+between these two prevalences as in (8.1) for outcomes on the additive
+scale.
 
 At a minimum, it may be useful to present:
 
