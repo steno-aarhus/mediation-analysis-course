@@ -295,7 +295,7 @@ digraph {
     C [label = 'C']
     Y [label = 'Y']
     U [label = 'U']
-  edge [minlen = 2]
+  edge [minlen = 1]
     C->A
     C->Y
     A->M
@@ -468,7 +468,7 @@ digraph {
     C [label = 'C']
     Y [label = 'Y']
     U [label = 'U']
-  edge [minlen = 2]
+  edge [minlen = 1]
     C->A
     C->Y
     A->M
