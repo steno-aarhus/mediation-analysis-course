@@ -547,6 +547,10 @@ digraph {
 
 ### G-computation
 
+Because of these limitations, we need to resort to a more general
+framework for mediation analysis utilizing causal diagrams and potential
+outcome languages.
+
 The G-computation algorithm was first introduced by Robins 1986
 @robins_new_1986 for estimating time-varying exposure causal in the
 presence of time-varying confounders of exposure effects. When
