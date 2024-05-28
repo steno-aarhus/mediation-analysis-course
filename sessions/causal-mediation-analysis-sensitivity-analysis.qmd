@@ -9,10 +9,22 @@ library(CMAverse)
 ```
 
 ::: callout-note
+## This session is inspired on Tyler VanderWeele's book: Explanation in Causal Inference: Methods for Mediation and Interaction 1st Edition
+:::
+
+::: callout-note
 ## Learning outcomes
 
--   Suggest relevant sensitivity analyses for mediation analyses
--   Perform sensitivity analysis for unmeasured confounding
+After this session you will be able to:
+
+-   Explain the assumptions for conducting sensitivity analysis for
+    unmeasured confounding
+
+-   Describe sensitivity analysis techniques to address unmeasured
+    confounding
+
+-   Perform sensitivity analysis using the CMAverse package and
+    interpret the results
 :::
 
 Unmeasured or uncontrolled confounding is a common problem in
@@ -26,8 +38,8 @@ stronger than for total effects.
 We might be worried that these assumptions are violated and that our
 estimates are biased.
 
-Sensitivity analysis techniques can help assess HOW ROBUST results are
-to violations in the assumptions being made.
+**Sensitivity analysis techniques can help assess HOW ROBUST results are
+to violations in the assumptions being made.**
 
 These techniques assess the extent to which an unmeasured variable (or
 variables) would have to affect both the exposure and the outcome in
@@ -59,7 +71,7 @@ digraph {
     A [label = 'A']
     Y [label = 'Y']
     U [label = 'U']
-  edge [minlen = 2]
+  edge [minlen = 1]
     A->Y
     C->A
     C->Y
@@ -104,7 +116,7 @@ If the exposure is binary, then we simply have *a* = 1 and *a*^\*^ = 0.
 A simple approach to sensitivity analysis is possible if we assume that
 **(A8.1.1)** *U* is binary and **(A8.1.2)** that the effect of *U* (on
 the additive scale) is the same for those with exposure level *A* = *a*
-and exposure level *A* = *a*^\*^ (no *U* × *A* interaction).
+and exposure level *A* = *a*^\*^ **(no *U* × *A* interaction).**
 
 If these assumptions hold, let γ be the effect of *U* on *Y* conditional
 on *A* and *C*, that is:
@@ -211,7 +223,7 @@ been able to condition on both C and U.
 We now make the simplifying assumptions that **(A8.1.3)** *U* is binary
 and that **(A8.1.2b)** the effect of *U* (on the risk ratio scale) is
 the same for those with exposure level *A* = *a* and exposure level *A*
-= *a*^\*^ (no *U* × *A* interaction on the risk ratio scale).
+= *a*^\*^ **(no *U* × *A* interaction on the risk ratio scale).**
 
 If these assumptions hold, we will let *γ* be the effect of *U* on *Y*
 conditional on *A* and *C* on the risk ratio scale, that is:
@@ -253,13 +265,15 @@ prevalence of the unmeasured confounder in both exposure groups *P*(*U*=
 between these two prevalences as in (8.1) for outcomes on the additive
 scale.
 
-At a minimum, it may be useful to present:
+::: callout-note
+## At a minimum, it may be useful to present:
 
 1- the sensitivity analysis parameters that would suffice to completely
 explain away an effect and also
 
 2- the sensitivity analysis parameters that would be required to shift
 the confidence interval to just include the null.
+:::
 
 ## Sensitivity analysis for controled direct effects
 
@@ -276,20 +290,20 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'X']
+    A [label = 'A']
     M [label = 'M']
     C [label = 'C']
     Y [label = 'Y']
     U [label = 'U']
   edge [minlen = 2]
-    C->X
+    C->A
     C->Y
-    X->M
-    X->Y
+    A->M
+    A->Y
     M->Y
     U->M
     U->Y
-{ rank = same; C; X; M; Y;}
+{ rank = same; C; A; M; Y;}
   { rank = max; U;}
 }
 ")
@@ -319,7 +333,7 @@ and *A* = *a*^\*^.
 Let *γm* be the effect of *U* on *Y* conditional on *A*, *C*, and *M* =
 *m*, that is:
 
-$γm = E(Y\|a,c,m,U = 1)−E(Y\|a,c,m,U = 0)$
+$γm = E(Y|a,c,m,U = 1)−E(Y|a,c,m,U = 0)$
 
 Note that by assumption (A8.2.2b) is the same for both levels of the
 exposure.
@@ -346,13 +360,13 @@ estimates of a *CDE* to an unmeasured mediator--outcome confounder.
 
 We can hypothesize a binary unmeasured mediator--outcome confounding
 variable *U* such that the difference in expected outcome *Y* comparing
-*U* = 1 and *U* = 0 is *γm* across strata of *X* conditional on *M* =
+*U* = 1 and *U* = 0 is *γm* across strata of *A* conditional on *M* =
 *m*, *C* = *c* and such that the difference in the prevalence of *U*,
 comparing exposure levels *a* and *a*^\*^ (comparing the exposed and
 unexposed), is *δm* conditional on *M* =*m*, *C* = *c*.
 
 For such an unmeasured mediator--outcome confounding variable, the bias
-of our estimate of the CDE controlling just for *C* is given simply by
+of our estimate of the *CDE* controlling just for *C* is given simply by
 *δmγm*.
 
 We can assess sensitivity to the presence of such an unmeasured
@@ -387,7 +401,7 @@ This approach will assume a rare outcome but can also be used for risk
 ratios with a common outcome. Let $B^{CDE}_{mult}(m|c)$ denote the ratio
 of
 
-1- The estimate of the controlled direct effect conditional on *C* (
+1- The estimate of the controlled direct effect conditional on *C*
 
 2- What would have been obtained had adjustment been made for *U* as
 well.
@@ -418,7 +432,7 @@ confidence intervals by the bias factor $B^{CDE}_{mult}(m|c)$ to get the
 corrected estimate for CDE risk ratio and its confidence interval—that
 is, what we would have obtained if we had adjusted for *U* a well.
 
-We have to specify the two prevalences of U, namely $P(U = 1|a,m, c)$
+We have to specify the two prevalences of *U*, namely $P(U = 1|a,m, c)$
 and $P(U = 1|a∗,m, c)$, in the different exposure groups conditional on
 *M* and *C*.
 
@@ -430,7 +444,7 @@ the interpretation of these prevalences is important
 ### Sensitivity analysis for natural direct and indirect effects in the abscence of exposure-mediator interaction
 
 A simple setting in which we can employ sensitivity analysis for natural
-direct (*NDE*) and indirect effects (*NIE*) is when th *NDE* and *CDE*
+direct (*NDE*) and indirect effects (*NIE*) is when the *NDE* and *CDE*
 coincide.
 
 This occurs when the four confounding assumptions are satisfied and
@@ -449,20 +463,20 @@ grViz("
 digraph {
   graph []
   node [shape = plaintext]
-    X [label = 'X']
+    A [label = 'A']
     M [label = 'M']
     C [label = 'C']
     Y [label = 'Y']
     U [label = 'U']
   edge [minlen = 2]
-    C->X
+    C->A
     C->Y
-    X->M
-    X->Y
+    A->M
+    A->Y
     M->Y
     U->M
     U->Y
-{ rank = same; C; X; M; Y;}
+{ rank = same; C; A; M; Y;}
   { rank = max; U;}
 }
 ")
@@ -507,7 +521,9 @@ $\frac{1+(γm−1)P(U=1|a∗,m,c)}{1+(γm−1)P(U=1|a,m,c)}$
 and we could divide our *NIE* estimates and its confidence interval by
 this bias factor to obtain a corrected estimate and confidence interval.
 
-We first load the nhanes data:
+## Example using the NHANES data
+
+Let's first load the nhanes dataset:
 
 ```{r}
 # first load the dataset
@@ -526,8 +542,7 @@ nhanes <- nhanes %>%
     na.omit()
 ```
 
-We then run the same example as before with red meat, inflammation and
-blood glucose.
+We will use the red meat, inflammation and blood glucose example
 
 ```{r}
 res_rb_confounders <- cmest(
@@ -553,3 +568,19 @@ uc_sens <- cmsens(
 uc_sens
 
 ```
+
+::: callout-note
+-   The E-value is the minimum strength of association, on the risk
+    ratio scale, that an unmeasured confounder would need to have with
+    both the treatment and the outcome to fully explain away a specific
+    treatment–outcome association, conditional on the measured
+    covariates.
+
+-   A large E-value implies that considerable unmeasured confounding
+    would be needed to explain away an effect estimate.
+
+-   A small E-value implies little unmeasured confounding would be
+    needed to explain away an effect estimate.
+
+(Tyler J VanderWeele 2017)
+:::
