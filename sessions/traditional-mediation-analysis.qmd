@@ -217,11 +217,7 @@ As the mediator is a continuous variable, we can build a linear
 regression model, adjusting for confounders on the pathway between A and
 M.
 
-<<<<<<< HEAD
-$(E(M|A=a, C=c)$ = $\beta_0$ + $\beta_1a$ + $\beta_2c$ (3.1)
-=======
 $(E(M|A=a, C=c) = \beta_0 + \beta_1a + \beta_2c$ (3.1)
->>>>>>> 5eb5707a7c3872d816a5ed1b26e604c087142cb1
 
 ```{r}
 fita <- lm(m ~ a + w1 + w2 + w3 + w4, data = nhanes)
@@ -258,11 +254,7 @@ That is to build the model between red meat intake and glucose levels,
 without adjusting for the inflammatory biomarker. The only difference
 between step 2 and step 3 is that mediator is not included in the model.
 
-<<<<<<< HEAD
-$(E(Y|A=a, C=c)$ = $\theta_0'$ + $\theta_1'a$ + $\theta4'c$ (3.3)
-=======
 $(E(Y|A=a, C=c) = \theta_0' + \theta_1'a + \theta4'c$ (1.3)
->>>>>>> 5eb5707a7c3872d816a5ed1b26e604c087142cb1
 
 ```{r}
 fitc <- lm(y ~ a + w1 + w2 + w3 + w4, data = nhanes)
