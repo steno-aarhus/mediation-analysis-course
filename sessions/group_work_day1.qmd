@@ -14,6 +14,7 @@ in the dataset.
 
 ```{r setup}
 library(here)
+library(tidyverse)
 
 load(here::here("data/frmghamdata.RData"))
 ```
@@ -36,15 +37,13 @@ research question.
 
 For the exercise on day 1, we will work with the following variables:
 
--   socio = socioeconomic status (SES) (binary: 0 = low SES, 1 = high
-    SES)
--   sysbp = systolic blood pressure (continous)
--   smoke = smoking status (binary: 0 = no prenatal smoking, 1 =
-    prenatal smoking)
--   educ = education ()
 -   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
--   obesity (binary: 0=normal, 1=obesity)
--   CVD = (binary: 0=no, 1=yes).
+-   sysbp = systolic blood pressure (continous)
+-   cvd = (binary: 0=no, 1=yes).
+-   cursmoke = smoking status (binary: 0 = no smoking, 1 = smoking)
+-   educ = education (categorical variable)
+-   sex = sex (0: male, 1: female)
+-   age = age (continuous variable)
 
 Note: in this example, the outcome of interest is the presence of CVD,
 which is a binary variable. We will not think about time-to-event
@@ -59,6 +58,28 @@ directed acyclic graphs. You can either draw by hand or use daggity
 1.  Estimate the relationship between obesity and blood pressure (fit
     the mediator model).
 
+Cleaning the data:
+
+```{r}
+frmgham_clean <- frmgham %>%
+  select(
+    id = randid, 
+    w1 = sex,
+    w2 = age,
+    w3 = cursmoke,
+    w4 = educ,
+    a = bmi, # this is the exposure
+    m = sysbp, # this is the mediator
+    y = cvd # this is the outcome
+  ) %>% 
+  na.omit()
+
+frmgham_clean <- frmgham_clean %>%
+  mutate(a = case_when(a >= 30 ~ 1,
+                       TRUE ~ 0))
+
+```
+
 2.  Estimate the effect of obesity on the prevalence of CVD, adjusting
     for SES, or other confounding factors based on your DAG.
 
@@ -71,7 +92,34 @@ directed acyclic graphs. You can either draw by hand or use daggity
     two approaches. Note: you do not need to estimate the confidence
     intervals.
 
+Product method:
+
+Difference method:
+
 5.  Calculate the direct effect and indirect effect using the
     **mediation** package.
+
+```{r, eval=FALSE}
+library(CMAverse)
+
+res_rb_confounders <- cmest(
+  data = frmgham_clean,
+  model = "rb",
+  outcome = "y",
+  exposure = "a",
+  mediator = "m",
+  basec = c("w1", "w2", "w3", "w4"),
+  EMint = FALSE,
+  mreg = list("linear"),
+  yreg = "logistic",
+  astar = 0,
+  a = 1,
+  mval = list(120),
+  estimation = "paramfunc",
+  inference = "delta"
+)
+
+summary(res_rb_confounders)
+```
 
 6.  Discuss the limitations of the traditional approach.
