@@ -228,11 +228,11 @@ the same for those with exposure level *A* = *a* and exposure level *A*
 If these assumptions hold, we will let *γ* be the effect of *U* on *Y*
 conditional on *A* and *C* on the risk ratio scale, that is:
 
-$γ = \frac{ P(Y = 1\|a, c,U = 1)}{P(Y = 1\|a, c,U = 0)}$
+$γ = \frac{ P(Y = 1|a, c,U = 1)}{P(Y = 1|a, c,U = 0)}$
 
 By assumption **(A8.1.2b)**
 
-$γ = \frac{P(Y=1\|a,c,U=1)}{P(Y=1\|a,c,U=0)}$
+$γ = \frac{P(Y=1|a,c,U=1)}{P(Y=1|a,c,U=0)}$
 
 is the same for both levels of the exposure.
 
@@ -242,7 +242,7 @@ This is the effect of *U* on *Y* adjusted for *C*; this is the effect of
 Under assumptions (A8.1.1) and (A8.1.2b), the bias factor on the
 multiplicative scale is given by:
 
-$B_{mult}(c) = \frac{1+(γ −1)P(U = 1\|a,c)}{1+(γ −1)P(U = 1\|a∗, c)}$
+$B_{mult}(c) = \frac{1+(γ −1)P(U = 1|a,c)}{1+(γ −1)P(U = 1|a∗, c)}$
 **(8.2)**
 
 We can use the bias formula by specifying the effect of *U* on *Y* on
@@ -393,9 +393,9 @@ above will also be applicable to natural direct effects as well.
 
 ### Binary outcomes
 
-We will consider estimating the controlled direct effect odds ratio from
-Chapter 2, $OR^{CDE}(m)$, with the mediator fixed at level *m*,
-conditional on the covariates *C* = *c*.
+We will consider estimating the controlled direct effect odds ratio as
+$OR^{CDE}(m)$, with the mediator fixed at level *m*, conditional on the
+covariates *C* = *c*.
 
 This approach will assume a rare outcome but can also be used for risk
 ratios with a common outcome. Let $B^{CDE}_{mult}(m|c)$ denote the ratio
@@ -422,7 +422,7 @@ of interest.
 Under assumptions (A8.1.1) and (A8.1.2d), the bias factor on the
 multiplicative scale is given by:
 
-$B^{CDE}_{mult}(m|c) = \frac{1+(γm −1)P(U= 1|a,m, c)}{1+(γm−1)P(U = 1\|a∗,m, c)}$
+$B^{CDE}_{mult}(m|c) = \frac{1+(γm −1)P(U= 1|a,m, c)}{1+(γm−1)P(U = 1|a∗,m, c)}$
 **(8.4)**
 
 Once we have calculated the bias term $B^{CDE}_{mult}(m|c)$, we can
