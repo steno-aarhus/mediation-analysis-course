@@ -554,108 +554,71 @@ We will now demonstrate how to conduct g-computation in a simulated
 dataset.
 
 ```{r}
-datasim <- function(n) {
-  x1 <- rbinom(n, size = 1, prob = 0.5)
+datasim <- function(n) { 
+  # This small function simulates a dataset with n rows
+  # containing covariats, and action, an outcome and
+  # the underlying potential outcomes
+  x1 <- rbinom(n, size = 1, prob = 0.5) 
   x2 <- rbinom(n, size = 1, prob = 0.65)
   x3 <- rnorm(n, 0, 1)
   x4 <- rnorm(n, 0, 1)
-  A <- rbinom(n, size = 1, prob = plogis(-1.6 + 2.5 * x2 + 2.2 * x3 + 0.6 * x4 + 0.4 * x2 * x4))
-  M <- 0.5 * A + 0.3 * x1 + rnorm(n)
-  Y.1 <- rbinom(n, size = 1, prob = plogis(-0.7 + 1 - 0.15 * x1 + 0.45 * x2 + 0.20 * x4 + 0.4 * x2 * x4))
-  Y.0 <- rbinom(n, size = 1, prob = plogis(-0.7 + 0 - 0.15 * x1 + 0.45 * x2 + 0.20 * x4 + 0.4 * x2 * x4))
-  Y <- Y.1 * A + Y.0 * (1 - A)
-  data.frame(x1, x2, x3, x4, A, M, Y, Y.1, Y.0)
-}
+  # The action (independent variable, treatment, exposure...)
+  # is a function of x2, x3, x4 and 
+  # the product of (ie, an interaction of) x2 and x4
+  A <- rbinom(n, size = 1, prob = plogis(-1.6 + 2.5*x2 + 2.2*x3 + 0.6*x4 + 0.4*x2*x4)) 
+  # Simulate the two potential outcomes
+  # as functions of x1, X2, X4 and the product of x2 and x4
+  
+  # Potential outcome if the action is 1
+  # note that here, we add 1
+  Y.1 <- rbinom(n, size = 1, prob = plogis(-0.7 + 1 - 0.15*x1 + 0.45*x2 + 0.20*x4 + 0.4*x2*x4)) 
+  # Potential outcome if the action is 0
+  # note that here, we do not add 1 so that there
+  # is a different the two potential outcomes (ie, an effect of A)
+  Y.0 <- rbinom(n, size = 1, prob = plogis(-0.7 + 0 - 0.15*x1 + 0.45*x2 + 0.20*x4 + 0.4*x2*x4)) 
+  
+  # Observed outcome 
+  # is the potential outcomes (Y.1 or Y.0)
+  # corresponding to action the individual experienced (A)
+  Y <- Y.1*A + Y.0*(1 - A) 
+  
+  # Return a data.frame as the output of this function
+  data.frame(x1, x2, x3, x4, A, Y, Y.1, Y.0) 
+} 
+
+
 
 set.seed(120110) # for reproducibility
-ObsData <- datasim(n = 10000) # really large sample
-TRUE_EY.1 <- mean(ObsData$Y.1)
-TRUE_EY.1 # mean outcome under A = 1
-TRUE_EY.0 <- mean(ObsData$Y.0)
-TRUE_EY.0
-# True average causal effect
-TRUE_ACE <- TRUE_EY.1 - TRUE_EY.0
-TRUE_ACE  
-TRUE_MOR <- (TRUE_EY.1 * (1 - TRUE_EY.0)) / ((1 - TRUE_EY.1) * TRUE_EY.0)
-TRUE_MOR # true marginal OR
-```
+ObsData <- datasim(n = 500000) # really large sample
+TRUE_EY.1 <- mean(ObsData$Y.1); TRUE_EY.1  # mean outcome under A = 1
 
-Step 1: Fit the models
 
-```{r}
-##fit the mediator as a function of A and W
-mediator_model <- lm(M ~ A + x1 + x2 + x3 + x4, data = ObsData)
-##fit the outcome as a function of A, M and W
-outcome_model <- glm(Y ~ A + M + x1 + x2 + x3 + x4, data = ObsData, family = binomial)
-```
+# Fit a logistic regression model predicting Y from the relevant confounders
+Q <- glm(Y ~ A + x2 + x4 + x2*x4, data = ObsData, family=binomial)
 
-Step 2: Duplicate the initial dataset in two counterfactual datasets. In
-one world, set A=1; in the other, set A=0. All other variables keep the
-original values.
 
-```{r}
-# Copy the "actual" data twice
+# Copy the "actual" (simulated) data twice
 A1Data <- A0Data <- ObsData
 # In one world A equals 1 for everyone, in the other one it equals 0 for everyone
 # The rest of the data stays as is (for now)
-A1Data$A <- 1
-A0Data$A <- 0
-```
+A1Data$A <- 1; A0Data$A <- 0
+head(ObsData); head(A1Data); head(A0Data)
 
-Step 3. Apply the function from step 1 to predict each individual's
-mediator and outcome in the two counterfactual datasets.
-
-```{r}
-# Predict M if A=1
-M_A1 <- predict(mediator_model, newdata=A1Data)
-# Predict M if A=0
-M_A0 <- predict(mediator_model, newdata=A0Data)
+# Predict Y if everybody attends
+Y_A1 <- predict(Q, A1Data, type="response") 
+# Predict Y if nobody attends
+Y_A0 <- predict(Q, A0Data, type="response") 
 # Taking a look at the predictions
-data.frame(M_A1 = head(M_A1), M_A0 = head(M_A0))
+data.frame(Y_A1=head(Y_A1), Y_A0=head(Y_A0), TRUE_Y=head(ObsData$Y)) |> round(digits = 2)
 
+# Mean outcomes in the two worlds
+pred_A1 <- mean(Y_A1); pred_A0 <- mean(Y_A0)
 
-# Add the predicted mediator values to the respective datasets
-A1Data$M <- M_A1
-A0Data$M <- M_A0
-# Predict Y if A=1 and MA1 using M_A1
-Y_A1_M1 <- predict(outcome_model, newdata = A1Data, type = "response")
-# Predict Y if A=0 using MA0 using M_A0
-Y_A0_M0 <- predict(outcome_model, newdata = A0Data, type = "response")
-
-
-# Create dataset for A=1, M=0 and A=0, M=1 scenarios
-A1Data_M0 <- A1Data
-A0Data_M1 <- A0Data
-A1Data_M0$M <- M_A0
-A0Data_M1$M <- M_A1
-
-
-# Predict the outcomes for these scenarios
-Y_A1_M0 <- predict(outcome_model, newdata = A1Data_M0, type = "response")
-Y_A0_M1 <- predict(outcome_model, newdata = A0Data_M1, type = "response")
-```
-
-Step 4: Compute the average effects
-
-```{r}
-# Average outcome when A = 1
-mean_Y_A1 <- mean(Y_A1_M1)
-# Average outcome when A = 0
-mean_Y_A0 <- mean(Y_A0_M0)
-# Total effect
-total_effect <- mean_Y_A1 - mean_Y_A0
-# Total effect
-total_effect 
-
-# Calculate the Marginal Odds Ratio using g-computation predictions
-gcomp_MOR <- (mean_Y_A1 * (1 - mean_Y_A0)) / ((1 - mean_Y_A1) * mean_Y_A0)
-
-
-# Calculate the average outcomes under counterfactual scenarios
-mean_Y_A1_M0 <- mean(Y_A1_M0)
-mean_Y_A0_M1 <- mean(Y_A0_M1)
-mean_Y_A1_M1 <- mean(Y_A1_M1)
-mean_Y_A0_M0 <- mean(Y_A0_M0)
+# Marginal odds ratio
+MOR_gcomp <- (pred_A1*(1 - pred_A0))/((1 - pred_A1)*pred_A0)
+# ATE (risk difference)
+RD_gcomp <- pred_A1 - pred_A0
+c(MOR_gcomp, RD_gcomp) |> round(digits=3)
 ```
 
 We recommend take the advantage of R packages to do the work
