@@ -8,6 +8,8 @@ book:
     - "Daniel B. Ibsen"
     - "Omar Silverman"
     - "Jie Zhang"
+    - "Nima Hejazi"
+    - "Iván Díaz"
   site-url: "https://analysis-of-mechanisms.netlify.app"
   repo-url: "https://github.com/steno-aarhus/mediation-analysis-course"
   chapters:
@@ -25,10 +27,19 @@ book:
       - sessions/causal-mediation-analysis-survival-outcomes.qmd
       - sessions/causal-mediation-analysis-sensitivity-analysis.qmd
       - sessions/reporting-guidelines.qmd
+      - sessions/mcma_preface.qmd
+      - sessions/mcma_effects_defn.qmd
+      - sessions/mcma_choosing_effects.qmd
       - sessions/group_work_day2.qmd
+      - sessions/mcma_estim_prelims.qmd
+      - sessions/mcma_estim_natural_interv.qmd
+      - sessions/mcma_estim_walkthru.qmd
+      - sessions/mcma_longit_effects.qmd
       - sessions/NetCoupler-example.qmd
   appendices:
     - appendices/references.qmd
+    - appendices/mcma_stoch_effects.qmd
+    - appendices/mcma_addl_readings.qmd
     - LICENSE.md
   page-footer:
     center:
