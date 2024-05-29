@@ -50,10 +50,12 @@ report. See @fig-agrema-checklist-sf.
 ![AGReMA checklist from Lee et
 al.](/images/agrema-checklist-sf.PNG){#fig-agrema-checklist-sf}
 
-## Exercise
+::: callout-note \## Exercise - 15 min
 
--   how many of the items are reported in the mediation analysis papers
+-   How many of the items are reported in the mediation analysis papers
     you reviewed in the beginning of the course?
--   what do you think are the most important things missing?
+-   What do you think are the most important things missing?
+
+:::
 
 ## References

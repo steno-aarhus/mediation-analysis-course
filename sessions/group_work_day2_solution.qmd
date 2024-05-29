@@ -30,8 +30,65 @@ can either use the **mediation** package or **CMAverse** package.
 
 2.  Perform a causal mediation analysis
 
+Load data:
+
+```{r setup}
+library(here)
+library(tidyverse)
+
+load(here::here("data/frmghamdata.RData"))
+```
+
+Clean the data:
+
+```{r}
+frmgham_clean <- frmgham %>%
+  select(
+    id = randid, 
+    w1 = sex,
+    w2 = age,
+    w3 = cursmoke,
+    w4 = educ,
+    a = bmi, # this is the exposure
+    m = sysbp, # this is the mediator
+    y = cvd # this is the outcome
+  ) %>% 
+  na.omit()
+
+frmgham_clean <- frmgham_clean %>%
+  mutate(a = case_when(a >= 30 ~ 1,
+                       TRUE ~ 0))
+
+```
+
+Do causal mediation analysis:
+
+```{r}
+library(CMAverse)
+
+res_rb <- cmest(
+  data = frmgham_clean, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w1", "w2", "w3", "w4"), EMint = TRUE,
+  mreg = list("linear"), yreg = "logistic",
+  astar = 0, a = 1, mval = list(120),
+  estimation = "paramfunc", inference = "delta"
+)
+
+summary(res_rb)
+```
+
 3.  Conduct a sensitivity analyses for uncontrolled confounding and
     discuss the results
+
+```{r}
+uc_sens <- cmsens(
+  object = res_rb,
+  sens = "uc"
+)
+
+uc_sens
+
+```
 
 4.  Write a short report of your mediation models. Focus on item
     6,9,10,11,14,15,18,19,20,21,22 in the long Agrema checklist.

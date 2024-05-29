@@ -1,0 +1,190 @@
+# Day 1 group work
+
+::: callout-note
+## Objective of this session
+
+-   Conduct mediation analysis using the traditional approaches
+-   Conduct mediation analysis using the 'mediation' R package
+-   Understanding summary output with binary outcome variable
+-   The limitations of the traditional approaches
+:::
+
+First, load the dataset and take a few minutes to explore the variables
+in the dataset.
+
+```{r setup}
+library(here)
+library(tidyverse)
+
+load(here::here("data/frmghamdata.RData"))
+```
+
+## Variables
+
+The dataset includes `r nrow(frmgham)` participants and
+`r ncol(frmgham)`.
+
+```{r}
+str(frmgham)
+```
+
+## Research question
+
+In this exercise, we will investigate the effect of obesity on the risk
+of cardiovascular disease (CVD), and how much this relation is mediated
+by high blood pressure. **Mediation analysis** could help us answer this
+research question.
+
+For the exercise on day 1, we will work with the following variables:
+
+-   bmi = body mass index (BMI) (continuous variable in kg/m^2^)
+-   sysbp = systolic blood pressure (continous)
+-   cvd = (binary: 0=no, 1=yes).
+-   cursmoke = smoking status (binary: 0 = no smoking, 1 = smoking)
+-   educ = education (categorical variable)
+-   sex = sex (0: male, 1: female)
+-   age = age (continuous variable)
+
+Note: in this example, the outcome of interest is the presence of CVD,
+which is a binary variable. We will not think about time-to-event
+outcomes for now. More on this will come later.
+
+Before we start, let's think about the research question and draw a
+directed acyclic graphs. You can either draw by hand or use daggity
+(https://www.dagitty.net/).
+
+[Address the following questions]{.underline}:
+
+1.  Estimate the relationship between obesity and blood pressure (fit
+    the mediator model).
+
+Cleaning the data:
+
+```{r}
+frmgham_clean <- frmgham %>%
+  select(
+    id = randid, 
+    w1 = sex,
+    w2 = age,
+    w3 = cursmoke,
+    w4 = educ,
+    a = bmi, # this is the exposure
+    m = sysbp, # this is the mediator
+    y = cvd # this is the outcome
+  ) %>% 
+  na.omit()
+
+frmgham_clean <- frmgham_clean %>%
+  mutate(a = case_when(a >= 30 ~ 1,
+                       TRUE ~ 0))
+
+```
+
+The association between obesity and blood pressure
+
+```{r}
+
+lm_m <- lm(m ~ a + w1 + w2 + w3 + w4,
+           data = frmgham_clean)
+summary(lm_m)
+
+```
+
+```{r}
+beta1a <- as.numeric(lm_m$coefficients[2])
+beta1a
+```
+
+Having obesity compared to not is associated with a greater systolic
+blood pressure.
+
+2.  Estimate the effect of obesity on the prevalence of CVD, adjusting
+    for SES, or other confounding factors based on your DAG.
+
+```{r}
+
+glm_y <- glm(y ~ a + w1 + w2 + w3 + w4,
+             family = binomial,
+             data = frmgham_clean)
+
+summary(glm_y)
+
+exp(glm_y$coefficients[2])
+
+```
+
+Association between obesity and CVD, not adjusting for blood pressure.
+
+```{r}
+beta_no_adjustment <- glm_y$coefficients[2]
+```
+
+3.  Estimate the effect of blood pressure on the prevalence of CVD,
+    adjusting for obesity and other confounding factors based on your
+    DAG.
+
+```{r}
+
+glm_y_m <- glm(y ~ a + m + w1 + w2 + w3 + w4,
+             family = binomial,
+             data = frmgham_clean)
+
+summary(glm_y_m)
+
+cbind(exp(glm_y_m$coefficients[2]), exp(glm_y_m$coefficients[3]))
+
+theta2m <- as.numeric(glm_y_m$coefficients[3])
+
+beta_adjustment <- as.numeric(glm_y_m$coefficients[2])
+
+```
+
+The association between obesity, adjusted for blood pressure, on cvd is
+OR = 1.36 (= direct effect)
+
+The association between blood pressure, adjusted for obesity, on cvd is
+OR = 1.02.
+
+4.  Now, calculate the direct effect and indirect effect using the
+    product method and difference method, and compare results from the
+    two approaches. Note: you do not need to estimate the confidence
+    intervals.
+
+Product method:
+
+```{r}
+
+indirect_prod <- beta1a * theta2m
+
+exp(indirect_prod)
+
+```
+
+Difference method:
+
+```{r}
+
+indirect_diff <- beta_no_adjustment - beta_adjustment
+
+exp(indirect_diff)
+
+```
+
+5.  Calculate the direct effect and indirect effect using the
+    **CMAverse** package.
+
+```{r}
+library(CMAverse)
+
+res_rb_confounders <- cmest(
+  data = frmgham_clean, model = "rb", outcome = "y", exposure = "a",
+  mediator = "m", basec = c("w1", "w2", "w3", "w4"), EMint = FALSE,
+  mreg = list("linear"), yreg = "logistic",
+  astar = 0, a = 1, mval = list(120),
+  estimation = "paramfunc", inference = "delta"
+)
+
+summary(res_rb_confounders)
+```
+
+6.  Discuss the limitations of the traditional approach.

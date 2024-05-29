@@ -65,7 +65,7 @@ General problems with the traditional approach is when we have
 exposure-mediator interaction and non-linear relationships.
 
 Counterfactual-based direct and indirect effects can be estimated,
-provided that the no-confounding assumption hold. To be able to do so,
+provided that the no confounding assumption hold. To be able to do so,
 we need a model for the mediator and a model for the outcome.
 
 Model for the mediator:
@@ -86,7 +86,7 @@ Note, that for your own data, you may need to take missing data into
 account in another way.
 
 The example here include a continuous treatment, mediator and outcome.
-We use these equations on an additive scale because they are easier to
+We use these equations on an additive scale because it is easier to
 explain the intuition behind the estimands. Similar equations exist for
 other types and combinations of variables.
 
@@ -180,7 +180,7 @@ round(as.numeric(CDE_m), digits = 2)
 
 The CDE is how much the outcome, here blood glucose, would change on
 average if the mediator, here inflammation measured by CRP levels, were
-fixed at level (m=`r median_m`) uniformly in the population but the
+fixed at level (m = `r median_m`) uniformly in the population but the
 treatment, red meat intake, was changed from 0 to 65 g/day. As we
 operate with a linear model for simplicity, it does not matter here if
 the change is from 0 to 65 or from 50 to 115 g/day.
@@ -193,7 +193,7 @@ fixing M at a specific value for everyone in the population
 
 PNDE can be obtained using this formula:
 
-$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + beta_1*a^* + \beta'_2*w))(a - a^*)$
+$PNDE = (\sigma_1 + \sigma_3 * (\beta_0 + \beta_1*a^* + \beta'_2*w))(a - a^*)$
 
 We set the value for the confounder w1 for the interaction to be the
 mean value of w1.
@@ -395,7 +395,7 @@ significant associations.
 ## G-computation-based approach
 
 ::: callout-note
-# Recall no-confounding assumption of causal mediation
+## Recall no-confounding assumption of causal mediation
 
 -   no exposure-mediator confounding
 -   no mediator-outcome confounding

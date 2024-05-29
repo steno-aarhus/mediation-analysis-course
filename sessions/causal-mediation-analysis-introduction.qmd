@@ -527,18 +527,19 @@ practice, this is rarely the case. Probably because the study was not
 designed to conduct mediation analysis.
 
 ::: callout-note
-## Exercise: Understanding different study designs (15 min)
+## Exercise: Understanding different study designs (30 min)
 
 Stay in the same groups that you did the previous exercise.
 
-1.  First discuss you own study: (5 min)
+1.  First discuss the study you were assigned to in the previous
+    session: (10 min)
 
--   How does your study separate the timing between the exposure,
+-   How does the study separate the timing between the exposure,
     mediator and outcome?
--   Did your study account for all the confounding assumptions? If not,
+-   Did the study account for all the confounding assumptions? If not,
     why not? What could they have done?
 
-2.  Everyone: (5min)
+2.  Everyone: (10 min)
 
 -   Describe the issues in your study to everyone.
 
@@ -578,4 +579,3 @@ In addition to consistency there is the assumption of no carry-over
 effects.
 
 ## References
-
