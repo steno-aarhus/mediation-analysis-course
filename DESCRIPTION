@@ -17,6 +17,7 @@ Imports:
     here,
     knitr,
     quarto,
+    bbotk,
     mediation,
     NetCoupler,
     rmarkdown,
@@ -36,22 +37,24 @@ Imports:
     sl3,
     medshift,
     medoutcon,
-    lmtp
+    lmtp,
+    lmcmtp
 Suggests:
     nnls,
     Rsolnp,
     nloptr,
-    gam,
-    earth,
-    glmnet,
     speedglm,
+    glmnet,
+    earth,
     ranger,
     hal9001,
-    SuperLearner
+    SuperLearner,
+    mlr3extralearners
 Remotes:
     github::BS1125/CMAverse
-    github::tlverse/sl3@devel,
+    github::tlverse/sl3,
     github::nhejazi/medshift,
     github::nhejazi/medoutcon,
     github::nt-williams/mlr3superlearner@Screener,
-    github::nt-williams/lcmmtp
+    github::nt-williams/lcmmtp,
+    github::mlr-org/mlr3extralearners@*release

@@ -1,18 +1,11 @@
-# Construction of G-computation and weighted estimators for the NDE: The case of the natural direct effect
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# Construction of estimators: Example with the NDE
 
 ## Recap of definition and identification of the natural direct effect
 
 Recall:
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -158,9 +151,9 @@ Then, the NDE is identified as
   - Computing the mean over all values $w$
 
 
-## Plug-in (a.k.a g-computation) estimator
+## Plug-in (G-computation) estimator
 
-The above is how you would compute the _true value_ __if you know__ the true
+The above is how you would compute the *true value* **if you know** the true
 distribution $\P$
 
 - This is exactly what we did in our R examples before
@@ -177,7 +170,7 @@ distribution $\P$
     $$
 - This is known as the G-computation estimator.
 
-## First weighted estimator (akin to inverse probability weighted)
+## First weighted estimator (akin to IPW)
 
 - An alternative expression of the parameter functional (for the NDE) is given
   by

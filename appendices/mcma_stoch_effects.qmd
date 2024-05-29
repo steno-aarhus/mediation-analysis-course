@@ -1,18 +1,11 @@
-# Appendix: Stochastic direct and indirect effects {#stochastic}
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# Appendix: Stochastic direct and indirect effects
 
 ## Definition of the effects
 
 Consider the following directed acyclic graph.
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under no intermediate confounders of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}

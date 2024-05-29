@@ -1,13 +1,5 @@
 # `R` packages for estimation of the causal (in)direct effects
 
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
-
 We'll now turn to working through a few examples of estimating the natural and
 interventional direct and indirect effects. Note that we will be using the
 [`medoutcon` `R` package](https://github.com/nhejazi/medoutcon), which supports
@@ -23,7 +15,7 @@ let's load the packages we'll be using and set a seed; then, load this data set
 and take a quick look.
 
 ```{r}
-#| label: pkg-setup
+#| label: mcma-pkg-setup
 library(tidyverse)
 library(sl3)
 library(medoutcon)
@@ -68,6 +60,7 @@ of $n$ i.i.d. observations of $O$. Recall the DAG [from an earlier
 chapter](#estimands), which represents the data-generating process:
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -171,16 +164,17 @@ $$
   limited library of algorithms, including n intercept model, a main terms GLM,
   Lasso ($\ell_1$-penalized) regression, and random forest (`ranger`).
   ```{r}
-  #| label: setup-sl
+  #| label: mcma_setup_sl
   # instantiate learners
   mean_lrnr <- Lrnr_mean$new()
   fglm_lrnr <- Lrnr_glm_fast$new()
   lasso_lrnr <- Lrnr_glmnet$new(alpha = 1, nfolds = 3)
+  mars_lrnr <- Lrnr_earth$new()
   rf_lrnr <- Lrnr_ranger$new(num.trees = 200)
 
   # create learner library and instantiate super learner ensemble
-  lrnr_lib <- Stack$new(mean_lrnr, fglm_lrnr, lasso_lrnr, rf_lrnr)
-  sl_lrnr <- Lrnr_sl$new(learners = lrnr_lib, metalearner = Lrnr_nnls$new())
+  lrnr_lib <- Stack$new(mean_lrnr, fglm_lrnr, lasso_lrnr, mars_lrnr, rf_lrnr)
+  sl_lrnr <- Lrnr_sl$new(learners = lrnr_lib)
   ```
 
 * Of course, there are many alternatives for learning algorithms to be included
@@ -198,7 +192,7 @@ $$
 * Now, let's use the `medoutcon()` function to estimate the _natural direct
   effect_:
   ```{r}
-  #| label: natural-de-os
+  #| label: mcma-natural-de-os
   # compute one-step estimate of the natural direct effect
   nde_onestep <- medoutcon(
     W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -219,7 +213,7 @@ $$
 * We can similarly call `medoutcon()` to estimate the _natural indirect effect_:
 
 ```{r}
-#| label: natural-ie-os
+#| label: mcma-natural-ie-os
 # compute one-step estimate of the natural indirect effect
 nie_onestep <- medoutcon(
   W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -257,6 +251,7 @@ effects are distinguished by their use of a stochastic intervention on the
 mediator to aid in their identification.
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under intermediate confounders of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -357,7 +352,7 @@ $$
   with only binary intermediate confounders, i.e., $Z \in \{0, 1\}$.
 * Let's use `medoutcon()` to estimate the _interventional direct effect_:
   ```{r}
-  #| label: interv-de-os
+  #| label: mcma-interv-de-os
   # compute one-step estimate of the interventional direct effect
   interv_de_onestep <- medoutcon(
     W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -377,7 +372,7 @@ $$
 
 * We can similarly estimate the _interventional indirect effect_:
   ```{r}
-  #| label: interv-ie-os
+  #| label: mcma-interv-ie-os
   # compute one-step estimate of the interventional indirect effect
   interv_ie_onestep <- medoutcon(
     W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -421,28 +416,29 @@ actionable in real-world studies.
 * Instead, consider the decomposition of the population intervention effect
   (PIE) of a _stochastic intervention_ into direct and indirect effects
   [@diaz2020causal]:
-\begin{align*}
-  \E[Y&_{A_\delta,M_{A_\delta}} - Y_{A,M_A}] = \\
-  &\underbrace{\E[Y_{\color{red}{A_\delta},\color{blue}{M_{A_\delta}}} -
-    Y_{\color{red}{A_\delta},
-    \color{blue}{M}}]}_{\text{stochastic natural indirect effect}} +
-    \underbrace{\E[Y_{\color{blue}{A_\delta},\color{red}{M}} -
-    Y_{\color{blue}{A},
-    \color{red}{M}}]}_{\text{stochastic natural direct effect}}
-\end{align*}
+  $$ \begin{align*}
+    \E[Y&_{A_\delta,M_{A_\delta}} - Y_{A,M_A}] = \\
+    &\underbrace{\E[Y_{\color{red}{A_\delta},\color{blue}{M_{A_\delta}}} -
+      Y_{\color{red}{A_\delta},
+      \color{blue}{M}}]}_{\text{stochastic natural indirect effect}} +
+      \underbrace{\E[Y_{\color{blue}{A_\delta},\color{red}{M}} -
+      Y_{\color{blue}{A},
+      \color{red}{M}}]}_{\text{stochastic natural direct effect}}
+  \end{align*} $$
 * Recall from our discussion of the [incremental propensity score
   interventions](#ipsi) [@kennedy2018nonparametric] that such stochastic
   interventions can compare the pre- and post-intervention odds of exposure:
-\begin{equation*}
-  \delta = \frac{\text{odds}(A_\delta = 1\mid W=w)}
-  {\text{odds}(A = 1\mid W=w)}.
-\end{equation*}
+  $$
+    \delta = \frac{\text{odds}(A_\delta = 1\mid W=w)}
+    {\text{odds}(A = 1\mid W=w)}.
+  $$
 * In our analysis, we will modulate the _odds of participating in a sports
   team_ by a fixed amount for each individual, setting, for example,
   $\delta = 2$:
-```{r delta_ipsi}
-delta_shift_ipsi <- 2
-```
+  ```{r}
+  #| label: delta_ipsi
+  delta_shift_ipsi <- 2
+  ```
 * Such an intervention may be interpreted as the effect of a school program
   that motivates children to participate in sports teams.
 
@@ -470,7 +466,8 @@ delta_shift_ipsi <- 2
   [@klaassen1987consistent; @zheng2011cross; @chernozhukov2018double].
 * Now, we're ready to use the `medshift` function to estimate the decomposition
   term common to both the _stochastic direct and indirect effects_:
-  ```{r stoch_decomp_os}
+  ```{r}
+  #| label: stoch_decomp_os
   # compute one-step estimate of decomposition term of the (in)direct effects
   stoch_decomp_onestep <- medshift(
     W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -489,7 +486,8 @@ delta_shift_ipsi <- 2
 
 * To estimate the stochastic direct effect, an extra step is necessary -- we
   must apply the delta method:
-  ```{r linear_contrast_delta}
+  ```{r}
+  #| label: linear_contrast_delta
   # convenience function to compute inference via delta method: EY1 - EY0
   linear_contrast <- function(params, eifs, ci_level = 0.95) {
     # bounds for confidence interval
@@ -505,7 +503,8 @@ delta_shift_ipsi <- 2
   }
   ```
 * Straightforward application of this procedure yields,
-  ```{r stoch_de_ipsi}
+  ```{r}
+  #| label: stoch_de_ipsi
   # parameter estimates and EIFs for components of direct effect
   EY <- mean(weight_behavior$bmi)
   eif_EY <- weight_behavior$bmi - EY

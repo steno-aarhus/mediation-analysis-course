@@ -1,21 +1,13 @@
-# How to choose an estimand: Real-world example {#estimandirl}
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# How to choose an estimand: Real-world example
 
 ## Comparative effectiveness of two medications for opioid use disorder (OUD)
 
-![](img/ctndag.png)
+![](../images/ctndag.png)
 
 _Motivation_: Opposite overall treatment effects for homeless versus nonhomeless
 participants. This application was explored in detail by @rudolph2020explaining.
 
-![](img/tmleesttotal.png)
+![](../images/tmleesttotal.png)
 
 ### Getting specific about the question
 
@@ -55,18 +47,18 @@ $\rightarrow$ Interventional direct and indirect effects.
   + Here $G_a$ is a draw from the distribution of $M_a\mid W$.
 - Need to incorporate multiple and continuous mediators
 
-#### What if the positivity assumption $\P(A=a\mid W)>0$ violated? {-}
+#### What if positivity assumption $\P(A=a\mid W)>0$ is violated? {.unnumbered}
 
 $\rightarrow$ Can't identify or estimate any of the above effects
 
 - But we can estimate the effect of some stochastic interventions, e.g., IPSIs
-- Tradeoff between feasibility and interpretation
+- Trade-off between feasibility and interpretation
 
-#### What if the exposure variable is continuous? {-}
+#### What if the exposure variable is continuous? {.unnumbered}
 
 $\rightarrow$ All the above effects are defined for binary exposures
 
 - But we can estimate the effect of some stochastic interventions
 - Work in progress (including upcoming R software)
 
-#### What if the exposure is actually time-varying? What if the mediators and/or intermediate confounders are actually time-varying? {-}
+#### What if the exposure is actually time-varying? What if the mediators and/or intermediate confounders are time-varying? {.unnumbered}

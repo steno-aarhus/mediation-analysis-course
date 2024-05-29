@@ -1,18 +1,11 @@
-# Types of path-specific causal mediation effects {#estimands}
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# Types of path-specific causal mediation effects
 
 - Controlled direct effects
 - Natural direct and indirect effects
 - Interventional direct and indirect effects
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -77,7 +70,7 @@ shorten >=2pt,}
 
 $$\psi_{\text{CDE}} = \E(Y_{1,m} - Y_{0,m})$$
 
-![](img/graphic4a3.png){width=40%}
+![](../images/graphic4a3.png){width=40%}
 
 - Set the mediator to a reference value $M=m$ uniformly for everyone in the
   population
@@ -158,7 +151,7 @@ Still using the same DAG as above,
   treatment was given but the mediator was held at the value it would have
   taken under no treatment_
 
-  ![](img/graphic4a.png){width=40%}
+  ![](../images/graphic4a.png){width=40%}
 
 - Recall that, because of the definition of counterfactuals
   \begin{equation*}
@@ -266,7 +259,7 @@ $$
 
 - Makes sense to intervene on $A$ but not directly on $M$.
 - Want to understand a natural mechanism underlying an association / total
-  effect. J. Pearl calls this _descriptive_.
+  effect. J. Pearl calls this *descriptive*.
 - NDE + NIE = total effect (ATE).
 - Okay with the assumptions.
 
@@ -274,6 +267,7 @@ _What if our data structure involves a post-treatment confounder of the
 mediator-outcome relationship (e.g., adherence)?_
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under intermediate confounders of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -339,7 +333,7 @@ shorten >=2pt,}
 \end{tikzpicture}
 ```
 
-![](img/ctndag.png)
+![](../images/ctndag.png)
 
 ### Unidentifiability of the NDE and NIE in this setting
 
@@ -371,6 +365,7 @@ shorten >=2pt,}
 
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Parallel worlds model of the scenario considered
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -491,7 +486,7 @@ intervention.
   variable in a hypothetical world where $A$ is set $A=1$ and $M$ is
   set to $M=G_0$ with probability one.
 
-![](img/graphic4b.png){width=60%}
+![](../images/graphic4b.png){width=60%}
 
 - Define $Y_{0,G_0}$ and $Y_{1,G_1}$ similarly
 - Then we can define:
@@ -656,4 +651,4 @@ More details in the original paper.
 
 ## Estimand Summary
 
-![](img/table1.png)
+![](../images/table1.png)

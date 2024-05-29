@@ -1,12 +1,4 @@
-# Causal mediation analysis intro {#mediation}
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# "Modern" causal mediation analysis
 
 ## Motivating study
 
@@ -25,13 +17,13 @@ library(here)
 
 - Key questions:
   - Do differences in the effects of treatment (comparing two medications for
-    opioid use disorder, naltrexone vs buprenorphine) on risk of relapse operate
-    through mediators of adherence, opioid use, pain, and depressive symptoms?
-    [@rudolph2020explaining]
+    opioid use disorder, naltrexone v. buprenorphine) on risk of relapse
+    operate through mediators of adherence, opioid use, pain, and depressive
+    symptoms? [@rudolph2020explaining]
   - Are those mediated effects different for homeless vs non-homeless
     individuals?
 
-![](/img/ctndag.png)
+![](../images/ctndag.png)
 
 ## What is causal mediation analysis?
 
@@ -57,39 +49,39 @@ library(here)
 - There is a confounder $Z$ of $M \rightarrow Y$ affected by treatment
   assignment (with adherence)
 - We could fit the following models:
-    \begin{align}
+    $$ \begin{align*}
       \E(M \mid A=a, W=w, Z=z) & = \gamma_0 + \gamma_1 a + \gamma_2 w + \gamma_3 z \\
-      \E(Y \mid M=m, A=a, W=w, Z=z) & = \beta_0 + \beta_1 m + \beta_2 a + \beta_3 w + \beta_4 z
-    \end{align}
+      \E(Y \mid M=m, A=a, W=w, Z=z) & = \beta_0 + \beta_1 m + \beta_2 a +
+        \beta_3 w + \beta_4 z
+    \end{align*} $$
 - The product $\gamma_1 \beta_1$ has been proposed as a measure of the effect
   of $A$ on $Y$ through $M$
 - Causal interpretation problems with this method: We will see that this
   parameter cannot be interpreted as a causal effect
 
 ### `R` Example:
-- Assume we have a pre-treamtment confounder of $Y$ and $M$, denote it with $W$
+- Assume we have a pre-treatment confounder of $Y$ and $M$, denote it with $W$
 - For simplicity, assume $A$ is randomized
 - We'll generate a really large sample from a data generating mechanism so that
   we are not concerned with sampling errors
-```{r}
-n <- 1e6
-w <- rnorm(n)
-a <- rbinom(n, 1, 0.5)
-z <- rbinom(n, 1, 0.2 * a + 0.3)
-m <- rnorm(n, w + z)
-y <- rnorm(n, m + w - a + z)
-```
+  ```{r}
+  n <- 1e6
+  w <- rnorm(n)
+  a <- rbinom(n, 1, 0.5)
+  z <- rbinom(n, 1, 0.2 * a + 0.3)
+  m <- rnorm(n, w + z)
+  y <- rnorm(n, m + w - a + z)
+  ```
 
 - Note that the indirect effect (i.e., the effect through $M$) in this example
   is nonzero (there is a pathway $A \rightarrow Z \rightarrow M \rightarrow Y$)
 - Let's see what the product of coefficients method would say:
-
-```{r}
-lm_y <- lm(y ~ m + a + w + z)
-lm_m <- lm(m ~ a + w + z)
-## product of coefficients
-coef(lm_y)[2] * coef(lm_m)[2]
-```
+  ```{r}
+  lm_y <- lm(y ~ m + a + w + z)
+  lm_m <- lm(m ~ a + w + z)
+  ## product of coefficients
+  coef(lm_y)[2] * coef(lm_m)[2]
+  ```
 
 Among other things, in this workshop:
 
@@ -106,6 +98,7 @@ types of graph:
 ### No intermediate confounders
 
 ```{tikz}
+#| echo: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -168,7 +161,9 @@ shorten >=2pt,}
 
 ### Intermediate confounders
 
-```{r, engine="tikz", fig.cap = "Directed acyclic graph under intermediate confounders of the mediator-outcome relation affected by treatment", fig.ext=if (knitr:::is_latex_output()) "pdf" else "png", echo = FALSE}
+```{tikz}
+#| echo: false
+#| fig-cap: Directed acyclic graph under intermediate confounders of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
@@ -236,13 +231,13 @@ shorten >=2pt,}
 The above graphs can be interpreted as a _non-parametric structural equation
 model_ (NPSEM), also known as _structural causal model_ (SCM):
 
-\begin{align}
+$$ \begin{align}
   W & = f_W(U_W) \nonumber \\
   A & = f_A(W, U_A) \nonumber \\
   Z & = f_Z(W, A, U_Z) \nonumber \\
   M & = f_M(W, A, Z, U_M) \nonumber \\
   Y & = f_Y(W, A, Z, M, U_Y)
-\end{align}
+\end{align} $$
 
 - Here $U=(U_W, U_A, U_Z, U_M, U_Y)$ is a vector of all unmeasured exogenous
   factors affecting the system
@@ -264,7 +259,7 @@ model_ (NPSEM), also known as _structural causal model_ (SCM):
   contrary to fact <!--we would be able to perform interventions on the
   random variables of interest-->
 
-### We will use the following counterfactual variables: {-}
+### We will use the following counterfactual variables: {.unnumbered}
 
 - $Y_a$ is a counterfactual variable in a hypothetical world where $\P(A=a)=1$
   with probability one for some value $a$
@@ -278,31 +273,31 @@ model_ (NPSEM), also known as _structural causal model_ (SCM):
 - In the NPSEM framework, counterfactuals are quantities _derived_ from the
   model.
 - Once you define a change to the causal system, that change needs to be
-  progagated downstream.
+  propagated downstream.
   - Example: modifying the system to make everyone receive XR-NTX yields
     counterfactual adherence, mediators, and outcomes.
 - Take as example the DAG in Figure 1.2:
-  \begin{align}
+  $$ \begin{align}
     A    &= a \nonumber \\
-    Z_a  &= f_Z(W, a, U_M) \nonumber \\
+    Z_a  &= f_Z(W, a, U_Z) \nonumber \\
     M_a  &= f_M(W, a, Z_a, U_M) \nonumber \\
     Y_a  &= f_Y(W, a, Z_a, M_a, U_Y)
-\end{align}
+  \end{align} $$
 - We will also be interested in _joint changes_ to the system:
-  \begin{align}
+  $$ \begin{align}
     A        &= a \nonumber \\
-    Z_a      &= f_Z(W, a, U_M) \nonumber \\
+    Z_a      &= f_Z(W, a, U_Z) \nonumber \\
     M        &= m \nonumber \\
     Y_{a,m}  &= f_Y(W, a, Z_a, m, U_Y)
-\end{align}
+  \end{align} $$
 - And, perhaps more importantly, we will use _nested counterfactuals_
 - For example, if $A$ is binary, you can think of the following counterfactual
-  \begin{align}
+  $$ \begin{align}
     A          &= 1 \nonumber \\
-    Z_1        &= f_Z(W, 1, U_M) \nonumber \\
+    Z_1        &= f_Z(W, 1, U_Z) \nonumber \\
     M          &= M_0 \nonumber \\
     Y_{1, M_0} &= f_Y(W, 1, Z_1, M_0, U_Y)
-  \end{align}
+  \end{align} $$
 - $Y_{1, M_0}$ is interpreted as *the outcome for an individual in a
   hypothetical world where treatment was given but the mediator was held at the
   value it would have taken under no treatment*.

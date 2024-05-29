@@ -1,12 +1,4 @@
-# Mediation with time-varying treatments, mediators, and covariates
-
-```{r}
-#| label: load-renv
-#| echo: false
-#| message: false
-renv::load(here::here())
-library(here)
-```
+# Time-varying treatments, mediators, and covariates
 
 We'll now turn to thinking about how to define and estimate effects
 for cases where treatment, mediators, and covariates are time-varying.
@@ -23,8 +15,8 @@ topic that are interesting/useful:
   by  Wenjing Zheng and Mark J. van der Laan
 - [Efficient and flexible causal mediation with time-varying
   mediators, treatments, and
-  confounders](https://www.degruyter.com/document/doi/10.1515/jci-2022-0077/html) by Iván Díaz,
-  Nicholas Williams, and Kara E. Rudolph
+  confounders](https://www.degruyter.com/document/doi/10.1515/jci-2022-0077/html)
+  by Iván Díaz, Nicholas Williams, and Kara E. Rudolph
 - [Identification and estimation of mediational effects of
   longitudinal modified treatment
   policies](https://arxiv.org/abs/2403.09928) by Brian Gilbert,

@@ -29,8 +29,8 @@ book:
       - sessions/reporting-guidelines.qmd
       - sessions/mcma_preface.qmd
       - sessions/mcma_effects_defn.qmd
-      - sessions/mcma_choosing_effects.qmd
       - sessions/group_work_day2.qmd
+      - sessions/mcma_choosing_effects.qmd
       - sessions/mcma_estim_prelims.qmd
       - sessions/mcma_estim_natural_interv.qmd
       - sessions/mcma_estim_walkthru.qmd
@@ -56,7 +56,9 @@ editor:
     canonical: true
 
 format:
-  r3-theme-html
+  r3-theme-html:
+    include-in-header:
+      - file: headers/mathjax.html
 
 execute:
   freeze: false
