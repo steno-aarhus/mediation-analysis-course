@@ -252,8 +252,8 @@ levels *A* = *a* and *A* = *a*^\*^.
 Once we have calculated the bias term **B~*mult*~(*c*)**, we can
 estimate our risk ratio controlling only for *C* (if the outcome is
 rare, fit a logistic regression) and we divide our estimate by
-**B~*mult*~(*c*)** to get the corrected estimate for risk ratio—that is,
-what we would have obtained if we had adjusted for *U* as well.
+**B~*mult*~(*c*)** to get the corrected estimate for risk ratio---that
+is, what we would have obtained if we had adjusted for *U* as well.
 
 Under the simplifying assumptions of (A8.1.1) and (A8.1.2b), we can also
 obtain corrected confidence intervals by dividing both limits of the
@@ -429,7 +429,7 @@ Once we have calculated the bias term $B^{CDE}_{mult}(m|c)$, we can
 estimate the *CDE* risk ratio controlling only for *C* (if the outcome
 is rare), we fit a logistic regression) and we divide our estimate and
 confidence intervals by the bias factor $B^{CDE}_{mult}(m|c)$ to get the
-corrected estimate for CDE risk ratio and its confidence interval—that
+corrected estimate for CDE risk ratio and its confidence interval---that
 is, what we would have obtained if we had adjusted for *U* a well.
 
 We have to specify the two prevalences of *U*, namely $P(U = 1|a,m, c)$
@@ -573,14 +573,14 @@ uc_sens
 -   The E-value is the minimum strength of association, on the risk
     ratio scale, that an unmeasured confounder would need to have with
     both the treatment and the outcome to fully explain away a specific
-    treatment–outcome association, conditional on the measured
-    covariates.
+    treatment--outcome association, conditional on the measured
+    covariates @vanderweele_sensitivity_2017.
 
 -   A large E-value implies that considerable unmeasured confounding
     would be needed to explain away an effect estimate.
 
 -   A small E-value implies little unmeasured confounding would be
     needed to explain away an effect estimate.
-
-(Tyler J VanderWeele 2017)
 :::
+
+## References
