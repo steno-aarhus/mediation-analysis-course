@@ -75,6 +75,8 @@ results with respect to time-to-event outcomes @tein_estimating_2003.
 They found that the methods coincides for the accelerated failure time
 model but not for the proportional hazards model.
 
+When the outcome is common, we can use weight approach (Lange 2012).
+
 To sum up, we can only use the traditional approaches for rare outcomes.
 Otherwise, we can use the product method to get an indication of whether
 there is mediation, but be aware that the estimate is not accurate.
@@ -115,8 +117,6 @@ have to satisfy below assumptions:
 -   no exposure induced mediation-outcome confounding
 -   Additionally, we assume that the mediator is measured for everyone
     before the outcome occurs.
-
-When the outcome is common, we can use weight approach (Lange 2012)
 
 ## Example
 
