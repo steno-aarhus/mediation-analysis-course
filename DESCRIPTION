@@ -56,7 +56,7 @@ Remotes:
     github::tlverse/sl3,
     github::nhejazi/medshift,
     github::nhejazi/medoutcon,
-    github::nt-williams/mlr3superlearner@Screener,
+    github::nt-williams/mlr3superlearner,
     github::nt-williams/lcmmtp,
     github::nt-williams/lmtp@devel,
     github::mlr-org/mlr3extralearners@*release
