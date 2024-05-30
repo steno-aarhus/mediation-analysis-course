@@ -37,8 +37,8 @@ Imports:
     sl3,
     medshift,
     medoutcon,
-    lmtp,
-    lmcmtp
+    lmcmtp,
+    lmtp
 Suggests:
     nnls,
     Rsolnp,
@@ -50,6 +50,7 @@ Suggests:
     hal9001,
     SuperLearner,
     mlr3extralearners
+    mma
 Remotes:
     github::BS1125/CMAverse
     github::tlverse/sl3,
@@ -57,4 +58,5 @@ Remotes:
     github::nhejazi/medoutcon,
     github::nt-williams/mlr3superlearner@Screener,
     github::nt-williams/lcmmtp,
+    github::nt-williams/lmtp@devel,
     github::mlr-org/mlr3extralearners@*release
