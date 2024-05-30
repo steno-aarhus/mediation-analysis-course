@@ -92,16 +92,16 @@ work, discussions and networking activities.
 
 ### May 30
 
-| Time        | May 30                                                                                      |
-|-------------|---------------------------------------------------------------------------------------------|
-| 9.00-10.15  | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)                          |
-| 10.15-10.30 | Coffee break                                                                                |
-| 10.30-12.00 | Modern mediation analysis - part 3 (NH, ID)                                                 |
-| 12.00-13.00 | Lunch                                                                                       |
-| 13.00-14.00 | Modern mediation analysis - part 4 (NH, ID)                                                 |
-| 14.15-15.00 | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) (14.15-15.00) |
-| 15.00-15.30 | Code-along with NetCoupler (CW, JZ) + De-brief, evaluation (15.15-16.00) (OS)               |
-| 15.00-16.00 | Code-along with NetCoupler (CW, JZ) + De-brief, evaluation (15.15-16.00) (OS)               |
+| Time        | May 30                                                                        |
+|-------------|-------------------------------------------------------------------------------|
+| 9.00-10.15  | Recap from yesterday + Modern mediation analysis - part 2 (NH, ID)            |
+| 10.15-10.30 | Coffee break                                                                  |
+| 10.30-12.00 | Modern mediation analysis - part 3 (NH, ID)                                   |
+| 12.00-13.00 | Lunch                                                                         |
+| 13.00-14.00 | Modern mediation analysis - part 4 (NH, ID)                                   |
+| 14.15-15.00 | Integrating Study Designs with Omics Data (CW) (open lecture, Steno Thursday) |
+| 15.00-15.30 | Code-along with NetCoupler (CW, JZ) + De-brief, evaluation (15.15-16.00) (OS) |
+| 15.30-16.00 | De-brief, evaluation (15.30-16.00) (OS)                                       |
 :::
 
 ::: callout-note
