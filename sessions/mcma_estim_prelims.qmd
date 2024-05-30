@@ -1,0 +1,115 @@
+# Overview of doubly robust estimators: Example with the ATE
+
+Recall our motivation for doing mediation analysis --- that is, we would like
+to decompose the total effect of a treatment $A$ on an outcome $Y$ into (two)
+distinct components (direct/indirect effects) that operate through mediator(s)
+$M$ (indirect effect) v. those operating independently of $M$ (direct effect).
+
+Recall that we define the *average treatment effect* (ATE) as $\E(Y_1-Y_0)$,
+and decompose it as follows
+$$
+\E[Y_{1,M_1} - Y_{0,M_0}] = \underbrace{\E[Y_{\color{red}{1},\color{blue}{M_1}}
+    - Y_{\color{red}{1},\color{blue}{M_0}}]}_{\text{natural indirect effect}} +
+    \underbrace{\E[Y_{\color{blue}{1},\color{red}{M_0}} -
+    Y_{\color{blue}{0},\color{red}{M_0}}]}_{\text{natural direct effect}}
+$$
+
+To introduce some of the ideas that we will use for estimation of the NDE, let
+us first briefly discuss estimation of $\E(Y_1)$ (estimation of $\E(Y_0)$ can be
+performed analogously).
+
+First, notice that under the assumption of no unmeasured confounders
+($Y_1\indep A\mid W$), we have
+
+$$ \begin{align*}
+  \E(Y_1) &= \E[ \E(Y_1 \mid W) ] \\
+          &= \E[ \E(Y_1 \mid A=1, W) ] \\
+          &= \E[ \E(Y \mid A=1, W) ] \ \ ,
+\end{align*} $$
+where the first step adds an expectation over $W$ (that is marginalized over),
+the second step uses no unmeasured confounding or exchangeability $(A \indep
+Y_a \mid L)$, and the last step applies consistency ($Y_a = Y$ for $A=a$).
+
+## Plug-in (G-computation) estimator
+
+The first estimator of $\E[ \E(Y \mid A=1, W) ]$ can be obtained by a
+three-step procedure:
+
+1. Fit a regression for $Y$ on $A$ and $W$, then
+2. use the above regression to predict the outcome mean if everyone's
+  $A$ is set to $A=1$, and then
+3. average these predictions.
+
+The resultant estimator can be expressed as
+$$
+  \frac{1}{n} \sum_{i=1}^n \hat{\E}(Y \mid A_i=1, W_i) \ .
+$$
+
+- Note that this plug-in estimator directly uses the above identification
+  formula (called a g-formula, arrived at via g-computation):
+  $\E[\E(Y \mid A=1, W)]$
+- This estimator requires that the (outcome) regression model for
+  $\hat{\E}(Y \mid A_i=1, W_i)$ is correctly specified.
+- Downside: If we use arbitrary machine learning for this model, general theory
+  for computing standard errors and confidence intervals (i.e., statistical
+  inference) is not available.
+
+## Inverse probability weighted (IPW) estimator
+
+An alternative method of estimation can be constructed after noticing the
+following equivalence:
+$$
+  \E[ \E(Y \mid A=1, W) ] = \E\left[ \frac{A}{\P(A=1\mid W)} Y \right] \ ,
+$$
+which may be carried out by way of the following procedure:
+
+1. Fit a regression for $A$ and $W$, then
+2. use the above regression to predict the probability of treatment $A=1$,
+   then
+3. compute the inverse probability weights $A_i / \hat{\P}(A_i =1 \mid W_i)$.
+   This weight will be zero for untreated units, and the inverse of the
+   probability of treatment for treated units.
+5. Finally, compute the weighted average of the outcome:
+   $$
+     \frac{1}{n} \sum_{i=1}^n \frac{A_i}{\hat{\P}(A_i=1 \mid W_i)} Y_i \ .
+   $$
+
+- This estimator requires that the regression model for $\hat{\P}(A=1 \mid W_i)$
+  is correctly specified.
+- Downside: If we use arbitrary machine learning for this model, general theory
+  for computing standard errors and confidence intervals (i.e., statistical
+  inference) is not available.
+
+## Augmented inverse probability weighted (AIPW) estimator
+
+Fortunately, we can combine these two estimators to get an estimator with
+enhanced properties.
+
+The improved estimator can be seen both as a *corrected* (or augmented) IPW
+estimator:
+$$
+  \underbrace{\frac{1}{n} \sum_{i=1}^n \frac{A_i}{\hat{\P}(A_i=1 \mid W_i)}
+  Y_i}_{\text{IPW estimator}} -
+  \underbrace{\frac{1}{n} \sum_{i=1}^n \frac{\hat{\E}(Y \mid A_i=1, W_i)}
+    {\hat{\P}(A_i=1 \mid W_i)}[A_i - \hat{\P}(A_i=1 \mid
+    W_i)]}_{\text{Correction term}} \ ,
+$$
+or
+$$
+  \underbrace{\frac{1}{n} \sum_{i=1}^n \hat{\E}(Y \mid A_i=1,
+    W_i)}_{\text{G-comp estimator}} +
+  \underbrace{\frac{1}{n} \sum_{i=1}^n \frac{A_i}{\hat{\P}(A_i=1\mid W_i)}
+    [Y_i - \hat{\E}(Y \mid A_i=1, W_i)]}_{\text{Correction term}} \ .
+$$
+
+This estimator has some desirable properties:
+
+- It is robust to misspecification of at most one of the two models (outcome or
+  treatment) (Can you see why?)
+- It is distributed as a normal random variable (RV) as sample size grows. This
+  allows us to easily compute confidence intervals and perform hypothesis tests.
+- It allows us to use machine learning to estimate the treatment and outcome
+  regressions to alleviate model misspecification bias.
+
+Next, we will work towards constructing estimators with these same properties
+for the mediation parameters that we have introduced.

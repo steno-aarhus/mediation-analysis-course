@@ -13,3 +13,4 @@ _book
 *_cache
 *.log
 site_libs
+!mathjax.html
