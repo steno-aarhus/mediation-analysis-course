@@ -37,7 +37,7 @@ Imports:
     sl3,
     medshift,
     medoutcon,
-    lmcmtp,
+    lcmmtp,
     lmtp
 Suggests:
     nnls,
@@ -48,7 +48,7 @@ Suggests:
     earth,
     ranger,
     hal9001,
-    SuperLearner,
+    mlr3superlearner,
     mlr3extralearners,
     mma
 Remotes:
