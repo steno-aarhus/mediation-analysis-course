@@ -56,6 +56,8 @@ Knowledge about linear and logistic regression and experience using R.
 Over the 3 days we will combine lectures with code-along sessions, group
 work, discussions and networking activities.
 
+<!-- notes: less time for estimation for day 2 -->
+
 ::: panel-tabset
 ### May 28
 
@@ -81,7 +83,7 @@ work, discussions and networking activities.
 | 12.00-13.00 | Lunch                                                                                                  |
 | 13.00-14.30 | Causal mediation analysis: Sensitivity analyses (OS) + Reporting guidelines (DI)                       |
 | 14.30-15.00 | Coffee break                                                                                           |
-| 15.00-16.00 | Modern mediation analysis - part 1 (NH, ID)                                                            |
+| 15.00-16.00 | Modern mediation analysis - part 1 (NH)                                                                |
 | 16.00-16.15 | Coffee break                                                                                           |
 | 16.15-18.00 | Group work + Reflections (DI, OS)                                                                      |
 | 18:30       | Social activity                                                                                        |
