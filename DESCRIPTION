@@ -49,10 +49,10 @@ Suggests:
     ranger,
     hal9001,
     SuperLearner,
-    mlr3extralearners
+    mlr3extralearners,
     mma
 Remotes:
-    github::BS1125/CMAverse
+    github::BS1125/CMAverse,
     github::tlverse/sl3,
     github::nhejazi/medshift,
     github::nhejazi/medoutcon,
