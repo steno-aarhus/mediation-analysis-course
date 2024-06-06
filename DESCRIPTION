@@ -34,11 +34,10 @@ Imports:
     sessioninfo,
     checkmate,
     origami,
-    sl3,
-    medshift,
-    medoutcon,
-    lcmmtp,
-    lmtp
+    sl3 (>= 1.4.5),
+    medshift (>= 0.1.4),
+    medoutcon (>= 0.2.2),
+    lmtp (>= 1.4.0)
 Suggests:
     nnls,
     Rsolnp,
@@ -48,7 +47,6 @@ Suggests:
     earth,
     ranger,
     hal9001,
-    mlr3superlearner,
     mlr3extralearners,
     mma
 Remotes:
@@ -56,7 +54,5 @@ Remotes:
     github::tlverse/sl3,
     github::nhejazi/medshift,
     github::nhejazi/medoutcon,
-    github::nt-williams/mlr3superlearner,
-    github::nt-williams/lcmmtp,
     github::nt-williams/lmtp@devel,
     github::mlr-org/mlr3extralearners@*release
