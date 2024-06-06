@@ -440,7 +440,6 @@ shorten >=2pt,}
 \draw[->,#3] (#1) -- +(#2);
 \end{pgfonlayer}
 }
-
 \begin{tikzpicture}
   \Vertex{0, 1}{Z_0}
   \Vertex{0, -1}{Z_1}
@@ -454,37 +453,6 @@ shorten >=2pt,}
 \end{tikzpicture}
 ```
 
-```{=html}
-<!--
-this is what we used to have
-- Technically, the reason for this is that an intervention setting $A=1$
-  (necessary for the definition of $Y_{1,m}$) induces a counterfactual variable
-  $Z_1$.
-- Likewise, an intervention setting $A=0$ (necessary for the definition of
-  $M_0$) induces a counterfactual $Z_0$.
-- The variables $Z_1$ and $Z_0$ are correlated because they share unmeasured
-  common causes, $U_Z$.
-- The variable $Z_1$ is correlated with $Y_{1,m}$, and the variable $Z_0$ is
-  correlated with $M_0$, because they are counterfactual outcomes in the same
-  hypothetical worlds.
-- To see this in the definition of counterfactual from a causal structural
-  model:
-\begin{align*}
-  Y_{1,m} &= f_Y(W, 1, Z_1, m, U_Y), \text{ and }\\
-  M_0 &= f_M(W, 0, Z_0, U_M)\\
-\end{align*}
-are correlated even after adjusting for $W$ by virtue of $Z_1$ and $Z_0$ being
-correlated.
--->
-```
-```{=html}
-<!--
-Intuitively:
-- $Z$ is a confounder of the relation $M \rightarrow Y$, which requires
-  adjustment
-- But $Z$ is on the pathway $A\rightarrow Y$, which precludes adjustment
--->
-```
 However:
 
 -   We can actually actually identify the NIE/NDE in the above setting
