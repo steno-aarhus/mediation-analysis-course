@@ -6,6 +6,7 @@ Recall:
 
 ```{tikz}
 #| echo: false
+#| eval: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
