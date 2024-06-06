@@ -180,6 +180,7 @@ $$
 
     ```{r}
     #| label: mcma_setup_sl
+    #| eval: false
     # instantiate learners
     mean_lrnr <- Lrnr_mean$new()
     fglm_lrnr <- Lrnr_glm_fast$new()
@@ -213,6 +214,7 @@ $$
 
     ```{r}
     #| label: mcma-natural-de-os
+    #| eval: false
     # compute one-step estimate of the natural direct effect
     nde_onestep <- medoutcon(
       W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -235,6 +237,7 @@ $$
 
 ```{r}
 #| label: mcma-natural-ie-os
+#| eval: false
 # compute one-step estimate of the natural indirect effect
 nie_onestep <- medoutcon(
   W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -390,6 +393,7 @@ $$
 
     ```{r}
     #| label: mcma-interv-de-os
+    #| eval: false
     # compute one-step estimate of the interventional direct effect
     interv_de_onestep <- medoutcon(
       W = weight_behavior[, c("age", "sex", "race", "tvhours")],
@@ -411,6 +415,7 @@ $$
 
     ```{r}
     #| label: mcma-interv-ie-os
+    #| eval: false
     # compute one-step estimate of the interventional indirect effect
     interv_ie_onestep <- medoutcon(
       W = weight_behavior[, c("age", "sex", "race", "tvhours")],

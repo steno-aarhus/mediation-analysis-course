@@ -51,10 +51,9 @@ increased mortality. The causal model underlying this problem is as
 follows:
 
 The data on a single observational unit can be represented by the vector
-$O=(L_1,
-A_1, Z_1, M_1, L_2, \ldots, A_\tau, Z_\tau, M_\tau, Y)$, with the data
-pooled across all participants denoted $O_1, \ldots, O_n$, for a of $n$
-i.i.d. observations of $O$. The associated DAG is
+$O=(L_1, A_1, Z_1, M_1, L_2, \ldots, A_\tau, Z_\tau, M_\tau, Y)$, with
+the data pooled across all participants denoted $O_1, \ldots, O_n$, for
+a of $n$ i.i.d. observations of $O$. The associated DAG is
 
 ```{tikz}
 #| fig-cap: Directed acyclic graph for time-varying treatments, mediators, and confounders
@@ -195,8 +194,8 @@ How can we define (total) causal effects in this example?
 ```
 -   We could then define the total effect as $E[Y(d) - Y]$, where $Y(d)$
     is the counterfactual mortality if the above rule had been
-    implemented every day, i.e., the intervention is $d=(d_1,d_2,\ldots,
-    d_\tau)$.
+    implemented every day, i.e., the intervention is
+    $d=(d_1,d_2,\ldots, d_\tau)$.
 
 -   This is a contrast of the mortality rate under a treatment rule that
     would delay intubation by one day vs the mortality rate that was
@@ -430,6 +429,7 @@ dataset available in the package:
 
 ```{r}
 #| label: longit-data
+#| eval: false
 library(lcmmtp)
 data <- as.data.frame(apply(lcmmtp_foo, 2, as.numeric))
 head(data)
@@ -441,6 +441,7 @@ estimate $\E[Y(1), G(0)]$:
 
 ```{r}
 #| label: longit-analysis1
+#| eval: false
 library(mlr3extralearners)
 vars <- lcmmtp:::lcmmtp_variables$new(
     L = list(c("L_1"), c("L_2")),
@@ -470,6 +471,7 @@ $\E[Y(1), G(0)] - \E[Y(0), G(0)]$:
 
 ```{r}
 #| label: longit-analysis2
+#| eval: false
 EY00 <- lcmmtp(
   lcmmtp_foo, vars, d_as, d_as,
   control = .lcmmtp_control(folds = 2,
@@ -486,6 +488,7 @@ R package:
 
 ```{r}
 #| label: contrast
+#| eval: false
 library(lmtp)
 class(EY00) <- class(EY10) <- 'lmtp'
 EY00$estimator <- EY10$estimator <- 'SDR'
