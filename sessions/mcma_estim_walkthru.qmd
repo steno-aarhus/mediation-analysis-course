@@ -18,6 +18,7 @@ take a quick look.
 
 ```{r}
 #| label: mcma-pkg-setup
+#| eval: false
 library(tidyverse)
 library(sl3)
 library(medoutcon)
@@ -28,6 +29,7 @@ set.seed(429153)
 
 ```{r}
 #| label: load-data
+#| eval: false
 # load and examine data
 data(weight_behavior)
 dim(weight_behavior)
