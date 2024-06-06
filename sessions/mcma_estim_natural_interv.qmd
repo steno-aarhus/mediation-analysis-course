@@ -1,3 +1,8 @@
+---
+execute:
+  eval: false
+---
+
 # Construction of estimators: Example with the NDE
 
 ## Recap of definition and identification of the natural direct effect
@@ -8,6 +13,7 @@ Recall:
 #| echo: false
 #| eval: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
+
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
@@ -244,30 +250,33 @@ $$
 -   The following `R` chunk provides simulation code to exemplify the
     bias of a G-computation parametric estimator in a simple situation
 
-    ```{r}
-    #| eval: false
-    mean_y <- function(m, a, w) abs(w) + a * m
-    mean_m <- function(a, w) plogis(w^2 - a)
-    pscore <- function(w) plogis(1 - abs(w))
-    ```
+```{r, eval=FALSE}
+#| eval: false
 
-    ```{r}
-    #| echo: false
-    #| results: hide
-    w_big <- runif(1e6, -1, 1)
-    trueval <- mean((mean_y(1, 1, w_big) - mean_y(1, 0, w_big)) *
-      mean_m(0, w_big) + (mean_y(0, 1, w_big) - mean_y(0, 0, w_big)) *
+mean_y <- function(m, a, w) abs(w) + a * m
+mean_m <- function(a, w) plogis(w^2 - a)
+pscore <- function(w) plogis(1 - abs(w))
+```
+
+```{r}
+#| results: hide
+
+
+w_big <- runif(1e6, -1, 1)
+trueval <- mean((mean_y(1, 1, w_big) - mean_y(1, 0, w_big)) *
+  mean_m(0, w_big) + (mean_y(0, 1, w_big) - mean_y(0, 0, w_big)) *
         (1 - mean_m(0, w_big)))
     print(trueval)
-    ```
 
--   This yields a true NDE value of `r round(trueval, 4)`
+```
+
+-   This yields a true NDE value of.
 
 -   Let's perform a simulation where we draw 1000 datasets from the
     above distribution, and compute a g-computation estimator based on
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     gcomp <- function(y, m, a, w) {
       lm_y <- lm(y ~ m + a + w)
       pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, m = m, w = w))
@@ -278,9 +287,9 @@ $$
       estimate <- mean(pred_pseudo)
       return(estimate)
     }
-    ```
+```
 
-    ```{r}
+```{r}
     #| eval: false
     estimate <- lapply(seq_len(1000), function(iter) {
       n <- 1000
@@ -295,13 +304,12 @@ $$
 
     hist(estimate)
     abline(v = trueval, col = "red", lwd = 4)
-    ```
+``
 
 -   The bias also affects the confidence intervals:
 
-    ```{r}
-    #| fig-width: 8
-    #| eval: false
+#| fig-width: 8
+#| eval: false
     cis <- cbind(
       estimate - qnorm(0.975) * sd(estimate),
       estimate + qnorm(0.975) * sd(estimate)
@@ -324,7 +332,7 @@ $$
       "Coverage probability = ",
       mean(lower < trueval & trueval < upper), "%"
     ), cex = 1.2)
-    ```
+```
 
 ## Pros and cons of G-computation or weighting with data-adaptive regression
 
@@ -483,8 +491,8 @@ the following steps:
         data-adaptive regression algorithms, such as the Super Learner
         [@vdl2007super]
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     library(mgcv)
     ## fit model for E(Y | A, W)
     b_fit <- gam(y ~ m:a + s(w, by = a))
@@ -492,13 +500,13 @@ the following steps:
     e_fit <- gam(a ~ m + w + s(w, by = m), family = binomial)
     ## fit model for P(A = 1 | W)
     g_fit <- gam(a ~ w, family = binomial)
-    ```
+```
 
 2.  Compute predictions $g(1\mid w)$, $g(0\mid w)$, $e(1\mid m, w)$,
     $e(0\mid m, w)$,$b(1, m, w)$, $b(0, m, w)$, and $b(a, m, w)$
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     ## Compute P(A = 1 | W)
     g1_pred <- predict(g_fit, type = 'response')
     ## Compute P(A = 0 | W)
@@ -513,20 +521,20 @@ the following steps:
     b0_pred <- predict(b_fit, newdata = data.frame(a = 0, m, w))
     ## Compute E(Y | A, M, W)
     b_pred  <- predict(b_fit)
-    ```
+```
 
 3.  Compute $Q(M, W)$, fit a model for $\E[Q(M,W) \mid W,A]$, and
     predict at $A=0$
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     ## Compute Q(M, W)
     pseudo <- b1_pred - b0_pred
     ## Fit model for E[Q(M, W) | A, W]
     q_fit <- gam(pseudo ~ a + w + s(w, by = a))
     ## Compute E[Q(M, W) | A = 0, W]
     q_pred <- predict(q_fit, newdata = data.frame(a = 0, w = w))
-    ```
+```
 
 4.  Estimate the weights
 
@@ -545,19 +553,19 @@ ip_weights <- a / g0_pred * e0_pred / e1_pred - (1 - a) / g0_pred
 
 5.  Compute the uncentered EIF:
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     eif <- ip_weights * (y - b_pred) + (1 - a) / g0_pred * (pseudo - q_pred) +
       q_pred
-    ```
+```
 
 6.  The one step estimator is the mean of the uncentered EIF
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
     ## One-step estimator
     mean(eif)
-    ```
+```
 
 ## Performance of the one-step estimator in a small simulation study
 
