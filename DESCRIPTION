@@ -34,9 +34,6 @@ Imports:
     sessioninfo,
     checkmate,
     origami,
-    sl3 (>= 1.4.5),
-    medshift (>= 0.1.4),
-    medoutcon (>= 0.2.2),
 Suggests:
     nnls,
     Rsolnp,
@@ -46,9 +43,5 @@ Suggests:
     earth,
     ranger,
     hal9001,
-    mma
 Remotes:
-    github::BS1125/CMAverse,
-    github::tlverse/sl3,
-    github::nhejazi/medshift,
-    github::nhejazi/medoutcon,
+    github::BS1125/CMAverse
