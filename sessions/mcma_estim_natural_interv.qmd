@@ -6,6 +6,7 @@ Recall:
 
 ```{tikz}
 #| echo: false
+#| eval: false
 #| fig-cap: Directed acyclic graph under *no intermediate confounders* of the mediator-outcome relation affected by treatment
 \dimendef\prevdepth=0
 \pgfdeclarelayer{background}
@@ -73,12 +74,14 @@ shorten >=2pt,}
 -   The observed data is $O = (W, A, M, Y)$
 
 This SCM is represented in the above DAG and the following causal
-models: \begin{align*}
+models:
+
+$$
   W & = f_W(U_W) \\
   A & = f_A(W, U_A) \\
   M & = f_M(W, A, U_M) \\
   Y & = f_Y(W, A, M, U_Y),
-\end{align*} where $(U_W, U_A,U_M, U_Y)$ are exogenous random errors.
+$$
 
 Recall that we need to assume the following to identify the above causal
 effects from our observed data:
@@ -89,9 +92,11 @@ effects from our observed data:
 -   $M_0 \indep Y_{1,m} \mid W$
 -   and positivity assumptions
 
-Then, the NDE is identified as $$
+Then, the NDE is identified as
+
+$$
     \psi(\P) = \E[\E\{\E(Y \mid A=1, M, W) - \E(Y \mid A=0, M, W) \mid A=0,W\}]
-  $$
+$$
 
 ## From causal to statistical quantities
 
@@ -128,10 +133,13 @@ Then, the NDE is identified as $$
     of the joint probability distribution of observed data
     $O=(W,A,Z,M,Y)$
 -   For example, under identifiability assumptions the natural direct
-    effect is equal to $$
+    effect is equal to
+
+$$
       \psi(\P) = \E[\color{Goldenrod}{\E\{\color{ForestGreen}
         {\E(Y \mid A=1, M, W) - \E(Y \mid A=0, M, W)} \mid A=0, W \}}]
-    $$
+$$
+
 -   The notation $\psi(\P)$ means that the parameter is a function of
     $\P$ -- in other words, that it is a function of this joint
     probability distribution
@@ -144,14 +152,17 @@ Then, the NDE is identified as $$
         for all values $(m,w)$
     -   Computing the probability $\P(M=m\mid A=0,W=w)$ for all values
         $(m,w)$
-    -   Compute \begin{align*}
+    -   Compute
+
+$$
           \color{Goldenrod}{\E\{}&\color{ForestGreen}{\E(Y \mid A=1, M, W) -
             \E(Y \mid A=0, M, W)}\color{Goldenrod}{\mid A=0,W\}} =\\
           &\color{Goldenrod}{\sum_m\color{ForestGreen}{\{\E(Y \mid A=1, m, w) -
             \E(Y \mid A=0, m, w)\}} \P(M=m\mid A=0, W=w)}
-        \end{align*}
-    -   Computing the probability $\P(W=w)$ for all values $w$
-    -   Computing the mean over all values $w$
+$$
+
+-   Computing the probability $\P(W=w)$ for all values $w$
+-   Computing the mean over all values $w$
 
 ## Plug-in (G-computation) estimator
 
@@ -164,11 +175,14 @@ true distribution $\P$
     -   Fit a regression to estimate, say $\hat\E(Y\mid A=0,M=m,W=w)$
     -   Fit a regression to estimate, say $\hat\P(M=m\mid A=0,W=w)$
     -   Estimate $\P(W=w)$ with the empirical distribution
-    -   Evaluate $$
+    -   Evaluate
+
+$$
           \psi(\hat\P) = \hat{\E}[\color{RoyalBlue}{
             \hat{\E}\{\color{Goldenrod}{\hat\E(Y \mid A=1, M, W) -
             \hat{\E}(Y \mid A=0, M, W)}\mid \color{RoyalBlue}{A=0,W}\}}]
-        $$
+$$
+
 -   This is known as the G-computation estimator.
 
 ## First weighted estimator (akin to IPW)
@@ -407,10 +421,12 @@ NDE
 -   Estimating $\P(M\mid A, W)$ is a very challenging problem when $M$
     is high-dimensional. But, since we have the ratio of these
     conditional densities, we can re-paramterize using Bayes' rule to
-    get something that is easier to compute: \begin{equation*}
+    get something that is easier to compute:
+
+$$
       \frac{\P(M \mid A=0, W)}{\P(M \mid A=1,W)} = \frac{\P(A = 0 \mid M, W)
         \P(A=1 \mid W)}{\P(A = 1 \mid M, W) \P(A=0 \mid W)} \ .
-    \end{equation*}
+$$
 
 Thus we can change the expression of the estimator a bit as follows.
 First, some more notation that will be useful later:
@@ -506,15 +522,17 @@ the following steps:
 
 4.  Estimate the weights
 
-    \begin{equation*}
+$$
     \color{RoyalBlue}{\bigg\{
       \frac{\I(A=1)}{g(0\mid W)} \frac{e(0 \mid M,W)}{e(1 \mid M,W)} -
       \frac{\I(A=0)}{g(0\mid W)} \bigg\}}
-    \end{equation*} using the above predictions:
+$$
 
-    ```{r}
-    ip_weights <- a / g0_pred * e0_pred / e1_pred - (1 - a) / g0_pred
-    ```
+using the above predictions:
+
+```{r}
+ip_weights <- a / g0_pred * e0_pred / e1_pred - (1 - a) / g0_pred
+```
 
 5.  Compute the uncentered EIF:
 
