@@ -87,7 +87,9 @@ $$\psi_{\text{CDE}} = \E(Y_{1,m} - Y_{0,m})$$
     -   $\P(A=a \mid W) > 0 \text{  } a.e.$
 
 Under the above identification assumptions, the controlled direct effect
-can be identified: $$
+can be identified:
+
+$$
   \E(Y_{1,m} - Y_{0,m}) = \E\{ \color{ForestGreen}{\E(Y \mid A=1, M=m, W) -
     \E(Y \mid A=0, M=m, W)} \}
 $$
@@ -111,15 +113,17 @@ $$
 
 -   Assume we would like the CDE at $m=0$
 
--   Then we generate predictions $$
+-   Then we generate predictions
+
+$$
       \color{ForestGreen}{\E(Y \mid A=1, M=m, W)} \text{ and }
         \color{ForestGreen}{\E(Y \mid A=0, M=m, W)} \ :
-    $$
+$$
 
-    ```{r}
-    pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, m = 0, w = w))
-    pred_y0 <- predict(lm_y, newdata = data.frame(a = 0, m = 0, w = w))
-    ```
+```{r}
+pred_y1 <- predict(lm_y, newdata = data.frame(a = 1, m = 0, w = w))
+pred_y0 <- predict(lm_y, newdata = data.frame(a = 0, m = 0, w = w))
+```
 
 -   Then we compute the difference between the predicted values
     $\color{ForestGreen}{\E(Y \mid A=1, M=m, W) - \E(Y \mid A=0, M=m, W)}$,
@@ -152,9 +156,10 @@ direct and indirect counterparts?*
 Still using the same DAG as above,
 
 -   Recall the definition of the nested counterfactual:
-    \begin{equation*}
+
+$$
       Y_{1, M_0} = f_Y(W, 1, M_0, U_Y)
-    \end{equation*}
+$$
 
 -   Interpreted as *the outcome for an individual in a hypothetical
     world where treatment was given but the mediator was held at the
@@ -163,9 +168,10 @@ Still using the same DAG as above,
     ![](../images/graphic4a.png){width="40%"}
 
 -   Recall that, because of the definition of counterfactuals
-    \begin{equation*}
+
+$$
       Y_{1, M_1} = Y_1
-    \end{equation*}
+$$
 
 Then we can decompose the *average treatment effect* $\E(Y_1-Y_0)$ as
 follows
@@ -221,11 +227,13 @@ $$
 ### Identification formula:
 
 -   Under the above identification assumptions, the natural direct
-    effect can be identified: \begin{equation*}
+    effect can be identified:
+
+$$
       \E(Y_{1,M_0} - Y_{0,M_0}) =
       \E[\color{Goldenrod}{\E\{}\color{ForestGreen}{\E(Y \mid A=1, M, W) -
       \E(Y \mid A=0, M, W)}\color{Goldenrod}{\mid A=0,W\}}]
-    \end{equation*}
+$$
 
 -   The natural indirect effect can be identified similarly.
 
@@ -485,14 +493,16 @@ two-time-point intervention.
 
 -   Define $Y_{0,G_0}$ and $Y_{1,G_1}$ similarly
 
--   Then we can define: $$
+-   Then we can define:
+
+$$
       \E[Y_{1,G_1} - Y_{0,G_0}] = \underbrace{\E[Y_{\color{red}{1},
         \color{blue}{G_1}} - Y_{\color{red}{1},
         \color{blue}{G_0}}]}_{\text{interventional indirect effect}} +
         \underbrace{\E[Y_{\color{blue}{1},\color{red}{G_0}} -
         Y_{\color{blue}{0},
         \color{red}{G_0}}]}_{\text{interventional direct effect}}
-    $$
+$$
 
 -   Note that $\E[Y_{1,G_1} - Y_{0,G_0}]$ is still a *total effect* of
     treatment, even if it is different from the ATE
@@ -538,12 +548,14 @@ two-time-point intervention.
 -   and positivity assumptions.
 
 Under these assumptions, the population interventional direct and
-indirect effect is identified: \begin{align*}
+indirect effect is identified:
+
+$$
   \E &(Y_{a, G_{a'}}) = \\
      & \E\left[\color{Purple}{\E\left\{\color{Goldenrod}{\sum_z}
       \color{ForestGreen}{\E(Y \mid A=a, Z=z, M, W)}
       \color{Purple}{\P(Z=z \mid A=a, W)}\mid A=a', W\right\}} \right]
-\end{align*}
+$$
 
 -   Let's dissect this formula in `R`:
 
